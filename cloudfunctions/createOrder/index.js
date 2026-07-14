@@ -6,6 +6,7 @@ const _ = db.command;
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext();
   const openid = wxContext.OPENID;
+  if (!openid) return { code: 1002, message: '未登录' };
   const { items, contactName, contactPhone, remark } = event;
 
   try {

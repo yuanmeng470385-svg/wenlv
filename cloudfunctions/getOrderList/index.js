@@ -5,6 +5,7 @@ const db = cloud.database();
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext();
   const openid = wxContext.OPENID;
+  if (!openid) return { code: 1002, message: '未登录' };
   const { status, page = 1, pageSize = 10, role = 'user' } = event;
 
   try {
