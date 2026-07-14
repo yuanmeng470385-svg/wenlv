@@ -4,6 +4,12 @@ const db = cloud.database();
 
 exports.main = async (event, context) => {
   try {
+    const openid = cloud.getWXContext().OPENID;
+    if (!openid) return { code: 1002, message: '未登录' };
+    const _admin = await db.collection('users').where({ _openid: openid }).get();
+    if (!(_admin.data[0] && (_admin.data[0].roles || []).includes('admin'))) {
+      return { code: 1002, message: '无管理员权限' };
+    }
     const res = await db.collection('providers')
       .where({ status: 'pending_review' })
       .orderBy('createTime', 'desc')

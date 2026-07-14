@@ -6,6 +6,12 @@ exports.main = async (event, context) => {
   const { portfolioId, action, reason } = event;
 
   try {
+    const openid = cloud.getWXContext().OPENID;
+    if (!openid) return { code: 1002, message: '未登录' };
+    const _admin = await db.collection('users').where({ _openid: openid }).get();
+    if (!(_admin.data[0] && (_admin.data[0].roles || []).includes('admin'))) {
+      return { code: 1002, message: '无管理员权限' };
+    }
     if (!['approved', 'rejected'].includes(action)) {
       return { code: 1001, message: '操作需为 approved 或 rejected' };
     }

@@ -6,6 +6,12 @@ exports.main = async (event, context) => {
   const { page = 1, pageSize = 20 } = event;
 
   try {
+    const openid = cloud.getWXContext().OPENID;
+    if (!openid) return { code: 1002, message: '未登录' };
+    const _admin = await db.collection('users').where({ _openid: openid }).get();
+    if (!(_admin.data[0] && (_admin.data[0].roles || []).includes('admin'))) {
+      return { code: 1002, message: '无管理员权限' };
+    }
     const total = (await db.collection('portfolios').where({ status: 'pending_review' }).count()).total;
     const list = await db.collection('portfolios')
       .where({ status: 'pending_review' })
