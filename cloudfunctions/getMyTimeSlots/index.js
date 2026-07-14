@@ -7,6 +7,7 @@ const DEFAULT_SLOTS = ['08:00','09:00','10:00','11:00','13:00','14:00','15:00','
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext();
   const openid = wxContext.OPENID;
+  if (!openid) return { code: 1002, message: '未登录' };
   const { date } = event;
 
   try {

@@ -5,7 +5,7 @@ const db = cloud.database();
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext();
   const openid = wxContext.OPENID;
-
+  if (!openid) return { code: 1002, message: '未登录' };
   try {
     const providerRes = await db.collection('providers').where({ userId: openid, status: 'active' }).get();
     if (providerRes.data.length === 0) return { code: 1003, message: '服务商不存在' };
