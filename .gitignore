@@ -12,3 +12,6 @@ Thumbs.db
 *.log
 .idea/
 .vscode/
+
+# SDD 执行进度（scratch，不入库）
+.superpowers/
