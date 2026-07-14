@@ -1,0 +1,9 @@
+.page-review { min-height: 100vh; background: #F5F5F5; padding: 20rpx; }
+.review-card { margin: 0 0 16rpx; }
+.tag-row { display: flex; flex-wrap: wrap; gap: 8rpx; }
+.feature-tag { padding: 4rpx 12rpx; font-size: 22rpx; border-radius: 8rpx; background: #FBF6F0; color: #C48B5C; }
+.action-btns { display: flex; justify-content: flex-end; gap: 12rpx; }
+.btn-pass { padding: 14rpx 40rpx; font-size: 26rpx; background: #52C41A; color: #fff; border-radius: 30rpx; }
+.btn-reject { padding: 14rpx 40rpx; font-size: 26rpx; background: #F5F5F5; color: #999; border-radius: 30rpx; }
+.empty-hint { padding: 120rpx 0; text-align: center; }
+.mt-10 { margin-top: 10rpx; } .mt-20 { margin-top: 20rpx; }

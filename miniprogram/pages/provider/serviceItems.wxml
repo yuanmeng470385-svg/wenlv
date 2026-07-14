@@ -1,0 +1,26 @@
+<view class="page-items">
+  <view class="top-bar flex-between p-20">
+    <text class="text-bold text-lg">我的套餐 ({{items.length}})</text>
+    <button class="add-btn" bindtap="goAdd">+ 新建套餐</button>
+  </view>
+
+  <view wx:for="{{items}}" wx:key="_id" class="item-card card" data-item="{{item}}" bindtap="goEdit">
+    <view class="flex-between mb-10">
+      <text class="text-bold">{{item.name}}</text>
+      <text class="status-tag {{item.status === 'active' ? 'on' : 'off'}}">{{item.status === 'active' ? '上架' : '下架'}}</text>
+    </view>
+    <text class="text-sm text-secondary mb-10">{{item.description}}</text>
+    <view class="flex-between">
+      <view>
+        <text class="text-price text-lg">¥{{item.price/100}}</text>
+        <text class="text-sm text-hint ml-10">{{item.priceType === 'fixed' ? '固定' : (item.priceType === 'hourly' ? '按时' : '按项目')}}</text>
+        <text class="text-sm text-hint ml-10">⏱ {{item.duration}}分钟</text>
+      </view>
+      <button class="toggle-btn" data-item="{{item}}" catchtap="onToggleStatus">{{item.status === 'active' ? '下架' : '上架'}}</button>
+    </view>
+  </view>
+
+  <view wx:if="{{!loading && !items.length}}" class="empty-hint">
+    <text class="text-secondary">还没有套餐，点击上方新建</text>
+  </view>
+</view>

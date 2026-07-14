@@ -1,0 +1,43 @@
+<view class="page-orders">
+  <scroll-view class="tab-scroll" scroll-x>
+    <view class="tab-list">
+      <view wx:for="{{activeRole === 'user' ? userTabs : providerTabs}}" wx:key="key"
+        class="tab-item {{currentTab === item.key ? 'active' : ''}}"
+        data-tab="{{item.key}}" bindtap="onTabChange">
+        <text>{{item.label}}</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <block wx:if="{{activeRole === 'user'}}">
+    <view wx:for="{{orders}}" wx:key="_id" class="order-card card" data-id="{{item._id}}" bindtap="onOrderTap">
+      <view class="flex-between mb-20"><text class="text-sm text-bold">{{item.orderNo}}</text><text class="text-sm text-primary">{{item.orderStatus}}</text></view>
+      <view wx:for="{{item.items}}" wx:key="serviceItemId" wx:for-item="si" class="order-item">
+        <text>{{si.name}}</text><text class="text-sm text-secondary">{{si.appointmentDate}} {{si.appointmentTime}}</text>
+      </view>
+      <view class="flex-between mt-20 pt-20"><text class="text-price text-lg">¥{{item.totalFee/100}}</text></view>
+    </view>
+  </block>
+
+  <block wx:else>
+    <view wx:for="{{orders}}" wx:key="_id" class="order-card card" data-id="{{item._id}}" bindtap="onOrderTap">
+      <view class="flex-between mb-20">
+        <text class="text-sm text-bold">{{item.orderNo}}</text>
+        <text class="status-text text-sm">{{item.orderStatus === 'paid' ? '待确认' : (item.orderStatus === 'confirmed' ? '已确认' : (item.orderStatus === 'in_progress' ? '进行中' : (item.orderStatus === 'completed' ? '已完成' : item.orderStatus)))}}</text>
+      </view>
+      <view wx:for="{{item.items}}" wx:key="serviceItemId" wx:for-item="si">
+        <view class="flex-between mb-10"><text class="text-bold">{{si.name}}</text><text class="text-price">¥{{si.price/100}}</text></view>
+        <text class="text-sm text-secondary">{{si.appointmentDate}} {{si.appointmentTime}}</text>
+      </view>
+      <text class="text-sm text-secondary mt-10">{{item.contactName}} {{item.contactPhone}}</text>
+      <view class="action-btns mt-20">
+        <button wx:if="{{item.orderStatus === 'paid'}}" class="btn-refuse" data-id="{{item._id}}" data-action="reject" catchtap="onProviderAction">拒绝</button>
+        <button wx:if="{{item.orderStatus === 'paid'}}" class="btn-confirm" data-id="{{item._id}}" data-action="confirm" catchtap="onProviderAction">确认接单</button>
+        <button wx:if="{{item.orderStatus === 'confirmed'}}" class="btn-confirm" data-id="{{item._id}}" data-action="start" catchtap="onProviderAction">开始服务</button>
+        <button wx:if="{{item.orderStatus === 'in_progress'}}" class="btn-confirm" data-id="{{item._id}}" data-action="complete" catchtap="onProviderAction">完成服务</button>
+      </view>
+    </view>
+  </block>
+
+  <view wx:if="{{!orders.length}}" class="empty-hint"><text class="text-secondary">暂无订单</text></view>
+</view>

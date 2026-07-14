@@ -1,0 +1,37 @@
+/* 样式重置 */
+view, scroll-view, swiper, swiper-item, movable-view, cover-view, text, icon, rich-text,
+progress, button, checkbox, form, input, label, picker, picker-view, radio, slider,
+switch, textarea, navigator, image, video, camera, live-player, live-pusher, map, canvas,
+open-data, web-view, ad, official-account {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+image {
+  display: block;
+  width: 100%;
+}
+
+button {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  line-height: inherit;
+}
+
+button::after {
+  border: none;
+}
+
+navigator {
+  text-decoration: none;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+

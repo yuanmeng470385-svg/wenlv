@@ -1,0 +1,31 @@
+.page-booking { background: var(--bg-page); min-height: 100vh; padding-bottom: 120rpx; }
+.step-indicator { padding: 24rpx; background: var(--bg-white); font-size: 24rpx; }
+.step { color: var(--text-disabled); margin: 0 6rpx; }
+.step.active { color: var(--color-primary); font-weight: 600; }
+.step-arrow { color: var(--text-disabled); margin: 0 4rpx; }
+.step-content { padding: 20rpx; height: calc(100vh - 220rpx); }
+.section-title { display: block; padding: 16rpx 0; }
+.service-select-card { margin: 0 0 12rpx; }
+.cart-section { border-top: 2rpx solid var(--border-color); padding-top: 20rpx; }
+.cart-item { margin: 0 0 12rpx; }
+.time-card { margin: 0 0 12rpx; }
+.date-item { display: inline-block; padding: 14rpx 24rpx; font-size: 24rpx; border-radius: 30rpx; margin-right: 12rpx; border: 1rpx solid var(--border-color); color: var(--text-secondary); }
+.date-item.active { border-color: var(--color-primary); color: var(--color-primary); background: var(--color-primary-bg); }
+.time-slots { margin-top: 10rpx; }
+.slot-grid { display: flex; flex-wrap: wrap; gap: 12rpx; }
+.slot-item { padding: 14rpx 28rpx; font-size: 24rpx; border-radius: 30rpx; border: 1rpx solid var(--border-color); color: var(--text-secondary); text-align: center; min-width: 120rpx; }
+.slot-item.active { border-color: var(--color-primary); color: var(--color-primary); background: var(--color-primary-bg); font-weight: 600; }
+.mb-10 { margin-bottom: 10rpx; }
+.mt-10 { margin-top: 10rpx; }
+.form-card { margin: 0; }
+.form-item { padding: 24rpx 0; border-bottom: 1rpx solid var(--border-color); }
+.form-label { display: block; font-size: 28rpx; font-weight: 600; margin-bottom: 12rpx; }
+.form-input { width: 100%; height: 60rpx; font-size: 28rpx; }
+.form-textarea { width: 100%; height: 120rpx; font-size: 28rpx; }
+.confirm-item { padding: 16rpx 0; border-bottom: 1rpx solid var(--border-color); }
+.bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; padding: 16rpx 30rpx; background: var(--bg-white); box-shadow: 0 -2rpx 12rpx rgba(0,0,0,0.04); display: flex; gap: 16rpx; }
+.prev-btn { width: 160rpx; height: 88rpx; background: var(--bg-page); color: var(--text-secondary); border-radius: 44rpx; font-size: 28rpx; display: flex; align-items: center; justify-content: center; }
+.next-btn { height: 88rpx; background: var(--color-primary); color: #fff; border-radius: 44rpx; font-size: 28rpx; display: flex; align-items: center; justify-content: center; }
+.submit-btn { height: 88rpx; background: var(--color-price); color: #fff; border-radius: 44rpx; font-size: 28rpx; display: flex; align-items: center; justify-content: center; }
+.p-20 { padding: 20rpx; }
+.text-right { text-align: right; }

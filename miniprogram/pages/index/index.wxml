@@ -1,0 +1,82 @@
+<!-- 用户模式 -->
+<block wx:if="{{activeRole === 'user'}}">
+<view class="page-index">
+  <swiper class="banner-swiper" indicator-dots autoplay circular>
+    <swiper-item wx:for="{{banners}}" wx:key="id">
+      <view class="banner-item"><text class="banner-title">{{item.title}}</text></view>
+    </swiper-item>
+  </swiper>
+
+  <view class="category-section">
+    <view class="category-grid">
+      <view class="category-item" wx:for="{{categories}}" wx:key="_id" data-type="{{item.type}}" bindtap="onCategoryTap">
+        <view class="category-icon-box"><text class="category-icon">{{item.icon || '📷'}}</text></view>
+        <text class="category-name">{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-header flex-between">
+      <text class="text-lg text-bold">热门推荐</text>
+      <text class="section-more text-sm text-primary" bindtap="goMore">更多 ›</text>
+    </view>
+    <view class="provider-list">
+      <view class="provider-card card" wx:for="{{hotProviders}}" wx:key="_id" data-id="{{item._id}}" bindtap="onProviderTap">
+        <view class="p-avatar-box">
+          <image wx:if="{{item.avatar}}" src="{{item.avatar}}" mode="aspectFill" />
+          <view wx:else class="img-ph">{{item.categoryType === 'photographer' ? '📷' : (item.categoryType === 'makeup' ? '💄' : '👘')}}</view>
+        </view>
+        <view class="flex-1 ml-20">
+          <view class="flex-row"><text class="text-bold text-ellipsis p-name">{{item.name}}</text><text wx:if="{{item.level>0}}" class="level-tag level-{{item.level}}">{{item.levelName}}</text></view>
+          <text class="text-sm text-secondary text-ellipsis mt-10">{{item.description}}</text>
+          <view class="flex-row mt-10"><text>⭐ {{item.rating||'暂无'}}</text><text class="text-hint text-sm ml-10">{{item.reviewCount}}评价</text></view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+</block>
+
+<!-- 商家模式 -->
+<block wx:else>
+<view class="page-dashboard">
+  <!-- 身份条 -->
+  <view class="dash-header">
+    <text class="text-lg">👋 {{providerName}}</text>
+    <view class="flex-row mt-10">
+      <text wx:if="{{providerLevelNum>0}}" class="level-tag level-{{providerLevelNum}}">{{providerLevel}}</text>
+      <text class="text-sm text-white ml-10">⭐ {{dashboard.rating||0}} | {{dashboard.totalOrders||0}}单</text>
+    </view>
+  </view>
+
+  <!-- 数据看板 -->
+  <view class="stats-row">
+    <view class="stat-card"><text class="stat-num">{{dashboard.todayOrders}}</text><text class="stat-label">今日预约</text></view>
+    <view class="stat-card"><text class="stat-num highlight">{{dashboard.pendingOrders}}</text><text class="stat-label">待处理</text></view>
+    <view class="stat-card"><text class="stat-num">{{dashboard.totalOrders}}</text><text class="stat-label">总订单</text></view>
+  </view>
+
+  <!-- 快捷入口 -->
+  <view class="quick-row">
+    <view class="quick-item" bindtap="goUploadWork"><text class="quick-icon">📤</text><text class="quick-label">上传作品</text></view>
+    <view class="quick-item" bindtap="goMyWorks"><text class="quick-icon">🖼️</text><text class="quick-label">作品管理</text></view>
+    <view class="quick-item" bindtap="goServiceItems"><text class="quick-icon">📦</text><text class="quick-label">套餐管理</text></view>
+    <view class="quick-item" bindtap="goSchedule"><text class="quick-icon">📅</text><text class="quick-label">档期管理</text></view>
+    <view class="quick-item" bindtap="goEditProfile"><text class="quick-icon">✏️</text><text class="quick-label">编辑资料</text></view>
+  </view>
+
+  <!-- 近期订单 -->
+  <view class="section">
+    <view class="section-header flex-between"><text class="text-lg text-bold">近期订单</text></view>
+    <view wx:if="{{!recentOrders.length}}" class="empty-hint"><text class="text-secondary">暂无订单</text></view>
+    <view wx:for="{{recentOrders}}" wx:key="_id" class="order-row card" data-id="{{item._id}}" bindtap="goOrderDetail">
+      <view class="flex-between mb-20">
+        <text class="text-sm text-bold">{{item.orderNo}}</text>
+        <text class="status-text text-sm">{{item.orderStatus === 'paid' ? '待确认' : (item.orderStatus === 'confirmed' ? '已确认' : (item.orderStatus === 'in_progress' ? '进行中' : item.orderStatus))}}</text>
+      </view>
+      <text class="text-sm text-secondary" wx:for="{{item.items}}" wx:key="serviceItemId" wx:for-item="si">{{si.appointmentDate}} {{si.appointmentTime}} | {{si.name}} | ¥{{si.price/100}}</text>
+    </view>
+  </view>
+</view>
+</block>

@@ -1,0 +1,22 @@
+<view class="page-review">
+  <view wx:if="{{loading}}" class="empty-hint"><text class="text-secondary">加载中...</text></view>
+  <view wx:elif="{{!list.length}}" class="empty-hint"><text class="text-secondary">暂无待审核退款</text></view>
+  <view wx:for="{{list}}" wx:key="_id" class="review-card card">
+    <view class="flex-between">
+      <text class="text-bold">{{item.orderNo}}</text>
+      <text class="refund-tag">待退款</text>
+    </view>
+    <text class="text-sm text-secondary mt-10">👤 {{item.contactName}} {{item.contactPhone}}</text>
+    <view wx:for="{{item.items}}" wx:key="serviceItemId" wx:for-item="si" class="mt-10">
+      <text>{{si.name}} | {{si.appointmentDate}} {{si.appointmentTime}} | ¥{{si.price/100}}</text>
+    </view>
+    <view class="flex-between mt-10 text-lg">
+      <text>退款金额</text><text class="text-price text-bold">¥{{item.refundAmount/100}}</text>
+    </view>
+    <text wx:if="{{item.cancelReason}}" class="text-sm text-secondary mt-10">原因: {{item.cancelReason}}</text>
+    <view class="action-btns mt-20">
+      <button class="btn-reject" data-id="{{item._id}}" data-action="rejected" bindtap="onAction">驳回</button>
+      <button class="btn-pass" data-id="{{item._id}}" data-action="approved" bindtap="onAction">通过退款</button>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,25 @@
+<view class="page-admin">
+  <view class="admin-header">🔧 管理中心</view>
+
+  <view class="stats-grid">
+    <view class="stat-card warn" bindtap="goProviders">
+      <text class="stat-num">{{stats.pendingProviders||0}}</text><text class="stat-label">待审服务商</text>
+    </view>
+    <view class="stat-card warn" bindtap="goPortfolios">
+      <text class="stat-num">{{stats.pendingPortfolios||0}}</text><text class="stat-label">待审作品</text>
+    </view>
+    <view class="stat-card warn" bindtap="goServiceItems">
+      <text class="stat-num">{{stats.pendingServiceItems||0}}</text><text class="stat-label">待审套餐</text>
+    </view>
+    <view class="stat-card warn" bindtap="goRefunds">
+      <text class="stat-num">{{stats.pendingRefunds||0}}</text><text class="stat-label">待审退款</text>
+    </view>
+  </view>
+
+  <view class="menu-section">
+    <view class="menu-item flex-between" bindtap="goProviders"><text>🏪 服务商入驻审核</text><text class="text-secondary">></text></view>
+    <view class="menu-item flex-between" bindtap="goServiceItems"><text>📦 套餐审核</text><text class="text-secondary">></text></view>
+    <view class="menu-item flex-between" bindtap="goPortfolios"><text>🖼️ 作品审核</text><text class="text-secondary">></text></view>
+    <view class="menu-item flex-between" bindtap="goRefunds"><text>💰 退款审核</text><text class="text-secondary">></text></view>
+  </view>
+</view>

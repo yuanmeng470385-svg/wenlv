@@ -1,0 +1,22 @@
+.page-schedule { min-height: 100vh; background: #F5F5F5; }
+.date-bar { background: #fff; padding: 16rpx 20rpx; white-space: nowrap; }
+.date-item { display: inline-block; padding: 14rpx 28rpx; font-size: 26rpx; border-radius: 30rpx; margin-right: 12rpx; border: 1rpx solid #EBEBEB; color: #666; }
+.date-item.active { border-color: #C48B5C; color: #C48B5C; background: #FBF6F0; font-weight: 600; }
+
+.slot-section { padding: 20rpx; }
+.batch-btns { display: flex; gap: 12rpx; }
+.batch-btn { padding: 10rpx 20rpx; font-size: 24rpx; border-radius: 24rpx; }
+.batch-btn.on { background: #F6FFED; color: #52C41A; border: 1rpx solid #52C41A; }
+.batch-btn.off { background: #FFF2F0; color: #FF4D4F; border: 1rpx solid #FF4D4F; }
+
+.slot-grid { display: flex; flex-wrap: wrap; gap: 16rpx; margin-top: 20rpx; }
+.slot-card { width: calc(50% - 8rpx); padding: 28rpx 20rpx; border-radius: 16rpx; text-align: center; }
+.slot-card.open { background: #FBF6F0; border: 2rpx solid #C48B5C; }
+.slot-card.closed { background: #F5F5F5; border: 2rpx solid #EBEBEB; }
+.slot-time { display: block; font-size: 36rpx; font-weight: 700; color: #1A1A1A; }
+.slot-status { display: block; font-size: 24rpx; margin-top: 6rpx; }
+.slot-card.open .slot-status { color: #52C41A; }
+.slot-card.closed .slot-status { color: #999; }
+
+.p-20 { padding: 20rpx; display: flex; }
+.empty-hint { padding: 120rpx 0; text-align: center; }

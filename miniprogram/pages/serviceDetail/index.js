@@ -1,0 +1,81 @@
+const { getProviderDetail } = require('../../services/serviceService');
+const { toggleLike, toggleFavorite } = require('../../services/orderService');
+
+Page({
+  data: {
+    providerId: '',
+    provider: null,
+    serviceItems: [],
+    portfolios: [],
+    reviews: [],
+    isFavorited: false,
+    activeTab: 'service',
+  },
+
+  onLoad(options) {
+    this.setData({ providerId: options.id });
+    this.loadDetail();
+  },
+
+  async loadDetail() {
+    wx.showLoading({ title: '加载中...' });
+    try {
+      const data = await getProviderDetail(this.data.providerId);
+      this.setData({
+        provider: data.provider,
+        serviceItems: data.serviceItems || [],
+        portfolios: data.portfolios || [],
+        reviews: data.reviews || [],
+      });
+    } catch (err) {
+      wx.showToast({ title: '加载失败', icon: 'none' });
+    } finally {
+      wx.hideLoading();
+    }
+  },
+
+  onTabChange(e) {
+    this.setData({ activeTab: e.currentTarget.dataset.tab });
+  },
+
+  onPortfolioTap(e) {
+    wx.navigateTo({ url: `/pages/portfolioDetail/index?id=${e.currentTarget.dataset.id}` });
+  },
+
+  async onToggleFavorite() {
+    if (!this.data.provider) return;
+    await toggleFavorite('provider', this.data.providerId);
+    this.setData({ isFavorited: !this.data.isFavorited });
+    wx.showToast({ title: this.data.isFavorited ? '已收藏' : '已取消收藏', icon: 'none' });
+  },
+
+  async onLikePortfolio(e) {
+    const id = e.currentTarget.dataset.id;
+    const liked = e.currentTarget.dataset.liked;
+    await toggleLike('portfolio', id);
+    const portfolios = this.data.portfolios.map(p => {
+      if (p._id === id) {
+        return { ...p, likeCount: (p.likeCount || 0) + (liked ? -1 : 1) };
+      }
+      return p;
+    });
+    this.setData({ portfolios });
+  },
+
+  onCallPhone() {
+    if (this.data.provider && this.data.provider.phone) {
+      wx.makePhoneCall({ phoneNumber: this.data.provider.phone });
+    }
+  },
+  onBookTap() {
+    // 默认带上第一个服务套餐
+    const items = this.data.serviceItems || [];
+    const sid = items.length > 0 ? items[0]._id : '';
+    wx.navigateTo({ url: `/pages/booking/index?providerId=${this.data.providerId}&serviceItemId=${sid}` });
+  },
+
+  onServiceSelect(e) {
+    const item = e.currentTarget.dataset.item;
+    wx.navigateTo({ url: `/pages/booking/index?providerId=${this.data.providerId}&serviceItemId=${item._id}` });
+  },
+});

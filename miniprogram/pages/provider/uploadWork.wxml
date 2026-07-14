@@ -1,0 +1,19 @@
+<view class="page-upload">
+  <view class="upload-grid card">
+    <text class="text-bold">作品图片（最多9张）</text>
+    <view class="img-grid mt-20">
+      <view wx:for="{{images}}" wx:key="*this" class="img-item"><image src="{{item}}" mode="aspectFill" /></view>
+      <view wx:if="{{images.length < 9}}" class="add-btn" bindtap="onChooseImage"><text class="text-xl text-hint">+</text></view>
+    </view>
+  </view>
+
+  <view class="form-section card">
+    <view class="form-item"><text class="form-label">作品标题</text><input class="form-input" placeholder="给作品起个名字" value="{{title}}" data-field="title" bindinput="onInputChange" /></view>
+    <view class="form-item"><text class="form-label">作品描述</text><textarea class="form-textarea" placeholder="详细描述作品" value="{{description}}" data-field="description" bindinput="onInputChange" /></view>
+    <view class="form-item"><text class="form-label">风格标签（逗号分隔）</text><input class="form-input" placeholder="如：古风,汉服,夜景" value="{{styleTags}}" data-field="styleTags" bindinput="onInputChange" /></view>
+  </view>
+
+  <view class="submit-section safe-bottom">
+    <button class="submit-btn" bindtap="onSubmit" loading="{{uploading}}">提交审核</button>
+  </view>
+</view>

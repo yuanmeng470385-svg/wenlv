@@ -1,0 +1,55 @@
+<view class="page-profile">
+  <!-- 用户头部 -->
+  <view class="user-header">
+    <view class="user-avatar">
+      <image wx:if="{{userInfo && userInfo.avatarUrl}}" src="{{userInfo.avatarUrl}}" mode="aspectFill" />
+      <text wx:else class="avt-ph">👤</text>
+    </view>
+    <text class="user-name text-xl text-bold">{{hasLogin ? (userInfo && userInfo.nickName) : '点击登录'}}</text>
+    <text class="user-role">{{activeRole === 'user' ? '普通用户' : (activeRole === 'photographer' ? '摄影师' : (activeRole === 'makeup' ? '妆造师' : '汉服店'))}}</text>
+    <button wx:if="{{!hasLogin}}" class="login-btn-sm" open-type="getUserInfo" bindgetuserinfo="onGetUserInfo">登录</button>
+  </view>
+
+  <!-- 管理员入口 -->
+  <view wx:if="{{isAdmin}}" class="admin-entry card" bindtap="goAdmin">
+    <view class="flex-between"><text>🔧 管理中心</text><text class="text-secondary">></text></view>
+  </view>
+
+  <!-- 身份切换 -->
+  <view wx:if="{{hasLogin && roles.length > 1}}" class="role-section card">
+    <text class="section-title text-sm text-secondary">切换身份</text>
+    <view class="role-list">
+      <view wx:for="{{roleList}}" wx:key="key"
+        class="role-chip {{activeRole === item.key ? 'active' : ''}}"
+        data-role="{{item.key}}" bindtap="onSwitchRole">
+        <text>{{item.icon}} {{item.label}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 用户模式菜单 -->
+  <block wx:if="{{activeRole === 'user'}}">
+    <view wx:if="{{hasLogin}}" class="menu-card card" bindtap="onApplyProvider">
+      <view class="flex-between"><text>🎨 申请成为服务商</text><text class="text-secondary">></text></view>
+    </view>
+    <view class="menu-section">
+      <view wx:for="{{menuItems}}" wx:key="label" class="menu-item flex-between" data-url="{{item.url}}" bindtap="onMenuTap">
+        <text>{{item.icon}} {{item.label}}</text><text class="text-secondary">></text>
+      </view>
+    </view>
+  </block>
+
+  <!-- 商家模式菜单 -->
+  <block wx:else>
+    <view class="menu-card card" bindtap="goUploadWork">
+      <view class="flex-between"><text>📤 上传作品</text><text class="text-secondary">></text></view>
+    </view>
+    <view class="menu-section">
+      <view class="menu-item flex-between" bindtap="goMyWorks"><text>🖼️ 作品管理</text><text class="text-secondary">></text></view>
+      <view class="menu-item flex-between" bindtap="goServiceItems"><text>📦 套餐管理</text><text class="text-secondary">></text></view>
+      <view class="menu-item flex-between" bindtap="goSchedule"><text>📅 档期管理</text><text class="text-secondary">></text></view>
+      <view class="menu-item flex-between" bindtap="goEditProfile"><text>✏️ 编辑资料</text><text class="text-secondary">></text></view>
+      <view class="menu-item flex-between" data-url="/pages/messages/index" bindtap="onMenuTap"><text>🔔 消息通知</text><text class="text-secondary">></text></view>
+    </view>
+  </block>
+</view>

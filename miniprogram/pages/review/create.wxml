@@ -1,0 +1,35 @@
+<view class="page-review">
+  <!-- 订单摘要 -->
+  <view wx:if="{{order}}" class="order-summary card">
+    <text class="text-bold text-lg">评价订单</text>
+    <text class="text-sm text-secondary mt-10">订单号: {{order.orderNo}}</text>
+    <view wx:for="{{order.items}}" wx:key="serviceItemId" wx:for-item="si" class="mt-10">
+      <text class="text-bold">{{si.name}}</text>
+      <text class="text-sm text-secondary ml-10">{{si.appointmentDate}}</text>
+    </view>
+    <view wx:for="{{providers}}" wx:key="_id" class="mt-10">
+      <text class="text-sm">服务商: {{item.name}}</text>
+    </view>
+  </view>
+
+  <!-- 评分 -->
+  <view class="rating-section card">
+    <text class="text-bold text-lg">评分</text>
+    <view class="star-row mt-20">
+      <text wx:for="{{[1,2,3,4,5]}}" wx:key="*this"
+        class="star {{item <= rating ? 'active' : ''}}"
+        data-rating="{{item}}" bindtap="onRatingChange">{{item <= rating ? '⭐' : '☆'}}</text>
+    </view>
+  </view>
+
+  <!-- 评价内容 -->
+  <view class="content-section card">
+    <text class="text-bold text-lg">评价内容</text>
+    <textarea class="review-textarea mt-20" placeholder="分享你的体验..." value="{{content}}" bindinput="onInputChange" maxlength="500" />
+    <text class="text-right text-sm text-hint">{{content.length}}/500</text>
+  </view>
+
+  <view class="p-20">
+    <button class="submit-btn" bindtap="onSubmit" loading="{{submitting}}">提交评价</button>
+  </view>
+</view>

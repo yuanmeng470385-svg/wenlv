@@ -1,0 +1,112 @@
+<view class="page-booking">
+  <view class="step-indicator flex-center">
+    <text class="step {{currentStep >= 1 ? 'active' : ''}}">1.选服务</text>
+    <text class="step-arrow">→</text>
+    <text class="step {{currentStep >= 2 ? 'active' : ''}}">2.选时间</text>
+    <text class="step-arrow">→</text>
+    <text class="step {{currentStep >= 3 ? 'active' : ''}}">3.填信息</text>
+    <text class="step-arrow">→</text>
+    <text class="step {{currentStep >= 4 ? 'active' : ''}}">4.确认</text>
+  </view>
+
+  <scroll-view scroll-y class="step-content" wx:if="{{currentStep === 1}}">
+    <text class="section-title text-lg text-bold">选择服务项目</text>
+    <view wx:for="{{serviceItems}}" wx:key="_id" class="service-select-card card" bindtap="addToCart" data-item="{{item}}">
+      <text class="text-bold">{{item.name}}</text>
+      <text class="text-sm text-secondary">{{item.description}}</text>
+      <view class="flex-between mt-10">
+        <text class="text-price">¥{{item.price / 100}}</text>
+        <text class="text-sm text-primary">+ 加入</text>
+      </view>
+    </view>
+
+    <view wx:if="{{cart.length}}" class="cart-section mt-20">
+      <text class="section-title text-lg text-bold">已选服务 ({{cart.length}}项)</text>
+      <view wx:for="{{cart}}" wx:key="_id" class="cart-item card">
+        <view class="flex-between">
+          <text class="text-bold">{{item.name}}</text>
+          <text class="text-sm text-price" data-index="{{index}}" bindtap="removeFromCart">移除</text>
+        </view>
+      </view>
+      <view class="text-right p-20">
+        <text class="text-price text-xl">合计 ¥{{totalFee / 100}}</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <scroll-view scroll-y class="step-content" wx:if="{{currentStep === 2}}">
+    <text class="section-title text-lg text-bold">选择预约时间</text>
+    <view wx:for="{{cart}}" wx:key="_id" wx:for-item="item" wx:for-index="idx">
+      <view class="time-card card">
+        <text class="text-bold">{{item.name}}</text>
+        <view class="date-list mt-20">
+          <scroll-view scroll-x>
+            <text wx:for="{{dateList}}" wx:key="date" wx:for-item="it"
+              class="date-item {{item.appointmentDate === it.date ? 'active' : ''}}"
+              data-date="{{it.date}}" data-idx="{{idx}}" bindtap="onSelectDate">
+              {{it.week}} {{it.monthDay}}
+            </text>
+          </scroll-view>
+        </view>
+        <view wx:if="{{item.appointmentDate}}" class="time-slots mt-20">
+          <text class="text-sm text-secondary mb-10">选择时段</text>
+          <view class="slot-grid">
+            <text wx:for="{{timeSlots}}" wx:key="*this" wx:for-item="t"
+              class="slot-item {{item.appointmentTime === t ? 'active' : ''}}"
+              data-time="{{t}}" data-idx="{{idx}}" bindtap="onSelectTime">
+              {{t}}
+            </text>
+          </view>
+        </view>
+        <view wx:if="{{item.priceType === 'hourly'}}" class="mt-20">
+          <text class="text-sm">时长: {{item.hours}}小时</text>
+          <slider min="1" max="8" value="{{item.hours}}" data-idx="{{idx}}" bindchange="onHoursChange" show-value />
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="step-content" wx:if="{{currentStep === 3}}">
+    <text class="section-title text-lg text-bold">填写联系信息</text>
+    <view class="form-card card">
+      <view class="form-item">
+        <text class="form-label">联系人</text>
+        <input class="form-input" placeholder="请输入姓名" value="{{contactName}}" data-field="contactName" bindinput="onInputChange" />
+      </view>
+      <view class="form-item">
+        <text class="form-label">手机号</text>
+        <input class="form-input" type="number" placeholder="请输入手机号" value="{{contactPhone}}" data-field="contactPhone" bindinput="onInputChange" />
+      </view>
+      <view class="form-item">
+        <text class="form-label">备注</text>
+        <textarea class="form-textarea" placeholder="有什么需要特别说明的？" value="{{remark}}" data-field="remark" bindinput="onInputChange" />
+      </view>
+    </view>
+  </view>
+
+  <view class="step-content" wx:if="{{currentStep === 4}}">
+    <text class="section-title text-lg text-bold">确认订单</text>
+    <view class="confirm-card card">
+      <view wx:for="{{cart}}" wx:key="_id" class="confirm-item">
+        <text class="text-bold">{{item.name}}</text>
+        <text class="text-sm text-secondary">{{item.appointmentDate}} {{item.appointmentTime}}</text>
+        <text class="text-price text-right">¥{{item.price / 100}}</text>
+      </view>
+      <view class="flex-between mt-10">
+        <text>联系人</text><text>{{contactName}} {{contactPhone}}</text>
+      </view>
+      <view class="flex-between mt-10" wx:if="{{remark}}">
+        <text>备注</text><text>{{remark}}</text>
+      </view>
+      <view class="flex-between mt-20 text-xl">
+        <text class="text-bold">合计</text><text class="text-price text-bold">¥{{totalFee / 100}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="bottom-bar safe-bottom flex-between">
+    <button wx:if="{{currentStep > 1}}" class="prev-btn" bindtap="prevStep">上一步</button>
+    <button wx:if="{{currentStep < 4}}" class="next-btn flex-1" bindtap="nextStep">下一步</button>
+    <button wx:if="{{currentStep === 4}}" class="submit-btn flex-1" bindtap="onSubmit">提交订单</button>
+  </view>
+</view>

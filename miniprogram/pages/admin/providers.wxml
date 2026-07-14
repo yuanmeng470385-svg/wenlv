@@ -1,0 +1,45 @@
+<view class="page-review">
+  <view wx:if="{{loading}}" class="empty-hint"><text class="text-secondary">加载中...</text></view>
+  <view wx:elif="{{!list.length}}" class="empty-hint"><text class="text-secondary">暂无待审核服务商</text></view>
+
+  <view wx:for="{{list}}" wx:key="_id" class="review-card card">
+    <!-- 基本信息 -->
+    <view class="flex-row">
+      <text class="cat-icon">{{getCategoryIcon(item.categoryType)}}</text>
+      <text class="text-bold text-lg ml-10">{{item.name}}</text>
+      <text class="type-tag ml-10">{{getTypeLabel(item.categoryType)}}</text>
+    </view>
+    <view class="flex-between mt-10">
+      <text class="text-sm text-secondary">📞 {{item.phone}}</text>
+      <text class="text-sm text-hint">{{item.createTime}}</text>
+    </view>
+    <text class="text-sm text-secondary mt-10">{{item.description}}</text>
+
+    <!-- 特色标签 -->
+    <view wx:if="{{item.featureTags && item.featureTags.length}}" class="tag-row mt-10">
+      <text wx:for="{{item.featureTags}}" wx:key="*this" class="feature-tag">{{item}}</text>
+    </view>
+
+    <!-- 封面图 -->
+    <view wx:if="{{item.coverImages && item.coverImages.length}}" class="mt-10">
+      <text class="text-sm text-secondary">封面图</text>
+      <scroll-view scroll-x class="img-scroll mt-10">
+        <image wx:for="{{item.coverImages}}" wx:key="*this" src="{{item}}" mode="aspectFill" class="review-img" data-url="{{item}}" data-urls="{{item.coverImages}}" bindtap="previewImage" />
+      </scroll-view>
+    </view>
+
+    <!-- 作品图 -->
+    <view wx:if="{{item.images && item.images.length}}" class="mt-10">
+      <text class="text-sm text-secondary">申请作品</text>
+      <scroll-view scroll-x class="img-scroll mt-10">
+        <image wx:for="{{item.images}}" wx:key="*this" src="{{item}}" mode="aspectFill" class="review-img" data-url="{{item}}" data-urls="{{item.images}}" bindtap="previewImage" />
+      </scroll-view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="action-btns mt-20">
+      <button class="btn-reject" data-id="{{item._id}}" bindtap="onReject">驳回</button>
+      <button class="btn-pass" data-id="{{item._id}}" data-type="{{item.categoryType}}" bindtap="onPass">通过审核</button>
+    </view>
+  </view>
+</view>

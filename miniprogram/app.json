@@ -1,0 +1,64 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/serviceList/index",
+    "pages/serviceDetail/index",
+    "pages/portfolioDetail/index",
+    "pages/booking/index",
+    "pages/orderList/index",
+    "pages/orderDetail/index",
+    "pages/profile/index",
+    "pages/favorites/index",
+    "pages/review/create",
+    "pages/messages/index",
+    "pages/provider/dashboard",
+    "pages/provider/register",
+    "pages/provider/editProfile",
+    "pages/provider/uploadWork",
+    "pages/provider/myWorks",
+    "pages/provider/schedule",
+    "pages/provider/serviceItems",
+    "pages/provider/editServiceItem",
+    "pages/admin/dashboard",
+    "pages/admin/providers",
+    "pages/admin/portfolios",
+    "pages/admin/serviceItems",
+    "pages/admin/refunds"
+  ],
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "navigationBarTitleText": "文旅摄影预约",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F5F5F5"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#C48B5C",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/tab-home.png",
+        "selectedIconPath": "images/tab-home-active.png"
+      },
+      {
+        "pagePath": "pages/orderList/index",
+        "text": "订单",
+        "iconPath": "images/tab-order.png",
+        "selectedIconPath": "images/tab-order-active.png"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的",
+        "iconPath": "images/tab-mine.png",
+        "selectedIconPath": "images/tab-mine-active.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "cloud": true
+}
+

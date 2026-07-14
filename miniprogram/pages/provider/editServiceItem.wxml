@@ -1,0 +1,50 @@
+<view class="page-form">
+  <view class="form-section card">
+    <view class="form-item">
+      <text class="form-label">套餐名称 *</text>
+      <input class="form-input" placeholder="如：古风人像精拍" value="{{form.name}}" data-field="name" bindinput="onInputChange" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">描述</text>
+      <textarea class="form-textarea" placeholder="套餐内容描述" value="{{form.description}}" data-field="description" bindinput="onInputChange" />
+    </view>
+  </view>
+
+  <view class="form-section card">
+    <text class="form-label mb-20">价格类型</text>
+    <view class="type-row">
+      <view wx:for="{{priceTypes}}" wx:key="key"
+        class="type-opt {{form.priceType === item.key ? 'active' : ''}}"
+        data-type="{{item.key}}" bindtap="onPriceTypeChange">
+        <text>{{item.label}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="form-section card">
+    <view class="form-item">
+      <text class="form-label">售价(元) *</text>
+      <input class="form-input" type="digit" placeholder="如：699" value="{{form.price}}" data-field="price" bindinput="onInputChange" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">原价(元)</text>
+      <input class="form-input" type="digit" placeholder="如：899" value="{{form.originalPrice}}" data-field="originalPrice" bindinput="onInputChange" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">时长(分钟)</text>
+      <input class="form-input" type="number" placeholder="服务时长" value="{{form.duration}}" data-field="duration" bindinput="onInputChange" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">每日最大接单数</text>
+      <input class="form-input" type="number" placeholder="5" value="{{form.maxDailyBooking}}" data-field="maxDailyBooking" bindinput="onInputChange" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">包含内容（逗号分隔）</text>
+      <input class="form-input" placeholder="如：2小时拍摄,30张精修,所有底片" value="{{form.includes}}" data-field="includes" bindinput="onInputChange" />
+    </view>
+  </view>
+
+  <view class="p-20">
+    <button class="save-btn" bindtap="onSubmit" loading="{{saving}}">{{isEdit ? '保存修改' : '创建套餐'}}</button>
+  </view>
+</view>

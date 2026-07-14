@@ -1,0 +1,20 @@
+.page-register { min-height: 100vh; background: var(--bg-page); padding-bottom: 120rpx; }
+.category-select { padding: 30rpx 20rpx; background: var(--bg-white); }
+.cat-options { display: flex; gap: 20rpx; }
+.cat-option { flex: 1; text-align: center; padding: 30rpx 0; border-radius: var(--radius-md); border: 2rpx solid var(--border-color); color: var(--text-secondary); }
+.cat-option.active { border-color: var(--color-primary); background: var(--color-primary-bg); color: var(--color-primary); }
+.cat-icon { display: block; font-size: 48rpx; margin-bottom: 8rpx; }
+.form-section { margin-top: 20rpx; }
+.form-item { padding: 24rpx 0; border-bottom: 1rpx solid var(--border-color); }
+.form-label { display: block; font-size: 28rpx; font-weight: 600; margin-bottom: 12rpx; }
+.form-input { width: 100%; height: 60rpx; font-size: 28rpx; }
+.form-textarea { width: 100%; height: 120rpx; font-size: 28rpx; }
+.upload-section { margin-top: 20rpx; }
+.upload-grid { display: flex; flex-wrap: wrap; gap: 12rpx; }
+.upload-item { width: calc(33.33% - 8rpx); height: 160rpx; border-radius: var(--radius-sm); overflow: hidden; }
+.upload-item image { width: 100%; height: 100%; }
+.upload-btn { width: calc(33.33% - 8rpx); height: 160rpx; border-radius: var(--radius-sm); border: 2rpx dashed var(--border-color); display: flex; align-items: center; justify-content: center; background: var(--bg-page); }
+.submit-section { position: fixed; bottom: 0; left: 0; right: 0; padding: 20rpx 30rpx; background: var(--bg-white); }
+.submit-btn { width: 100%; height: 88rpx; background: var(--color-primary); color: #fff; border-radius: 44rpx; font-size: 32rpx; display: flex; align-items: center; justify-content: center; }
+.mt-10 { margin-top: 10rpx; }
+.mt-20 { margin-top: 20rpx; }

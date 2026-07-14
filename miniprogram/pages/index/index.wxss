@@ -1,0 +1,48 @@
+/* ========== 用户模式 ========== */
+.page-index { padding-bottom: 20rpx; }
+.banner-swiper { width: 100%; height: 360rpx; }
+.banner-item { width: 100%; height: 100%; background: linear-gradient(135deg, #E8C9A0, #C48B5C); display: flex; align-items: center; justify-content: center; }
+.banner-title { font-size: 48rpx; color: #fff; font-weight: 700; }
+
+.category-section { padding: 30rpx 20rpx; background: #fff; }
+.category-grid { display: flex; justify-content: space-around; }
+.category-item { display: flex; flex-direction: column; align-items: center; }
+.category-icon-box { width: 100rpx; height: 100rpx; border-radius: 16rpx; background: #FBF6F0; display: flex; align-items: center; justify-content: center; margin-bottom: 12rpx; }
+.category-icon { font-size: 44rpx; }
+.category-name { font-size: 26rpx; color: #1A1A1A; }
+.section { margin-top: 20rpx; }
+.section-header { padding: 20rpx 30rpx; }
+.provider-list { padding: 0 10rpx; }
+.provider-card { display: flex; margin: 0 10rpx 16rpx; }
+.p-avatar-box { width: 120rpx; height: 120rpx; border-radius: 12rpx; overflow: hidden; flex-shrink: 0; background: linear-gradient(135deg, #f5ebe0, #e8d5c4); }
+.p-avatar-box image { width: 100%; height: 100%; }
+.p-name { max-width: 300rpx; }
+
+/* ========== 商家模式 ========== */
+.page-dashboard { min-height: 100vh; background: #F5F5F5; padding-bottom: 20rpx; }
+.dash-header { background: linear-gradient(135deg, #C48B5C, #A0703E); padding: 50rpx 30rpx 40rpx; color: #fff; }
+.text-white { color: rgba(255,255,255,0.9); }
+
+.stats-row { display: flex; gap: 12rpx; padding: 20rpx; margin-top: -20rpx; }
+.stat-card { flex: 1; background: #fff; border-radius: 16rpx; padding: 24rpx 16rpx; text-align: center; box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.04); }
+.stat-num { display: block; font-size: 40rpx; font-weight: 700; color: #1A1A1A; }
+.stat-num.highlight { color: #E8563A; }
+.stat-label { display: block; font-size: 22rpx; color: #999; margin-top: 6rpx; }
+
+.quick-row { display: flex; flex-wrap: wrap; gap: 12rpx; padding: 0 20rpx; margin-bottom: 20rpx; }
+.quick-item { flex: 1 1 calc(33.33% - 12rpx); min-width: 160rpx; background: #fff; border-radius: 16rpx; padding: 30rpx 10rpx; text-align: center; box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.04); }
+.quick-icon { display: block; font-size: 44rpx; margin-bottom: 8rpx; }
+.quick-label { font-size: 24rpx; color: #666; }
+
+.order-row { margin: 10rpx 20rpx 0; }
+.status-text { color: #E8563A; font-weight: 600; }
+
+/* ========== 共用 ========== */
+.level-tag { font-size: 20rpx; padding: 4rpx 12rpx; border-radius: 20rpx; margin-left: 10rpx; color: #fff; }
+.level-1 { background: #CD7F32; } .level-2 { background: #C0C0C0; color: #333; } .level-3 { background: #FFD700; color: #333; } .level-4 { background: #3A7BDE; } .level-5 { background: #9B59B6; }
+
+.img-ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 46rpx; background: linear-gradient(135deg, #f5ebe0, #e8d5c4); }
+
+.empty-hint { padding: 60rpx 0; text-align: center; }
+.ml-10 { margin-left: 10rpx; } .ml-20 { margin-left: 20rpx; } .mt-10 { margin-top: 10rpx; } .mb-20 { margin-bottom: 20rpx; }
+.text-ellipsis { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

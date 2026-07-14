@@ -1,0 +1,49 @@
+<view class="page-order-detail" wx:if="{{order}}">
+  <view class="status-header card">
+    <text class="text-xl text-bold">{{getStatusText(order.orderStatus)}}</text>
+    <text class="text-sm text-secondary mt-10">订单号: {{order.orderNo}}</text>
+  </view>
+
+  <view class="info-section card">
+    <text class="text-bold text-lg">服务项目</text>
+    <view wx:for="{{order.items}}" wx:key="serviceItemId" class="detail-item">
+      <text class="text-bold">{{item.name}}</text>
+      <text class="text-sm text-secondary">{{item.appointmentDate}} {{item.appointmentTime}}</text>
+      <text class="text-sm">时长: {{item.duration}}分钟</text>
+      <text class="text-price">¥{{item.price / 100}} x {{item.quantity}}</text>
+    </view>
+  </view>
+
+  <view class="info-section card">
+    <text class="text-bold text-lg">服务商</text>
+    <view wx:for="{{providers}}" wx:key="_id" class="provider-row mt-10">
+      <text class="text-bold">{{item.name}}</text>
+      <text wx:if="{{item.level>0}}" class="level-tag level-{{item.level}}">{{item.levelName}}</text>
+      <text class="text-sm text-secondary ml-10">⭐ {{item.rating||0}}</text>
+    </view>
+  </view>
+
+  <view class="info-section card">
+    <text class="text-bold text-lg">联系信息</text>
+    <view class="flex-between mt-10"><text>联系人</text><text>{{order.contactName}}</text></view>
+    <view class="flex-between mt-10"><text>手机号</text><text>{{order.contactPhone}}</text></view>
+    <view wx:if="{{order.remark}}" class="flex-between mt-10"><text>备注</text><text>{{order.remark}}</text></view>
+  </view>
+
+  <view class="info-section card">
+    <text class="text-bold text-lg">费用明细</text>
+    <view class="flex-between mt-10 text-xl">
+      <text>总金额</text><text class="text-price text-bold">¥{{order.totalFee / 100}}</text>
+    </view>
+    <view wx:if="{{order.refundAmount > 0}}" class="flex-between mt-10">
+      <text>退款金额</text><text class="text-success">¥{{order.refundAmount / 100}}</text>
+    </view>
+  </view>
+
+  <view class="action-bar safe-bottom">
+    <button wx:if="{{order.orderStatus === 'pending_pay'}}" class="mock-pay-btn" bindtap="onMockPay">模拟支付(测试) ¥{{order.totalFee / 100}}</button>
+    <button wx:if="{{order.orderStatus === 'pending_pay'}}" class="pay-btn mt-10" bindtap="onPay">微信支付 ¥{{order.totalFee / 100}}</button>
+    <button wx:if="{{order.orderStatus === 'pending_pay' || order.orderStatus === 'paid'}}" class="cancel-btn mt-10" bindtap="onCancelOrder">取消订单</button>
+    <button wx:if="{{order.orderStatus === 'completed'}}" class="review-btn mt-10" bindtap="onReview">去评价</button>
+  </view>
+</view>

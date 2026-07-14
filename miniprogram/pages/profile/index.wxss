@@ -1,0 +1,23 @@
+.page-profile { min-height: 100vh; background: #F5F5F5; padding-bottom: 40rpx; }
+.user-header { background: linear-gradient(135deg, #C48B5C, #A0703E); padding: 50rpx 30rpx 40rpx; display: flex; flex-direction: column; align-items: center; }
+.user-avatar { width: 120rpx; height: 120rpx; border-radius: 50%; overflow: hidden; border: 4rpx solid rgba(255,255,255,0.5); margin-bottom: 16rpx; background: rgba(255,255,255,0.2); }
+.user-avatar image { width: 100%; height: 100%; }
+.avt-ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 60rpx; }
+.user-name { color: #fff; }
+.user-role { color: rgba(255,255,255,0.8); font-size: 24rpx; margin-top: 6rpx; }
+.login-btn-sm { margin-top: 16rpx; padding: 8rpx 32rpx; font-size: 26rpx; background: #fff; color: #C48B5C; border-radius: 30rpx; }
+
+.admin-entry { margin: 30rpx 20rpx 10rpx; background: #1A1A1A; color: #fff; }
+.admin-entry text { color: #fff; }
+
+.role-section { margin: 20rpx; }
+.section-title { display: block; margin-bottom: 16rpx; }
+.role-list { display: flex; flex-wrap: wrap; gap: 10rpx; }
+.role-chip { padding: 12rpx 24rpx; border-radius: 30rpx; font-size: 26rpx; background: #F5F5F5; color: #666; }
+.role-chip.active { background: #FBF6F0; color: #C48B5C; font-weight: 600; }
+
+.menu-card { margin: 10rpx 20rpx; }
+
+.menu-section { margin-top: 20rpx; background: #fff; }
+.menu-item { padding: 30rpx; border-bottom: 1rpx solid #EBEBEB; }
+.menu-item:last-child { border-bottom: none; }

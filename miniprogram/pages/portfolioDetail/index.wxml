@@ -1,0 +1,34 @@
+<view class="page-portfolio" wx:if="{{portfolio}}">
+  <swiper class="image-swiper" bindchange="onSwiperChange">
+    <swiper-item wx:for="{{portfolio.images}}" wx:key="*this">
+      <image src="{{item}}" mode="aspectFill" class="detail-img" data-url="{{item}}" bindtap="onPreviewImage" />
+    </swiper-item>
+  </swiper>
+
+  <view class="detail-info card">
+    <text class="text-xl text-bold">{{portfolio.title}}</text>
+    <text class="text-secondary mt-10">{{portfolio.description}}</text>
+
+    <view wx:if="{{portfolio.styleTags && portfolio.styleTags.length}}" class="tag-row mt-20">
+      <text wx:for="{{portfolio.styleTags}}" wx:key="*this" class="feature-tag">{{item}}</text>
+    </view>
+
+    <view class="meta-row mt-20">
+      <text wx:if="{{portfolio.shootDate}}" class="text-sm text-secondary">📅 {{portfolio.shootDate}}</text>
+      <text wx:if="{{portfolio.shootLocation}}" class="text-sm text-secondary">📍 {{portfolio.shootLocation}}</text>
+      <text wx:if="{{portfolio.makeupDuration}}" class="text-sm text-secondary">⏱ 妆造 {{portfolio.makeupDuration}}分钟</text>
+      <text wx:if="{{portfolio.hanfuType}}" class="text-sm text-secondary">👘 {{portfolio.hanfuType}}</text>
+    </view>
+  </view>
+
+  <view class="action-bar safe-bottom flex-between">
+    <view class="action-btn" bindtap="onLike">
+      <text class="action-icon">{{isLiked ? '❤️' : '🤍'}}</text>
+      <text class="text-sm">{{portfolio.likeCount || 0}}</text>
+    </view>
+    <view class="action-btn" bindtap="onFavorite">
+      <text class="action-icon">{{isFavorited ? '⭐' : '☆'}}</text>
+      <text class="text-sm">收藏</text>
+    </view>
+  </view>
+</view>

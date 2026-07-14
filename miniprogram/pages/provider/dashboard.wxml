@@ -1,0 +1,22 @@
+<view class="page-dashboard">
+  <view class="stats-grid">
+    <view class="stat-item"><text class="stat-num">{{stats.todayOrders}}</text><text class="stat-label">今日订单</text></view>
+    <view class="stat-item"><text class="stat-num">{{stats.pendingOrders}}</text><text class="stat-label">待处理</text></view>
+    <view class="stat-item"><text class="stat-num">{{stats.totalOrders}}</text><text class="stat-label">总订单</text></view>
+    <view class="stat-item"><text class="stat-num">¥{{stats.totalIncome}}</text><text class="stat-label">总收入</text></view>
+  </view>
+
+  <view class="quick-actions">
+    <view class="action-card" bindtap="goUploadWork"><text class="text-xl">📤</text><text>上传作品</text></view>
+    <view class="action-card" bindtap="goMyWorks"><text class="text-xl">🖼️</text><text>作品管理</text></view>
+    <view class="action-card" bindtap="goSchedule"><text class="text-xl">📅</text><text>档期管理</text></view>
+    <view class="action-card" bindtap="goEditProfile"><text class="text-xl">✏️</text><text>编辑资料</text></view>
+  </view>
+
+  <view class="section card"><text class="text-bold text-lg">最近订单</text>
+    <view wx:for="{{recentOrders}}" wx:key="_id" class="order-row" data-id="{{item._id}}" bindtap="goOrderDetail">
+      <text>{{item.orderNo}}</text><text class="text-price">¥{{item.totalFee / 100}}</text>
+    </view>
+    <view wx:if="{{!recentOrders.length}}" class="empty-hint"><text class="text-secondary">暂无订单</text></view>
+  </view>
+</view>

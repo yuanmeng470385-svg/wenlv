@@ -1,0 +1,12 @@
+.page-portfolio { background: #000; min-height: 100vh; padding-bottom: 100rpx; }
+.image-swiper { width: 100%; height: 600rpx; }
+.detail-img { width: 100%; height: 100%; }
+.detail-info { margin: 20rpx; background: var(--bg-white); }
+.tag-row { display: flex; flex-wrap: wrap; gap: 10rpx; }
+.feature-tag { padding: 6rpx 16rpx; font-size: 22rpx; border-radius: 8rpx; background: var(--color-primary-bg); color: var(--color-primary); }
+.meta-row { display: flex; flex-wrap: wrap; gap: 16rpx; }
+.action-bar { position: fixed; bottom: 0; left: 0; right: 0; padding: 20rpx 40rpx; background: rgba(0,0,0,0.8); }
+.action-btn { display: flex; flex-direction: column; align-items: center; gap: 4rpx; color: #fff; }
+.action-icon { font-size: 48rpx; }
+.mt-10 { margin-top: 10rpx; }
+.mt-20 { margin-top: 20rpx; }

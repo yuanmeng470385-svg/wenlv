@@ -1,0 +1,60 @@
+<view class="page-register">
+  <view class="category-select">
+    <text class="text-bold text-lg">选择身份类型</text>
+    <view class="cat-options mt-20">
+      <view wx:for="{{categories}}" wx:key="type"
+        class="cat-option {{categoryType === item.type ? 'active' : ''}}"
+        data-type="{{item.type}}" bindtap="onSelectCategory">
+        <text class="cat-icon">{{item.icon}}</text>
+        <text>{{item.label}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="form-section card">
+    <view class="form-item">
+      <text class="form-label">名称</text>
+      <input class="form-input" placeholder="请输入名称/店名" value="{{name}}" data-field="name" bindinput="onInputChange" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">联系电话</text>
+      <input class="form-input" type="number" placeholder="请输入联系电话" value="{{phone}}" data-field="phone" bindinput="onInputChange" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">简介</text>
+      <textarea class="form-textarea" placeholder="介绍一下你的服务和特色" value="{{description}}" data-field="description" bindinput="onInputChange" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">特色标签（逗号分隔）</text>
+      <input class="form-input" placeholder="如：古风,汉服,夜景" value="{{featureTags}}" data-field="featureTags" bindinput="onInputChange" />
+    </view>
+  </view>
+
+  <view class="upload-section card">
+    <text class="text-bold">封面图（最多3张）</text>
+    <view class="upload-grid mt-20">
+      <view wx:for="{{coverImages}}" wx:key="*this" class="upload-item">
+        <image src="{{item}}" mode="aspectFill" />
+      </view>
+      <view wx:if="{{coverImages.length < 3}}" class="upload-btn" bindtap="onUploadCover">
+        <text class="text-xl text-hint">+</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="upload-section card">
+    <text class="text-bold">代表作品（最多9张）</text>
+    <view class="upload-grid mt-20">
+      <view wx:for="{{portfolioImages}}" wx:key="*this" class="upload-item">
+        <image src="{{item}}" mode="aspectFill" />
+      </view>
+      <view wx:if="{{portfolioImages.length < 9}}" class="upload-btn" bindtap="onUploadPortfolio">
+        <text class="text-xl text-hint">+</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="submit-section safe-bottom">
+    <button class="submit-btn" bindtap="onSubmit" loading="{{submitting}}">提交审核</button>
+  </view>
+</view>

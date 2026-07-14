@@ -1,0 +1,6 @@
+.page-works { min-height: 100vh; background: var(--bg-page); padding: 20rpx; }
+.work-card { display: flex; align-items: center; margin: 0 0 16rpx; gap: 16rpx; }
+.work-thumb { width: 120rpx; height: 120rpx; border-radius: 8rpx; flex-shrink: 0; }
+.work-info { display: flex; flex-direction: column; gap: 6rpx; }
+.del-btn { padding: 8rpx 16rpx; font-size: 24rpx; }
+.empty-hint { padding: 120rpx 0; text-align: center; }

@@ -1,0 +1,54 @@
+<view class="page-list">
+  <scroll-view class="category-scroll" scroll-x>
+    <view class="cat-list">
+      <view wx:for="{{categories}}" wx:key="_id" class="cat-item {{categoryType === item.type ? 'active' : ''}}" data-type="{{item.type}}" bindtap="onCategorySwitch">
+        <text>{{item.name}}</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <input class="search-input" placeholder="搜索服务商名称、标签..." value="{{keyword}}" confirm-type="search" bindinput="onSearchInput" bindconfirm="onSearch" />
+    <text wx:if="{{keyword}}" class="search-clear" bindtap="onClearSearch">✕</text>
+  </view>
+
+  <view class="filter-bar flex-row" wx:if="{{categoryType !== 'hanfu_shop'}}">
+    <scroll-view scroll-x class="level-scroll">
+      <view wx:for="{{levels}}" wx:key="value" class="level-item {{levelFilter === item.value ? 'active' : ''}}" data-value="{{item.value}}" bindtap="onLevelChange">
+        <text>{{item.label}}</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <view class="sort-bar flex-row flex-between px-20 py-20">
+    <text class="text-sm text-secondary">共 {{total}} 个{{categoryName}}</text>
+    <view class="sort-options flex-row">
+      <text wx:for="{{sortOptions}}" wx:key="key" class="sort-item {{sortBy === item.key ? 'active' : ''}}" data-key="{{item.key}}" bindtap="onSortChange">{{item.label}}</text>
+    </view>
+  </view>
+
+  <view class="provider-list">
+    <view wx:for="{{providers}}" wx:key="_id" class="provider-card card" data-id="{{item._id}}" bindtap="onProviderTap">
+      <view class="flex-row">
+        <image class="p-avatar" src="{{item.avatar}}" mode="aspectFill" />
+        <view class="flex-1 ml-20">
+          <view class="flex-row">
+            <text class="text-lg text-bold text-ellipsis p-name">{{item.name}}</text>
+            <text wx:if="{{item.level > 0}}" class="level-tag level-{{item.level}}">{{item.levelName}}</text>
+          </view>
+          <text class="text-sm text-secondary text-ellipsis mt-10">{{item.description}}</text>
+          <view class="flex-row mt-10">
+            <text class="text-sm text-price">⭐ {{item.rating || '-'}}</text>
+            <text class="text-sm text-hint ml-10">{{item.reviewCount}}评价 | {{item.orderCount}}单</text>
+          </view>
+        </view>
+      </view>
+      <view wx:if="{{item.featureTags && item.featureTags.length}}" class="tag-row mt-10">
+        <text wx:for="{{item.featureTags}}" wx:key="*this" class="feature-tag">{{item}}</text>
+      </view>
+    </view>
+
+    <view wx:if="{{!providers.length}}" class="empty-hint"><text class="text-secondary">暂无{{categoryName}}</text></view>
+  </view>
+</view>

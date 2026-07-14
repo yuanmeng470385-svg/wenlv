@@ -1,0 +1,56 @@
+/* CSS 变量定义 - 文旅摄影预约小程序 */
+page {
+  /* 品牌色系 - 古风暖色调 */
+  --color-primary: #C48B5C;
+  --color-primary-dark: #A0703E;
+  --color-primary-light: #E8C9A0;
+  --color-primary-bg: #FBF6F0;
+
+  /* 功能色 */
+  --color-price: #E8563A;
+  --color-success: #52C41A;
+  --color-warning: #FAAD14;
+  --color-danger: #FF4D4F;
+  --color-info: #1890FF;
+
+  /* 等级色 */
+  --level-bronze: #CD7F32;
+  --level-silver: #C0C0C0;
+  --level-gold: #FFD700;
+  --level-platinum: #3A7BDE;
+  --level-diamond: #9B59B6;
+
+  /* 文字色 */
+  --text-primary: #1A1A1A;
+  --text-secondary: #666666;
+  --text-hint: #999999;
+  --text-disabled: #CCCCCC;
+
+  /* 背景色 */
+  --bg-page: #F5F5F5;
+  --bg-white: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --bg-mask: rgba(0, 0, 0, 0.5);
+
+  /* 边框 */
+  --border-color: #EBEBEB;
+  --border-radius: 12rpx;
+
+  /* 阴影 */
+  --shadow-card: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+  --shadow-float: 0 4rpx 24rpx rgba(0, 0, 0, 0.08);
+
+  /* 间距 */
+  --spacing-xs: 8rpx;
+  --spacing-sm: 16rpx;
+  --spacing-md: 24rpx;
+  --spacing-lg: 32rpx;
+  --spacing-xl: 48rpx;
+
+  /* 圆角 */
+  --radius-sm: 8rpx;
+  --radius-md: 16rpx;
+  --radius-lg: 24rpx;
+  --radius-round: 50%;
+}
+

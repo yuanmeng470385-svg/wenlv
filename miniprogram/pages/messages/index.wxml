@@ -1,0 +1,11 @@
+<view class="page-messages">
+  <view wx:for="{{messages}}" wx:key="id" class="msg-card card">
+    <view class="flex-between">
+      <text class="text-bold {{item.read ? '' : 'unread'}}">{{item.title}}</text>
+      <text class="text-sm text-hint">{{item.time}}</text>
+    </view>
+    <text class="text-sm text-secondary mt-10">{{item.content}}</text>
+    <view wx:if="{{!item.read}}" class="unread-dot"></view>
+  </view>
+  <view wx:if="{{!messages.length}}" class="empty-hint"><text class="text-secondary">暂无消息</text></view>
+</view>
