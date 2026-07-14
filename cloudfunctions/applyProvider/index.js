@@ -25,6 +25,18 @@ exports.main = async (event, context) => {
     }).get();
 
     if (exists.data.length > 0) {
+      // 已有该类型 provider：可能上次申请建了 provider 却漏更新 roles（两步非事务）。
+      // 此处补齐 roles 以自愈脏数据，再返回“已申请过”，避免用户永久卡死无法切换身份。
+      const userRes0 = await db.collection('users').where({ _openid: openid }).get();
+      if (userRes0.data.length > 0) {
+        const u0 = userRes0.data[0];
+        if (!(u0.roles || []).includes(categoryType)) {
+          const roles0 = [...new Set([...(u0.roles || []), categoryType])];
+          await db.collection('users').doc(u0._id).update({
+            data: { roles: roles0, updateTime: db.serverDate() }
+          });
+        }
+      }
       return { code: 2001, message: '您已申请过该类型的服务商，请勿重复申请' };
     }
 

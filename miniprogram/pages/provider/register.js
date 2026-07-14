@@ -72,7 +72,7 @@ Page({
       wx.showToast({ title: '申请已提交，等待审核', icon: 'success' });
       setTimeout(() => wx.navigateBack(), 1500);
     } catch (err) {
-      wx.showToast({ title: '提交失败', icon: 'none' });
+      wx.showToast({ title: (err && err.message) || '提交失败', icon: 'none' });
     } finally {
       this.setData({ submitting: false });
     }

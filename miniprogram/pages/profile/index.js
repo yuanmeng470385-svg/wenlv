@@ -15,11 +15,13 @@ Page({
     const rawRoles = g.userInfo ? (g.userInfo.roles || ['user']) : ['user'];
     const labelMap = { user: '用户', photographer: '摄影师', makeup: '妆造师', hanfu_shop: '汉服店' };
     const iconMap = { user: '👤', photographer: '📷', makeup: '💄', hanfu_shop: '👘' };
-    const roleList = rawRoles.map(r => ({ key: r, icon: iconMap[r] || '👤', label: labelMap[r] || r }));
+    // admin 通过“管理中心”入口访问，不作为可切换身份
+    const switchableRoles = rawRoles.filter(r => r !== 'admin');
+    const roleList = switchableRoles.map(r => ({ key: r, icon: iconMap[r] || '👤', label: labelMap[r] || r }));
     const isAdmin = rawRoles.includes('admin');
     this.setData({
       userInfo: g.userInfo, activeRole: g.activeRole,
-      hasLogin: g.hasLogin, roles: rawRoles, roleList, isAdmin,
+      hasLogin: g.hasLogin, roles: switchableRoles, roleList, isAdmin,
     });
   },
 
