@@ -1,4 +1,4 @@
-const { callFunction } = require('../../../services/cloud');
+const { callFunction } = require('../../services/cloud');
 
 Page({
   data: {
