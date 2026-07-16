@@ -6,6 +6,8 @@ exports.main = async (event, context) => {
   const { providerId } = event;
 
   try {
+    const openid = cloud.getWXContext().OPENID;
+    console.log(`[getProviderDetail] caller=${openid || 'anonymous'}`, JSON.stringify(event));
     // 参数校验
     if (!providerId || typeof providerId !== 'string') {
       return { code: 1001, message: '服务商ID无效' };

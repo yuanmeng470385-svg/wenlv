@@ -5,6 +5,8 @@ const db = cloud.database();
 exports.main = async (event, context) => {
   const { portfolioId } = event;
   try {
+    const openid = cloud.getWXContext().OPENID;
+    console.log(`[getPortfolioDetail] caller=${openid || 'anonymous'}`, JSON.stringify(event));
     const res = await db.collection('portfolios').doc(portfolioId).get();
     if (!res.data) return { code: 1003, message: '作品不存在' };
 

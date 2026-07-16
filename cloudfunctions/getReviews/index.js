@@ -6,6 +6,8 @@ exports.main = async (event, context) => {
   const { providerId, page = 1, pageSize = 10 } = event;
 
   try {
+    const openid = cloud.getWXContext().OPENID;
+    console.log(`[getReviews] caller=${openid || 'anonymous'}`, JSON.stringify(event));
     const where = {};
     if (providerId) where.providerId = providerId;
 

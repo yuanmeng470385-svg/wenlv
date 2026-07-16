@@ -4,6 +4,8 @@ const db = cloud.database();
 
 exports.main = async (event, context) => {
   try {
+    const openid = cloud.getWXContext().OPENID;
+    console.log(`[getCategoryList] caller=${openid || 'anonymous'}`, JSON.stringify(event));
     const res = await db.collection('categories')
       .where({ status: 'active' })
       .orderBy('sortOrder', 'asc')

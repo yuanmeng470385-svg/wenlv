@@ -4,11 +4,14 @@ const db = cloud.database();
 const _ = db.command;
 
 exports.main = async (event, context) => {
-  const { categoryType, page = 1, pageSize = 10, level, sortBy = 'sortOrder', keyword } = event;
+  const { categoryType, page = 1, pageSize = 10, level, sortBy = 'sortOrder', keyword, city } = event;
 
   try {
+    const openid = cloud.getWXContext().OPENID;
+    console.log(`[getProviderList] caller=${openid || 'anonymous'}`, JSON.stringify(event));
     const where = { status: 'active' };
     if (categoryType) where.categoryType = categoryType;
+    if (city) where.city = city;
     if (level !== undefined) where.level = level;
     if (keyword && keyword.trim()) {
       const kw = keyword.trim();
