@@ -2,6 +2,11 @@ const cloud = require('wx-server-sdk');
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 const db = cloud.database();
 
+function maskPhone(phone) {
+  if (!phone || phone.length < 7) return phone;
+  return phone.slice(0, 3) + '****' + phone.slice(-4);
+}
+
 exports.main = async (event, context) => {
   const { orderId } = event;
 
@@ -30,6 +35,10 @@ exports.main = async (event, context) => {
         const p = await db.collection('providers').doc(pid).get();
         if (p.data) providers.push(p.data);
       } catch (e) { /* ignore */ }
+    }
+
+    if (order.contactPhone) {
+      order.contactPhone = maskPhone(order.contactPhone);
     }
 
     return {

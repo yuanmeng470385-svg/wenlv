@@ -2,6 +2,11 @@ const cloud = require('wx-server-sdk');
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 const db = cloud.database();
 
+function maskPhone(phone) {
+  if (!phone || phone.length < 7) return phone;
+  return phone.slice(0, 3) + '****' + phone.slice(-4);
+}
+
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext();
   const openid = wxContext.OPENID;
@@ -37,9 +42,13 @@ exports.main = async (event, context) => {
 
     // 返回用户信息
     const user = await db.collection('users').where({ _openid: openid }).get();
+    const userInfo = user.data[0];
+    if (userInfo && userInfo.phone) {
+      userInfo.phone = maskPhone(userInfo.phone);
+    }
     return {
       code: 0,
-      data: { userInfo: user.data[0] },
+      data: { userInfo },
       message: 'success',
     };
   } catch (err) {

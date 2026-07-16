@@ -3,6 +3,11 @@ cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 const db = cloud.database();
 const _ = db.command;
 
+function maskPhone(phone) {
+  if (!phone || phone.length < 7) return phone;
+  return phone.slice(0, 3) + '****' + phone.slice(-4);
+}
+
 exports.main = async (event, context) => {
   const { categoryType, page = 1, pageSize = 10, level, sortBy = 'sortOrder', keyword, city } = event;
 
@@ -33,9 +38,14 @@ exports.main = async (event, context) => {
       .limit(pageSize)
       .get();
 
+    const maskedList = list.data.map(p => ({
+      ...p,
+      phone: p.phone ? maskPhone(p.phone) : p.phone,
+    }));
+
     return {
       code: 0,
-      data: { list: list.data, total, page, pageSize },
+      data: { list: maskedList, total, page, pageSize },
       message: 'success',
     };
   } catch (err) {

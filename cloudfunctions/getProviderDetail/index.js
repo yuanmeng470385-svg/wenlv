@@ -2,6 +2,11 @@ const cloud = require('wx-server-sdk');
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 const db = cloud.database();
 
+function maskPhone(phone) {
+  if (!phone || phone.length < 7) return phone;
+  return phone.slice(0, 3) + '****' + phone.slice(-4);
+}
+
 exports.main = async (event, context) => {
   const { providerId } = event;
 
@@ -39,10 +44,16 @@ exports.main = async (event, context) => {
       .limit(10)
       .get();
 
+    // 脱敏服务商手机号
+    const provider = providerRes.data;
+    if (provider && provider.phone) {
+      provider.phone = maskPhone(provider.phone);
+    }
+
     return {
       code: 0,
       data: {
-        provider: providerRes.data,
+        provider,
         serviceItems: serviceItems.data,
         portfolios: portfolios.data,
         reviews: reviews.data,

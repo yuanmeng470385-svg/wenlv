@@ -2,6 +2,11 @@ const cloud = require('wx-server-sdk');
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 const db = cloud.database();
 
+function maskPhone(phone) {
+  if (!phone || phone.length < 7) return phone;
+  return phone.slice(0, 3) + '****' + phone.slice(-4);
+}
+
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext();
   const openid = wxContext.OPENID;
@@ -41,9 +46,14 @@ exports.main = async (event, context) => {
       .limit(pageSize)
       .get();
 
+    const maskedList = list.data.map(order => ({
+      ...order,
+      contactPhone: order.contactPhone ? maskPhone(order.contactPhone) : order.contactPhone,
+    }));
+
     return {
       code: 0,
-      data: { list: list.data, total: totalRes.total, page, pageSize },
+      data: { list: maskedList, total: totalRes.total, page, pageSize },
       message: 'success',
     };
   } catch (err) {
