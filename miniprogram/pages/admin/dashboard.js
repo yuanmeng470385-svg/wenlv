@@ -11,4 +11,5 @@ Page({
   goPortfolios() { wx.navigateTo({ url: '/pages/admin/portfolios' }); },
   goServiceItems() { wx.navigateTo({ url: '/pages/admin/serviceItems' }); },
   goRefunds() { wx.navigateTo({ url: '/pages/admin/refunds' }); },
+  goUsers() { wx.navigateTo({ url: '/pages/admin/users' }); },
 });

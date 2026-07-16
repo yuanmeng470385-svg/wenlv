@@ -24,7 +24,8 @@
     "pages/admin/providers",
     "pages/admin/portfolios",
     "pages/admin/serviceItems",
-    "pages/admin/refunds"
+    "pages/admin/refunds",
+    "pages/admin/users"
   ],
   "window": {
     "backgroundTextStyle": "dark",

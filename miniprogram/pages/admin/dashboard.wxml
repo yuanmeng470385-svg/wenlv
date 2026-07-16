@@ -22,4 +22,8 @@
     <view class="menu-item flex-between" bindtap="goPortfolios"><text>🖼️ 作品审核</text><text class="text-secondary">></text></view>
     <view class="menu-item flex-between" bindtap="goRefunds"><text>💰 退款审核</text><text class="text-secondary">></text></view>
   </view>
+
+  <view class="menu-section mt-20">
+    <view class="menu-item flex-between" bindtap="goUsers"><text>👤 用户管理</text><text class="text-secondary">></text></view>
+  </view>
 </view>
