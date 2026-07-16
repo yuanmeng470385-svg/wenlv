@@ -1,0 +1,9 @@
+{
+  "name": "getContactPhone",
+  "version": "1.0.0",
+  "description": "获取完整手机号（需权限校验）",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}
