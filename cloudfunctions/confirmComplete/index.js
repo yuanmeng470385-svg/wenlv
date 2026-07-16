@@ -25,13 +25,17 @@ exports.main = async (event, context) => {
       data: { orderStatus: 'completed', updateTime: db.serverDate() }
     });
 
-    // 更新关联服务商的订单数
+    // 更新关联服务商的订单数 + 通知
     const providerIds = [...new Set(order.items.map(i => i.providerId))];
     for (const pid of providerIds) {
       try {
         await db.collection('providers').doc(pid).update({
           data: { orderCount: db.command.inc(1), updateTime: db.serverDate() }
         });
+        const pv = (await db.collection('providers').doc(pid).get()).data;
+        if (pv && pv.userId) {
+          await db.collection('notifications').add({ data: { userId: pv.userId, type: 'order_completed', title: '订单已完成', content: `订单 ${order.orderNo} 客户已确认完成`, relatedId: orderId, read: false, createTime: db.serverDate() } });
+        }
       } catch (e) { /* ignore */ }
     }
 

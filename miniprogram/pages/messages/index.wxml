@@ -1,5 +1,9 @@
 <view class="page-messages">
-  <view wx:for="{{messages}}" wx:key="id" class="msg-card card">
+  <view wx:if="{{unreadCount > 0}}" class="mark-all-bar">
+    <text class="text-sm text-secondary">{{unreadCount}} 条未读</text>
+    <text class="text-sm text-primary" bindtap="onMarkAllRead">全部已读</text>
+  </view>
+  <view wx:for="{{messages}}" wx:key="_id" class="msg-card card" data-item="{{item}}" bindtap="onNotificationTap">
     <view class="flex-between">
       <text class="text-bold {{item.read ? '' : 'unread'}}">{{item.title}}</text>
       <text class="text-sm text-hint">{{item.time}}</text>

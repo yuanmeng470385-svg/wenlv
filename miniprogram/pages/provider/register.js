@@ -10,6 +10,7 @@ Page({
       { type: 'hanfu_shop', label: '汉服店', icon: '👘' },
     ],
     name: '',
+    city: '',
     phone: '',
     description: '',
     featureTags: '',
@@ -57,12 +58,16 @@ Page({
     if (!this.data.name || !this.data.phone) {
       wx.showToast({ title: '请填写名称和电话', icon: 'none' }); return;
     }
+    if (this.data.categoryType === 'hanfu_shop' && !this.data.city) {
+      wx.showToast({ title: '汉服店请填写所在城市', icon: 'none' }); return;
+    }
 
     this.setData({ submitting: true });
     try {
       await applyProvider({
         categoryType: this.data.categoryType,
         name: this.data.name,
+        city: this.data.city,
         phone: this.data.phone,
         description: this.data.description,
         featureTags: this.data.featureTags.split(',').map(t => t.trim()).filter(Boolean),

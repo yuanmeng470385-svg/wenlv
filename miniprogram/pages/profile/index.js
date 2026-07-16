@@ -4,6 +4,7 @@ const { switchRole: switchRoleApi } = require('../../services/userService');
 Page({
   data: {
     userInfo: null, activeRole: 'user', hasLogin: false, roles: [],
+    unreadCount: 0,
     menuItems: [
       { icon: '⭐', label: '我的收藏', url: '/pages/favorites/index' },
       { icon: '🔔', label: '消息通知', url: '/pages/messages/index' },
@@ -23,6 +24,14 @@ Page({
       userInfo: g.userInfo, activeRole: g.activeRole,
       hasLogin: g.hasLogin, roles: switchableRoles, roleList, isAdmin,
     });
+    this.loadUnreadCount();
+  },
+
+  async loadUnreadCount() {
+    try {
+      const res = await require('../../services/cloud').callFunction('getNotifications', { page: 1, pageSize: 1 });
+      this.setData({ unreadCount: res.unreadCount || 0 });
+    } catch (e) { /* ignore */ }
   },
 
   async onSwitchRole(e) {

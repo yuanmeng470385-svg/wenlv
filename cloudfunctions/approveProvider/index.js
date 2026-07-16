@@ -30,6 +30,10 @@ exports.main = async (event, context) => {
       });
       // 审计日志
       await db.collection('auditLogs').add({ data: { adminOpenid: openid, action: 'rejectProvider', targetId: providerId, detail: { reason }, createTime: db.serverDate() } });
+      // 通知申请人
+      if (provider.userId) {
+        await db.collection('notifications').add({ data: { userId: provider.userId, type: 'provider_rejected', title: '申请未通过', content: `您的${provider.categoryType === 'photographer' ? '摄影师' : provider.categoryType === 'makeup' ? '妆造师' : '汉服店'}申请未通过审核${reason ? '：' + reason : ''}`, relatedId: providerId, read: false, createTime: db.serverDate() } }).catch(() => {});
+      }
       return { code: 0, data: {}, message: '已驳回' };
     }
 
@@ -46,6 +50,11 @@ exports.main = async (event, context) => {
     });
     // 审计日志
     await db.collection('auditLogs').add({ data: { adminOpenid: openid, action: 'approveProvider', targetId: providerId, detail: { level: finalLevel, levelName }, createTime: db.serverDate() } });
+    // 通知申请人
+    if (provider.userId) {
+      const catName = provider.categoryType === 'photographer' ? '摄影师' : provider.categoryType === 'makeup' ? '妆造师' : '汉服店';
+      await db.collection('notifications').add({ data: { userId: provider.userId, type: 'provider_approved', title: '申请已通过', content: `您的${catName}申请已通过审核${isHanfu ? '' : '，等级：' + levelName}`, relatedId: providerId, read: false, createTime: db.serverDate() } }).catch(() => {});
+    }
 
     return { code: 0, data: { level: finalLevel, levelName }, message: `已通过！${isHanfu ? '' : '等级: ' + levelName}` };
   } catch (err) { return { code: 9999, message: err.message }; }

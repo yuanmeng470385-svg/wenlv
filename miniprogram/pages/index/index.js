@@ -63,7 +63,14 @@ Page({
   },
 
   onRoleChanged(role) { this.setData({ activeRole: role }); this.loadData(); },
-  onCategoryTap(e) { wx.navigateTo({ url: `/pages/serviceList/index?type=${e.currentTarget.dataset.type}` }); },
+  onCategoryTap(e) {
+    const type = e.currentTarget.dataset.type;
+    if (type === 'hanfu_shop') {
+      wx.navigateTo({ url: '/pages/hanfuLocation/index' });
+    } else {
+      wx.navigateTo({ url: `/pages/serviceList/index?type=${type}` });
+    }
+  },
   onProviderTap(e) { wx.navigateTo({ url: `/pages/serviceDetail/index?id=${e.currentTarget.dataset.id}` }); },
   goMore() { wx.navigateTo({ url: '/pages/serviceList/index?type=photographer' }); },
 

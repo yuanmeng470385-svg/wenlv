@@ -106,6 +106,16 @@ exports.main = async (event, context) => {
 
     const result = await db.collection('orders').add({ data: orderData });
 
+    // 通知各服务商有新订单
+    for (const item of orderItems) {
+      try {
+        const pv = (await db.collection('providers').doc(item.providerId).get()).data;
+        if (pv && pv.userId) {
+          await db.collection('notifications').add({ data: { userId: pv.userId, type: 'new_order', title: '新预约订单', content: `${item.name} - ${item.appointmentDate} ${item.appointmentTime}`, relatedId: result._id, read: false, createTime: db.serverDate() } });
+        }
+      } catch (e) { /* ignore */ }
+    }
+
     return {
       code: 0,
       data: { orderId: result._id, orderNo, totalFee },

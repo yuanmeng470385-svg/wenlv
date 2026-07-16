@@ -16,6 +16,10 @@
       <text class="form-label">名称</text>
       <input class="form-input" placeholder="请输入名称/店名" value="{{name}}" data-field="name" bindinput="onInputChange" />
     </view>
+    <view wx:if="{{categoryType === 'hanfu_shop'}}" class="form-item">
+      <text class="form-label">所在城市</text>
+      <input class="form-input" placeholder="请输入所在城市（如：杭州）" value="{{city}}" data-field="city" bindinput="onInputChange" />
+    </view>
     <view class="form-item">
       <text class="form-label">联系电话</text>
       <input class="form-input" type="number" placeholder="请输入联系电话" value="{{phone}}" data-field="phone" bindinput="onInputChange" />

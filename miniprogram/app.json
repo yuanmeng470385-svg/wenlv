@@ -2,6 +2,7 @@
   "pages": [
     "pages/index/index",
     "pages/serviceList/index",
+    "pages/hanfuLocation/index",
     "pages/serviceDetail/index",
     "pages/portfolioDetail/index",
     "pages/booking/index",
@@ -59,6 +60,14 @@
     ]
   },
   "sitemapLocation": "sitemap.json",
-  "cloud": true
+  "cloud": true,
+  "permission": {
+    "scope.userLocation": {
+      "desc": "用于获取您所在城市，查找附近的汉服店"
+    }
+  },
+  "requiredPrivateInfos": [
+    "getLocation"
+  ]
 }
 

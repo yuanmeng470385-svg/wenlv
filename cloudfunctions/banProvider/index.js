@@ -34,6 +34,10 @@ exports.main = async (event, context) => {
       });
       // 审计日志
       await db.collection('auditLogs').add({ data: { adminOpenid: openid, action: 'banProvider', targetId: providerId, detail: { reason }, createTime: db.serverDate() } });
+      // 通知商家
+      if (provider.userId) {
+        await db.collection('notifications').add({ data: { userId: provider.userId, type: 'provider_banned', title: '店铺已被暂停', content: `您的店铺因${reason || '违规处理'}被暂停运营`, relatedId: providerId, read: false, createTime: db.serverDate() } }).catch(() => {});
+      }
       return { code: 0, data: {}, message: '已封禁该服务商' };
     } else {
       // unban

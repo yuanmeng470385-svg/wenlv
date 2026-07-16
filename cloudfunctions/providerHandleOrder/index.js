@@ -59,6 +59,18 @@ exports.main = async (event, context) => {
 
     await db.collection('orders').doc(orderId).update({ data: updateData });
 
+    // 通知下单用户
+    const statusMsgs = {
+      confirm: ['order_confirmed', '订单已确认', `商家${provider.name}已确认您的订单`],
+      reject: ['order_rejected', '订单被拒绝', `商家${provider.name}拒绝了您的订单${reason ? '：' + reason : ''}`],
+      start: ['order_started', '服务已开始', `商家${provider.name}已开始为您服务`],
+      complete: ['order_pending_complete', '服务已完成', `商家${provider.name}已标记服务完成，请确认`],
+    };
+    const msg = statusMsgs[action];
+    if (msg) {
+      await db.collection('notifications').add({ data: { userId: order.userId, type: msg[0], title: msg[1], content: msg[2], relatedId: orderId, read: false, createTime: db.serverDate() } }).catch(() => {});
+    }
+
     return { code: 0, data: { orderStatus: statusMap[action] }, message: '操作成功' };
   } catch (err) {
     console.error('[providerHandleOrder]', err);

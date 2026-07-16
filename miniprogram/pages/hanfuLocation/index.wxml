@@ -1,0 +1,70 @@
+<!-- 顶部位置栏 -->
+<view class="location-bar">
+  <view class="loc-left" bindtap="onSelectCity">
+    <text class="loc-icon">📍</text>
+    <text class="loc-city">{{locating ? '定位中...' : (city || '点击选择城市')}}</text>
+    <text class="loc-arrow">▾</text>
+  </view>
+  <view class="loc-btn" bindtap="onRelocate">
+    <text>🔄 自动定位</text>
+  </view>
+</view>
+
+<!-- 定位中 -->
+<view wx:if="{{locating}}" class="state-loading">
+  <text>正在获取位置...</text>
+</view>
+
+<!-- 结果区 -->
+<block wx:if="{{loaded}}">
+  <!-- 平台已入住 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-icon">🏠</text>
+      <text class="section-title">平台已入住</text>
+      <text wx:if="{{!inEmpty}}" class="section-count">({{inProviders.length}}家)</text>
+    </view>
+    <view wx:if="{{inLoading}}" class="state-loading"><text>加载中...</text></view>
+    <view wx:elif="{{inEmpty}}" class="state-empty"><text>该城市暂无入驻汉服店</text></view>
+    <block wx:else>
+      <view wx:for="{{inProviders}}" wx:key="_id" class="shop-card" bindtap="onInProviderTap" data-id="{{item._id}}">
+        <image class="shop-avatar" src="{{item.avatar || '/images/default-avatar.png'}}" mode="aspectFill" />
+        <view class="shop-info">
+          <view class="shop-name">{{item.name}}</view>
+          <view wx:if="{{item.city}}" class="shop-city">📍 {{item.city}}</view>
+          <view class="shop-desc">{{item.description || ''}}</view>
+          <view class="shop-meta">
+            <text wx:if="{{item.rating}}" class="shop-rating">⭐ {{item.rating}}</text>
+            <text wx:if="{{item.orderCount}}" class="shop-orders">{{item.orderCount}}单</text>
+          </view>
+        </view>
+        <text class="shop-arrow">></text>
+      </view>
+    </block>
+  </view>
+
+  <!-- 附近汉服店（地图API） -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-icon">📍</text>
+      <text class="section-title">附近汉服店</text>
+      <text wx:if="{{!nearEmpty}}" class="section-count">({{nearbyShops.length}}家)</text>
+      <text class="section-tag">外部商家</text>
+    </view>
+    <view wx:if="{{nearLoading}}" class="state-loading"><text>加载中...</text></view>
+    <view wx:elif="{{nearEmpty}}" class="state-empty"><text>该城市暂无搜索结果</text></view>
+    <block wx:else>
+      <view wx:for="{{nearbyShops}}" wx:key="_id" class="shop-card">
+        <view class="shop-avatar shop-avatar-placeholder">🏪</view>
+        <view class="shop-info">
+          <view class="shop-name">{{item.name}}</view>
+          <view class="shop-desc">{{item.address}}</view>
+          <view wx:if="{{item.category}}" class="shop-cat">{{item.category}}</view>
+        </view>
+        <view wx:if="{{item.phone}}" class="call-btn" catchtap="onCallPhone" data-phone="{{item.phone}}">
+          <text>📞 拨号</text>
+        </view>
+      </view>
+    </block>
+  </view>
+</block>

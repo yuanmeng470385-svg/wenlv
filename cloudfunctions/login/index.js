@@ -43,6 +43,10 @@ exports.main = async (event, context) => {
     // 返回用户信息
     const user = await db.collection('users').where({ _openid: openid }).get();
     const userInfo = user.data[0];
+    // 封禁检查
+    if (userInfo && userInfo.status === 'banned') {
+      return { code: 1002, message: `账户已被封禁${userInfo.banReason ? '：' + userInfo.banReason : ''}` };
+    }
     if (userInfo && userInfo.phone) {
       userInfo.phone = maskPhone(userInfo.phone);
     }
