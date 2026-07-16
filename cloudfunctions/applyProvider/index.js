@@ -6,7 +6,7 @@ exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext();
   const openid = wxContext.OPENID;
   if (!openid) return { code: 1002, message: '未登录' };
-  const { categoryType, name, phone, description, featureTags, coverImages, portfolioImages } = event;
+  const { categoryType, name, city, phone, description, featureTags, coverImages, portfolioImages } = event;
 
   try {
     if (!categoryType || !name || !phone) {
@@ -40,12 +40,23 @@ exports.main = async (event, context) => {
       return { code: 2001, message: '您已申请过该类型的服务商，请勿重复申请' };
     }
 
+    // 先更新用户 roles（放前面，避免 provider 创建成功但 roles 更新失败的不一致）
+    const userRes = await db.collection('users').where({ _openid: openid }).get();
+    if (userRes.data.length > 0) {
+      const user = userRes.data[0];
+      const roles = [...new Set([...(user.roles || []), categoryType])];
+      await db.collection('users').doc(user._id).update({
+        data: { roles, updateTime: db.serverDate() }
+      });
+    }
+
     // 创建服务商记录（待审核状态）
     const providerRes = await db.collection('providers').add({
       data: {
         userId: openid,
         categoryType,
         name,
+        city: city || '',
         phone,
         description: description || '',
         featureTags: featureTags || [],
@@ -77,16 +88,6 @@ exports.main = async (event, context) => {
           viewCount: 0,
           createTime: db.serverDate(),
         }
-      });
-    }
-
-    // 更新用户 roles
-    const userRes = await db.collection('users').where({ _openid: openid }).get();
-    if (userRes.data.length > 0) {
-      const user = userRes.data[0];
-      const roles = [...new Set([...(user.roles || []), categoryType])];
-      await db.collection('users').doc(user._id).update({
-        data: { roles, updateTime: db.serverDate() }
       });
     }
 
