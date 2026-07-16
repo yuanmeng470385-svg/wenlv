@@ -1,0 +1,9 @@
+{
+  "name": "confirmComplete",
+  "version": "1.0.0",
+  "description": "客户确认服务完成",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}

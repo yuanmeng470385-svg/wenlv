@@ -39,7 +39,7 @@ exports.main = async (event, context) => {
       confirm: 'confirmed',
       reject: 'cancelled',
       start: 'in_progress',
-      complete: 'completed',
+      complete: 'pending_complete',
     };
 
     const updateData = {
@@ -58,13 +58,6 @@ exports.main = async (event, context) => {
     }
 
     await db.collection('orders').doc(orderId).update({ data: updateData });
-
-    // 更新服务商订单数
-    if (action === 'complete') {
-      await db.collection('providers').doc(provider._id).update({
-        data: { orderCount: db.command.inc(1), updateTime: db.serverDate() }
-      });
-    }
 
     return { code: 0, data: { orderStatus: statusMap[action] }, message: '操作成功' };
   } catch (err) {

@@ -29,6 +29,13 @@ exports.main = async (event, context) => {
       }
 
       const serviceItem = itemRes.data;
+
+      // 检查商家是否休假
+      const provider = await db.collection('providers').doc(serviceItem.providerId).get();
+      if (provider.data && provider.data.isOpen === false) {
+        return { code: 2002, message: `[${serviceItem.name}] 的商家已暂停接单，请稍后再试` };
+      }
+
       let itemPrice = serviceItem.price;
       let duration = serviceItem.duration;
       const quantity = item.quantity || 1;

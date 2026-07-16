@@ -1,0 +1,9 @@
+{
+  "name": "toggleProviderOpen",
+  "version": "1.0.0",
+  "description": "商家切换营业/休假状态",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}
