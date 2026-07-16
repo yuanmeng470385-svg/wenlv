@@ -5,10 +5,13 @@ Page({
     orderId: '',
     order: null,
     providers: [],
+    isAdmin: false,
   },
 
   onLoad(options) {
-    this.setData({ orderId: options.id });
+    const app = getApp();
+    const isAdmin = app.globalData.userInfo && (app.globalData.userInfo.roles || []).includes('admin');
+    this.setData({ orderId: options.id, isAdmin });
     this.loadDetail();
   },
 

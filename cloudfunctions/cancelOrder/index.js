@@ -28,7 +28,7 @@ exports.main = async (event, context) => {
     let earliestTime = '';
     for (const item of order.items) {
       if (item.appointmentDate && item.appointmentTime) {
-        const target = new Date(`${item.appointmentDate}T${item.appointmentTime}:00`);
+        const target = new Date(`${item.appointmentDate}T${item.appointmentTime}:00+08:00`);
         const hours = (target - new Date()) / (1000 * 60 * 60);
         if (hours < minHours) {
           minHours = hours;
@@ -66,6 +66,7 @@ exports.main = async (event, context) => {
       cancelReason: cancelReason || '',
       cancelTime: db.serverDate(),
       refundAmount,
+      preRefundStatus: needAdminRefund ? order.orderStatus : undefined,
       updateTime: db.serverDate(),
     };
 

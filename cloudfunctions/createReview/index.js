@@ -16,6 +16,7 @@ exports.main = async (event, context) => {
     const orderRes = await db.collection('orders').doc(orderId).get();
     if (!orderRes.data) return { code: 1003, message: '订单不存在' };
     if (orderRes.data.userId !== openid) return { code: 1002, message: '无权评价' };
+    if (orderRes.data.orderStatus !== 'completed') return { code: 2001, message: '仅已完成订单可评价' };
 
     // 对每个服务商分别创建评价
     const providerIds = [...new Set(orderRes.data.items.map(i => i.providerId))];

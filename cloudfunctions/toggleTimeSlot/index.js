@@ -29,7 +29,22 @@ exports.main = async (event, context) => {
     }
 
     // 切换单个时段
+    // 如果要关闭时段，先检查是否有已有预约
     const exist = await db.collection('timeSlots').where({ providerId: provider._id, date, time }).get();
+    const currentlyAvailable = exist.data.length > 0 ? exist.data[0].available : true;
+    if (currentlyAvailable) {
+      const bookedOrders = await db.collection('orders').where({
+        orderStatus: db.command.in(['paid', 'confirmed', 'in_progress']),
+        items: db.command.elemMatch({
+          providerId: provider._id,
+          appointmentDate: date,
+          appointmentTime: time,
+        }),
+      }).count();
+      if (bookedOrders.total > 0) {
+        return { code: 2002, message: `该时段已有 ${bookedOrders.total} 个预约，无法关闭` };
+      }
+    }
     if (exist.data.length > 0) {
       const newAvail = !exist.data[0].available;
       await db.collection('timeSlots').doc(exist.data[0]._id).update({ data: { available: newAvail, updateTime: db.serverDate() } });

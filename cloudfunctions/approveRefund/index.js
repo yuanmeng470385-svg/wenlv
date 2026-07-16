@@ -22,8 +22,11 @@ exports.main = async (event, context) => {
       });
       return { code: 0, data: {}, message: '退款已通过' };
     } else {
+      // 驳回退款：恢复到退款前的状态
+      const order = (await db.collection('orders').doc(orderId).get()).data;
+      const restoreStatus = order.preRefundStatus || 'paid';
       await db.collection('orders').doc(orderId).update({
-        data: { orderStatus: 'paid', refundAmount: 0, updateTime: db.serverDate() }
+        data: { orderStatus: restoreStatus, refundAmount: 0, updateTime: db.serverDate() }
       });
       return { code: 0, data: {}, message: '退款已驳回' };
     }

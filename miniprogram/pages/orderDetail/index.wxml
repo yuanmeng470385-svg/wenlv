@@ -48,7 +48,7 @@
   </view>
 
   <view class="action-bar safe-bottom">
-    <button wx:if="{{order.orderStatus === 'pending_pay'}}" class="mock-pay-btn" bindtap="onMockPay">模拟支付(测试) ¥{{order.totalFee / 100}}</button>
+    <button wx:if="{{order.orderStatus === 'pending_pay' && isAdmin}}" class="mock-pay-btn" bindtap="onMockPay">模拟支付(测试) ¥{{order.totalFee / 100}}</button>
     <button wx:if="{{order.orderStatus === 'pending_pay'}}" class="pay-btn mt-10" bindtap="onPay">微信支付 ¥{{order.totalFee / 100}}</button>
     <button wx:if="{{order.orderStatus === 'pending_pay' || order.orderStatus === 'paid'}}" class="cancel-btn mt-10" bindtap="onCancelOrder">取消订单</button>
     <button wx:if="{{order.orderStatus === 'completed'}}" class="review-btn mt-10" bindtap="onReview">去评价</button>

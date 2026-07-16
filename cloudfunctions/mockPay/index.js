@@ -8,6 +8,12 @@ exports.main = async (event, context) => {
   const { orderId } = event;
 
   try {
+    // 生产环境安全：仅 admin 可调用模拟支付
+    const _admin = await db.collection('users').where({ _openid: openid }).get();
+    if (!(_admin.data[0] && (_admin.data[0].roles || []).includes('admin'))) {
+      return { code: 1002, message: '无管理员权限' };
+    }
+
     const orderRes = await db.collection('orders').doc(orderId).get();
     const order = orderRes.data;
     if (!order) return { code: 1003, message: '订单不存在' };

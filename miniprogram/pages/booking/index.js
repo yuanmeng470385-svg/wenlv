@@ -152,12 +152,17 @@ Page({
       wx.hideLoading();
       const orderId = orderRes.orderId;
       wx.hideLoading();
+      const app = getApp();
+      const isAdmin = app.globalData.userInfo && (app.globalData.userInfo.roles || []).includes('admin');
+      const payOptions = isAdmin
+        ? ['模拟支付(测试模式)', '微信支付(需商户号)', '稍后支付']
+        : ['微信支付', '稍后支付'];
       wx.showActionSheet({
-        itemList: ['模拟支付(测试模式)', '微信支付(需商户号)', '稍后支付'],
+        itemList: payOptions,
         success: (res) => {
-          if (res.tapIndex === 0) {
+          if (isAdmin && res.tapIndex === 0) {
             this.doMockPay(orderId);
-          } else if (res.tapIndex === 1) {
+          } else if ((isAdmin && res.tapIndex === 1) || (!isAdmin && res.tapIndex === 0)) {
             this.doPay(orderId);
           } else {
             wx.redirectTo({ url: `/pages/orderDetail/index?id=${orderId}` });

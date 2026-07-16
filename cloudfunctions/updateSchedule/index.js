@@ -15,6 +15,21 @@ exports.main = async (event, context) => {
 
     // 更新或创建时段
     for (const slot of (timeSlots || [])) {
+      // 如果要关闭时段，先检查是否有已有预约
+      if (slot.available === false) {
+        const bookedOrders = await db.collection('orders').where({
+          orderStatus: db.command.in(['paid', 'confirmed', 'in_progress']),
+          items: db.command.elemMatch({
+            providerId: provider._id,
+            appointmentDate: date,
+            appointmentTime: slot.time,
+          }),
+        }).count();
+        if (bookedOrders.total > 0) {
+          return { code: 2002, message: `${date} ${slot.time} 已有 ${bookedOrders.total} 个预约，无法关闭` };
+        }
+      }
+
       const exist = await db.collection('timeSlots').where({
         providerId: provider._id, date, time: slot.time
       }).get();
