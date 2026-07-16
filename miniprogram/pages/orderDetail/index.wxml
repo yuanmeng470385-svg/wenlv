@@ -20,13 +20,20 @@
       <text class="text-bold">{{item.name}}</text>
       <text wx:if="{{item.level>0}}" class="level-tag level-{{item.level}}">{{item.levelName}}</text>
       <text class="text-sm text-secondary ml-10">⭐ {{item.rating||0}}</text>
+      <text class="call-icon ml-10" bindtap="onCallProvider" data-id="{{item._id}}">📞</text>
     </view>
   </view>
 
   <view class="info-section card">
     <text class="text-bold text-lg">联系信息</text>
     <view class="flex-between mt-10"><text>联系人</text><text>{{order.contactName}}</text></view>
-    <view class="flex-between mt-10"><text>手机号</text><text>{{order.contactPhone}}</text></view>
+    <view class="flex-between mt-10">
+      <text>手机号</text>
+      <view class="flex-row">
+        <text>{{order.contactPhone}}</text>
+        <text class="call-icon ml-10" bindtap="onCallCustomer">📞</text>
+      </view>
+    </view>
     <view wx:if="{{order.remark}}" class="flex-between mt-10"><text>备注</text><text>{{order.remark}}</text></view>
   </view>
 

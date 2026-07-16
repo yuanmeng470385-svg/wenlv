@@ -36,6 +36,10 @@ const toggleFavorite = (targetType, targetId) =>
 /** 获取收藏列表 */
 const getFavorites = () => callFunction('getFavorites');
 
+/** 获取完整手机号（需权限校验） */
+const getContactPhone = (target, targetId) =>
+  callFunction('getContactPhone', { target, [target === 'order' ? 'orderId' : 'providerId']: targetId });
+
 module.exports = {
   createOrder,
   payOrder,
@@ -47,5 +51,6 @@ module.exports = {
   toggleLike,
   toggleFavorite,
   getFavorites,
+  getContactPhone,
 };
 

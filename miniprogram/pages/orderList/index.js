@@ -34,6 +34,7 @@ Page({
       const isProvider = this.data.activeRole !== 'user';
       const fnName = isProvider ? 'getProviderOrders' : 'getOrderList';
       const params = { page: this.data.page, pageSize: 10 };
+      if (isProvider) params.role = this.data.activeRole;
       if (this.data.currentTab !== 'all') params.status = this.data.currentTab;
 
       const res = await callFunction(fnName, params);
@@ -65,6 +66,25 @@ Page({
     } catch (err) {
       wx.hideLoading();
       wx.showToast({ title: '操作失败', icon: 'none' });
+    }
+  },
+
+  async onCallCustomer(e) {
+    const orderId = e.currentTarget.dataset.id;
+    if (!orderId) return;
+    wx.showLoading({ title: '获取中...' });
+    try {
+      const { getContactPhone } = require('../../services/orderService');
+      const res = await getContactPhone('order', orderId);
+      wx.hideLoading();
+      if (res && res.phone) {
+        wx.makePhoneCall({ phoneNumber: res.phone });
+      } else {
+        wx.showToast({ title: '暂无电话', icon: 'none' });
+      }
+    } catch (err) {
+      wx.hideLoading();
+      wx.showToast({ title: '获取失败', icon: 'none' });
     }
   },
 

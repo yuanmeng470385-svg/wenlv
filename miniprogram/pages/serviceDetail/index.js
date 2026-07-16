@@ -62,9 +62,21 @@ Page({
     this.setData({ portfolios });
   },
 
-  onCallPhone() {
-    if (this.data.provider && this.data.provider.phone) {
-      wx.makePhoneCall({ phoneNumber: this.data.provider.phone });
+  async onCallPhone() {
+    if (!this.data.providerId) return;
+    wx.showLoading({ title: '获取中...' });
+    try {
+      const { getContactPhone } = require('../../services/orderService');
+      const res = await getContactPhone('provider', this.data.providerId);
+      wx.hideLoading();
+      if (res && res.phone) {
+        wx.makePhoneCall({ phoneNumber: res.phone });
+      } else {
+        wx.showToast({ title: '暂无电话', icon: 'none' });
+      }
+    } catch (err) {
+      wx.hideLoading();
+      wx.showToast({ title: '获取失败', icon: 'none' });
     }
   },
   onBookTap() {

@@ -75,6 +75,43 @@ Page({
     wx.navigateTo({ url: `/pages/review/create?orderId=${this.data.orderId}` });
   },
 
+  async onCallCustomer() {
+    if (!this.data.orderId) return;
+    wx.showLoading({ title: '获取中...' });
+    try {
+      const { getContactPhone } = require('../../services/orderService');
+      const res = await getContactPhone('order', this.data.orderId);
+      wx.hideLoading();
+      if (res && res.phone) {
+        wx.makePhoneCall({ phoneNumber: res.phone });
+      } else {
+        wx.showToast({ title: '暂无电话', icon: 'none' });
+      }
+    } catch (err) {
+      wx.hideLoading();
+      wx.showToast({ title: '获取失败', icon: 'none' });
+    }
+  },
+
+  async onCallProvider(e) {
+    const providerId = e.currentTarget.dataset.id;
+    if (!providerId) return;
+    wx.showLoading({ title: '获取中...' });
+    try {
+      const { getContactPhone } = require('../../services/orderService');
+      const res = await getContactPhone('provider', providerId);
+      wx.hideLoading();
+      if (res && res.phone) {
+        wx.makePhoneCall({ phoneNumber: res.phone });
+      } else {
+        wx.showToast({ title: '暂无电话', icon: 'none' });
+      }
+    } catch (err) {
+      wx.hideLoading();
+      wx.showToast({ title: '获取失败', icon: 'none' });
+    }
+  },
+
   onPay() {
     if (this.data.order && this.data.order.orderStatus === 'pending_pay') {
       const { payOrder } = require('../../services/orderService');
