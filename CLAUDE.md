@@ -24,7 +24,7 @@ miniprogram/              前端
   services/serviceService.js 服务商/作品
   services/orderService.js 订单/支付/评价/互动
 
-cloudfunctions/           后端 (44个云函数)
+cloudfunctions/           后端 (49个云函数)
   无外部API，全部使用 wx-server-sdk 操作云数据库
 ```
 
@@ -45,13 +45,16 @@ admin (管理员) → 在 DB 中手动添加 roles:["user","admin"]，审核所�
 ## 订单状态机
 
 ```
-pending_pay → paid → confirmed → in_progress → completed → reviewed
+pending_pay → paid → confirmed → in_progress → pending_complete → completed → reviewed
     ↓           ↓         ↓             ↓
 cancelled   pending_refund(管理员审批通过后→cancelled)
 ```
 
-- 用户取消：<24h 全额退，<0h(过期)不可取消，其余退50%；退款需管理员 `approveRefund` 审批
-- 商家操作：`providerHandleOrder` (confirm/start/complete)；拒绝时自动标记退款
+- 用户取消：<24h 全额退，24h 内退50%，已过期不可取消；退款需管理员 `approveRefund` 审批
+- 商家操作：`providerHandleOrder` (confirm/reject/start/complete)；complete 后进入 `pending_complete` 待客户确认
+- 客户确认：`confirmComplete` 将 `pending_complete` → `completed`
+- 超时自动取消：`cancelExpiredOrders` 取消超过24h无人接单的 paid 订单
+- 商家休假：`toggleProviderOpen` 一键暂停/恢复接单（不影响已有订单）
 
 ## 数据库集合 (10个)
 
