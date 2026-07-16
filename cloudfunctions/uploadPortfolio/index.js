@@ -10,6 +10,13 @@ exports.main = async (event, context) => {
 
   try {
     if (!title || !images || !images.length) return { code: 1001, message: '请填写标题并上传作品图片' };
+    if (images.length > 9) return { code: 1001, message: '最多上传9张作品图片' };
+    // 校验图片 fileID 格式
+    for (const img of images) {
+      if (!img || typeof img !== 'string' || !img.startsWith('cloud://')) {
+        return { code: 1001, message: '图片格式无效，请重新上传' };
+      }
+    }
 
     const providerRes = await db.collection('providers').where({ userId: openid, status: 'active' }).get();
     if (providerRes.data.length === 0) return { code: 1003, message: '您还不是审核通过的服务商' };

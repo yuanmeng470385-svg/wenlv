@@ -15,6 +15,8 @@ exports.main = async (event, context) => {
     await db.collection('serviceItems').doc(serviceItemId).update({
       data: { status: action === 'approved' ? 'active' : 'inactive', updateTime: db.serverDate() }
     });
+    // 审计日志
+    await db.collection('auditLogs').add({ data: { adminOpenid: openid, action: action === 'approved' ? 'approveServiceItem' : 'rejectServiceItem', targetId: serviceItemId, createTime: db.serverDate() } });
     return { code: 0, data: {}, message: action === 'approved' ? '套餐已通过' : '套餐已驳回' };
   } catch (err) { return { code: 9999, message: err.message }; }
 };

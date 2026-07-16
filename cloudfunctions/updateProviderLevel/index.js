@@ -19,6 +19,8 @@ exports.main = async (event, context) => {
     await db.collection('providers').doc(providerId).update({
       data: { level, levelName: LEVEL_MAP[level], updateTime: db.serverDate() }
     });
+    // 审计日志
+    await db.collection('auditLogs').add({ data: { adminOpenid: openid, action: 'updateProviderLevel', targetId: providerId, detail: { level, levelName: LEVEL_MAP[level] }, createTime: db.serverDate() } });
 
     return { code: 0, data: { level, levelName: LEVEL_MAP[level] }, message: '等级更新成功' };
   } catch (err) {

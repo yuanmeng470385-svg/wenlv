@@ -28,6 +28,8 @@ exports.main = async (event, context) => {
       await db.collection('portfolios').where({ providerId, status: 'pending_review' }).update({
         data: { status: 'rejected', reviewRemark: reason || '' }
       });
+      // 审计日志
+      await db.collection('auditLogs').add({ data: { adminOpenid: openid, action: 'rejectProvider', targetId: providerId, detail: { reason }, createTime: db.serverDate() } });
       return { code: 0, data: {}, message: '已驳回' };
     }
 
@@ -42,6 +44,8 @@ exports.main = async (event, context) => {
     await db.collection('portfolios').where({ providerId, status: 'pending_review' }).update({
       data: { status: 'approved' }
     });
+    // 审计日志
+    await db.collection('auditLogs').add({ data: { adminOpenid: openid, action: 'approveProvider', targetId: providerId, detail: { level: finalLevel, levelName }, createTime: db.serverDate() } });
 
     return { code: 0, data: { level: finalLevel, levelName }, message: `已通过！${isHanfu ? '' : '等级: ' + levelName}` };
   } catch (err) { return { code: 9999, message: err.message }; }

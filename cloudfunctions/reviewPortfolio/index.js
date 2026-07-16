@@ -22,6 +22,8 @@ exports.main = async (event, context) => {
     };
 
     await db.collection('portfolios').doc(portfolioId).update({ data: updateData });
+    // 审计日志
+    await db.collection('auditLogs').add({ data: { adminOpenid: openid, action: action === 'approved' ? 'approvePortfolio' : 'rejectPortfolio', targetId: portfolioId, detail: { reason }, createTime: db.serverDate() } });
 
     return { code: 0, data: { status: action }, message: action === 'approved' ? '作品已通过审核' : '作品已驳回' };
   } catch (err) {

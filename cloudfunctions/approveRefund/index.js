@@ -20,6 +20,8 @@ exports.main = async (event, context) => {
       await db.collection('payments').where({ orderId }).update({
         data: { payStatus: 'refund_full', updateTime: db.serverDate() }
       });
+      // 审计日志
+      await db.collection('auditLogs').add({ data: { adminOpenid: openid, action: 'approveRefund', targetId: orderId, createTime: db.serverDate() } });
       return { code: 0, data: {}, message: '退款已通过' };
     } else {
       // 驳回退款：恢复到退款前的状态
@@ -28,6 +30,8 @@ exports.main = async (event, context) => {
       await db.collection('orders').doc(orderId).update({
         data: { orderStatus: restoreStatus, refundAmount: 0, updateTime: db.serverDate() }
       });
+      // 审计日志
+      await db.collection('auditLogs').add({ data: { adminOpenid: openid, action: 'rejectRefund', targetId: orderId, createTime: db.serverDate() } });
       return { code: 0, data: {}, message: '退款已驳回' };
     }
   } catch (err) { return { code: 9999, message: err.message }; }
