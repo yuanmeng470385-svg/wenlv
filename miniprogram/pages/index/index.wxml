@@ -18,18 +18,16 @@
 
   <view class="section">
     <view class="section-header flex-between">
-      <text class="text-lg text-bold">热门推荐</text>
-      <text class="section-more text-sm text-primary" bindtap="goMore">更多 ›</text>
+      <text class="text-lg text-bold">优秀展示</text>
     </view>
-    <view class="provider-list">
-      <view class="provider-card card" wx:for="{{hotProviders}}" wx:key="_id" data-id="{{item._id}}" bindtap="onProviderTap">
-        <view class="p-avatar-box">
-          <image wx:if="{{item.avatar}}" src="{{item.avatar}}" mode="aspectFill" />
-          <view wx:else class="img-ph">{{item.categoryType === 'photographer' ? '📷' : (item.categoryType === 'makeup' ? '💄' : '👘')}}</view>
-        </view>
-        <view class="flex-1 ml-20">
-          <view class="flex-row"><text class="text-bold text-ellipsis p-name">{{item.name}}</text></view>
-          <text class="text-sm text-secondary text-ellipsis mt-10">{{item.description}}</text>
+    <view class="featured-grid">
+      <view class="featured-item" wx:for="{{featuredWorks}}" wx:key="_id" data-id="{{item.providerId}}" bindtap="onProviderTap">
+        <image wx:if="{{item.image}}" src="{{item.image}}" mode="aspectFill" class="featured-img" />
+        <view wx:else class="featured-img img-ph">{{item.providerCategory === 'photographer' ? '📷' : (item.providerCategory === 'makeup' ? '💄' : '👘')}}</view>
+        <view class="featured-info">
+          <image wx:if="{{item.providerAvatar}}" src="{{item.providerAvatar}}" mode="aspectFill" class="featured-avatar" />
+          <view wx:else class="featured-avatar img-ph-sm">{{item.providerCategory === 'photographer' ? '📷' : (item.providerCategory === 'makeup' ? '💄' : '👘')}}</view>
+          <text class="featured-name text-ellipsis">{{item.providerName}}</text>
         </view>
       </view>
     </view>

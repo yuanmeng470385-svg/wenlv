@@ -1,11 +1,11 @@
-const { getCategoryList, getProviderList } = require('../../services/serviceService');
+const { getCategoryList } = require('../../services/serviceService');
 const { login } = require('../../services/userService');
 const app = getApp();
 
 Page({
   data: {
     banners: [{ id: 1, title: '古风汉服摄影' },{ id: 2, title: '专业妆造服务' },{ id: 3, title: '汉服租赁体验' }],
-    categories: [], hotProviders: [],
+    categories: [], featuredWorks: [],
     activeRole: 'user', hasLogin: false,
     dashboard: { todayOrders: 0, pendingOrders: 0, totalOrders: 0 },
     recentOrders: [],
@@ -46,10 +46,11 @@ Page({
     wx.showLoading({ title: '加载中...' });
     try {
       if (this.data.activeRole === 'user') {
-        const [categories, hotRes] = await Promise.all([
-          getCategoryList(), getProviderList({ page: 1, pageSize: 6 }),
+        const { callFunction } = require('../../services/cloud');
+        const [categories, featuredRes] = await Promise.all([
+          getCategoryList(), callFunction('getFeaturedPortfolios'),
         ]);
-        this.setData({ categories: categories || [], hotProviders: (hotRes && hotRes.list) || [] });
+        this.setData({ categories: categories || [], featuredWorks: (featuredRes && featuredRes.list) || [] });
       } else {
         const { callFunction } = require('../../services/cloud');
         const { getProviderDetail } = require('../../services/serviceService');

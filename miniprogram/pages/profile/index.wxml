@@ -41,15 +41,7 @@
 
   <!-- 商家模式菜单 -->
   <block wx:else>
-    <view class="menu-card card" bindtap="goUploadWork">
-      <view class="flex-between"><text>📤 上传作品</text><text class="text-secondary">></text></view>
-    </view>
     <view class="menu-section">
-      <view class="menu-item flex-between" bindtap="goMyWorks"><text>🖼️ 作品管理</text><text class="text-secondary">></text></view>
-      <view class="menu-item flex-between" bindtap="goServiceItems"><text>📦 套餐管理</text><text class="text-secondary">></text></view>
-      <view class="menu-item flex-between" bindtap="goSchedule"><text>📅 档期管理</text><text class="text-secondary">></text></view>
-      <view class="menu-item flex-between" bindtap="goOrders"><text>📋 订单</text><text class="text-secondary">></text></view>
-      <view class="menu-item flex-between" bindtap="goEditProfile"><text>✏️ 编辑资料</text><text class="text-secondary">></text></view>
       <view class="menu-item flex-between" data-url="/pages/messages/index" bindtap="onMenuTap"><text>🔔 消息通知</text><text class="text-secondary">></text></view>
       <view class="menu-item flex-between" bindtap="onDeregister"><text>⚠️ 注销商家身份</text><text class="text-secondary">></text></view>
     </view>

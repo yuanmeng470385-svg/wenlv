@@ -11,7 +11,7 @@
 
   <block wx:if="{{activeRole === 'user'}}">
     <view wx:for="{{orders}}" wx:key="_id" class="order-card card" data-id="{{item._id}}" bindtap="onOrderTap">
-      <view class="flex-between mb-20"><text class="text-sm text-bold">{{item.orderNo}}</text><text class="text-sm text-primary">{{item.orderStatus}}</text></view>
+      <view class="flex-between mb-20"><text class="text-sm text-bold">{{item.orderNo}}</text><text class="text-sm text-primary">{{item.statusText}}</text></view>
       <view wx:for="{{item.items}}" wx:key="serviceItemId" wx:for-item="si" class="order-item">
         <text>{{si.name}}<text wx:if="{{si.providerDeleted}}" class="text-sm text-hint">(商家已注销)</text></text>
         <text class="text-sm text-secondary">{{si.appointmentDate}} {{si.appointmentTime}}</text>
@@ -39,7 +39,7 @@
     <view wx:for="{{orders}}" wx:key="_id" class="order-card card" data-id="{{item._id}}" bindtap="onOrderTap">
       <view class="flex-between mb-20">
         <text class="text-sm text-bold">{{item.orderNo}}</text>
-        <text class="status-text text-sm">{{item.orderStatus === 'paid' ? '待确认' : (item.orderStatus === 'confirmed' ? '已确认' : (item.orderStatus === 'in_progress' ? '进行中' : (item.orderStatus === 'completed' ? '已完成' : item.orderStatus)))}}</text>
+        <text class="status-text text-sm">{{item.statusText}}</text>
       </view>
       <view wx:for="{{item.items}}" wx:key="serviceItemId" wx:for-item="si">
         <view class="flex-between mb-10"><text class="text-bold">{{si.name}}</text><text class="text-price">¥{{si.price/100}}</text></view>

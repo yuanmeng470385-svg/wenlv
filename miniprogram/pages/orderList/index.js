@@ -1,5 +1,17 @@
 const app = getApp();
 
+const STATUS_MAP = {
+  pending_pay: '待付款',
+  paid: '已付款',
+  confirmed: '已确认',
+  in_progress: '进行中',
+  pending_complete: '待确认完成',
+  completed: '已完成',
+  reviewed: '已评价',
+  cancelled: '已取消',
+  pending_refund: '退款中',
+};
+
 Page({
   data: {
     activeRole: 'user',
@@ -50,7 +62,8 @@ Page({
       if (this.data.currentTab !== 'all') params.status = this.data.currentTab;
 
       const res = await callFunction(fnName, params);
-      const list = this.data.page === 1 ? res.list : [...this.data.orders, ...res.list];
+      const rawList = this.data.page === 1 ? res.list : [...this.data.orders, ...res.list];
+      const list = rawList.map(o => ({ ...o, statusText: STATUS_MAP[o.orderStatus] || o.orderStatus }));
       this.setData({ orders: list, total: res.total, hasMore: list.length < res.total });
     } catch (err) { console.error(err); }
     finally { wx.hideLoading(); }
