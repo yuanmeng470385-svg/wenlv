@@ -51,5 +51,12 @@
       <view class="menu-item flex-between" bindtap="goEditProfile"><text>✏️ 编辑资料</text><text class="text-secondary">></text></view>
       <view class="menu-item flex-between" data-url="/pages/messages/index" bindtap="onMenuTap"><text>🔔 消息通知</text><text class="text-secondary">></text></view>
     </view>
+    <view class="menu-card danger-card" bindtap="onDeregister">
+      <view class="flex-between"><text>⚠️ 注销商家身份</text><text class="text-secondary">></text></view>
+    </view>
   </block>
+
+  <view wx:if="{{hasLogin}}" class="logout-section safe-bottom">
+    <button class="logout-btn" bindtap="onLogout">退出登录</button>
+  </view>
 </view>

@@ -61,6 +61,43 @@ Page({
   goEditProfile() { wx.navigateTo({ url: '/pages/provider/editProfile' }); },
   goAdmin() { wx.navigateTo({ url: '/pages/admin/dashboard' }); },
 
+  onDeregister() {
+    wx.showModal({
+      title: '注销商家身份',
+      content: '注销后将永久删除您的店铺及所有数据（作品、套餐、评价），且不可恢复。确定继续吗？',
+      confirmText: '确定注销',
+      confirmColor: '#E74C3C',
+      success: async (res) => {
+        if (!res.confirm) return;
+        wx.showLoading({ title: '提交中...' });
+        try {
+          const { callFunction } = require('../../services/cloud');
+          await callFunction('requestDeregister');
+          wx.hideLoading();
+          wx.showToast({ title: '已提交审核', icon: 'success' });
+        } catch (err) {
+          wx.hideLoading();
+          wx.showToast({ title: (err && err.message) || '提交失败', icon: 'none' });
+        }
+      }
+    });
+  },
+
+  onLogout() {
+    wx.showModal({
+      title: '退出登录',
+      content: '确定要退出登录吗？',
+      success: (res) => {
+        if (res.confirm) {
+          const app = getApp();
+          app.globalData = {};
+          wx.clearStorageSync();
+          wx.reLaunch({ url: '/pages/index/index' });
+        }
+      }
+    });
+  },
+
   async onGetUserInfo(e) {
     if (e.detail.userInfo) {
       try {
