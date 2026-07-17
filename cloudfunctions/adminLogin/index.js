@@ -16,9 +16,12 @@ exports.main = async (event, context) => {
       return { code: 1003, message: '无管理员权限，需在数据库中手动添加 admin 角色' };
     }
 
-    // 从 config 集合读取管理员密码，默认 "admin123"
-    const configRes = await db.collection('config').where({ key: 'adminPassword' }).get();
-    const correctPwd = (configRes.data.length > 0) ? configRes.data[0].value : 'admin123';
+    // 从 config 集合读取管理员密码，集合不存在则用默认
+    let correctPwd = 'admin123';
+    try {
+      const configRes = await db.collection('config').where({ key: 'adminPassword' }).get();
+      if (configRes.data.length > 0) correctPwd = configRes.data[0].value;
+    } catch (e) { /* config 集合不存在，用默认密码 */ }
     if (password === correctPwd) {
       return { code: 0, data: {}, message: '验证通过' };
     }
