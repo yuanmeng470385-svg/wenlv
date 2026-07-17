@@ -1,14 +1,14 @@
 <view class="page-orders">
   <block wx:if="{{isAdminMode}}">
     <view class="admin-review-center">
-      <view class="admin-header-sm">📋 审核中心</view>
+      <view class="admin-header-sm">审核中心</view>
       <view class="review-menu">
-        <view class="review-menu-item flex-between" bindtap="goAdminProviders"><text>🏪 服务商入驻</text><text class="text-secondary">></text></view>
-        <view class="review-menu-item flex-between" bindtap="goAdminPortfolios"><text>🖼️ 作品审核</text><text class="text-secondary">></text></view>
-        <view class="review-menu-item flex-between" bindtap="goAdminServiceItems"><text>📦 套餐审核</text><text class="text-secondary">></text></view>
-        <view class="review-menu-item flex-between" bindtap="goAdminRefunds"><text>💰 退款审核</text><text class="text-secondary">></text></view>
-        <view class="review-menu-item flex-between" bindtap="goAdminAvatarUpdates"><text>🖼️ 头像/背景审核</text><text class="text-secondary">></text></view>
-        <view class="review-menu-item flex-between" bindtap="goAdminDeregistrations"><text>⚠️ 注销审核</text><text class="text-secondary">></text></view>
+        <view class="review-menu-item flex-between" bindtap="goAdminProviders"><text>服务商入驻</text><text class="text-secondary">></text></view>
+        <view class="review-menu-item flex-between" bindtap="goAdminPortfolios"><text>作品审核</text><text class="text-secondary">></text></view>
+        <view class="review-menu-item flex-between" bindtap="goAdminServiceItems"><text>套餐审核</text><text class="text-secondary">></text></view>
+        <view class="review-menu-item flex-between" bindtap="goAdminRefunds"><text>退款审核</text><text class="text-secondary">></text></view>
+        <view class="review-menu-item flex-between" bindtap="goAdminAvatarUpdates"><text>头像/背景审核</text><text class="text-secondary">></text></view>
+        <view class="review-menu-item flex-between" bindtap="goAdminDeregistrations"><text>注销审核</text><text class="text-secondary">></text></view>
       </view>
     </view>
   </block>

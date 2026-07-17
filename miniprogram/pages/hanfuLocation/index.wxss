@@ -4,7 +4,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 20rpx 30rpx;
-  background: linear-gradient(135deg, #C48B5C 0%, #B07A4E 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
   color: #fff;
 }
 .loc-left {
@@ -34,13 +34,13 @@
   font-weight: 600;
 }
 .section-icon { margin-right: 8rpx; }
-.section-title { color: #333; }
-.section-count { color: #999; font-size: 24rpx; margin-left: 8rpx; font-weight: 400; }
+.section-title { color: var(--text-primary); }
+.section-count { color: var(--text-hint); font-size: 24rpx; margin-left: 8rpx; font-weight: 400; }
 .section-tag {
   margin-left: 12rpx;
   font-size: 20rpx;
-  color: #C48B5C;
-  border: 1rpx solid #C48B5C;
+  color: var(--color-primary);
+  border: 1rpx solid var(--color-primary);
   border-radius: 6rpx;
   padding: 2rpx 8rpx;
   font-weight: 400;
@@ -50,7 +50,7 @@
 .shop-card {
   display: flex;
   align-items: center;
-  background: #fff;
+  background: var(--bg-white);
   border-radius: 16rpx;
   padding: 24rpx;
   margin-bottom: 16rpx;
@@ -59,7 +59,7 @@
   width: 110rpx;
   height: 110rpx;
   border-radius: 12rpx;
-  background: #F5F5F5;
+  background: var(--bg-page);
   flex-shrink: 0;
   margin-right: 20rpx;
 }
@@ -68,13 +68,13 @@
   align-items: center;
   justify-content: center;
   font-size: 48rpx;
-  background: #F5F0EA;
+  background: var(--color-primary-bg);
 }
 .shop-info { flex: 1; overflow: hidden; }
 .shop-name {
   font-size: 30rpx;
   font-weight: 600;
-  color: #333;
+  color: var(--text-primary);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -82,32 +82,32 @@
 }
 .shop-city {
   font-size: 24rpx;
-  color: #C48B5C;
+  color: var(--color-primary);
   margin-bottom: 4rpx;
 }
 .shop-desc {
   font-size: 24rpx;
-  color: #999;
+  color: var(--text-hint);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   margin-bottom: 6rpx;
 }
-.shop-meta { font-size: 22rpx; color: #999; display: flex; gap: 16rpx; }
-.shop-rating { color: #E8A735; }
-.shop-arrow { color: #ccc; font-size: 36rpx; }
-.shop-cat { font-size: 20rpx; color: #C48B5C; }
+.shop-meta { font-size: 22rpx; color: var(--text-hint); display: flex; gap: 16rpx; }
+.shop-rating { color: var(--color-warning); }
+.shop-arrow { color: var(--text-disabled); font-size: 36rpx; }
+.shop-cat { font-size: 20rpx; color: var(--color-primary); }
 
 /* 拨号按钮 */
 .call-btn {
   flex-shrink: 0;
   padding: 12rpx 20rpx;
-  background: #C48B5C;
+  background: var(--color-primary);
   color: #fff;
   border-radius: 30rpx;
   font-size: 24rpx;
 }
 
 /* 状态 */
-.state-loading { text-align: center; padding: 60rpx 0; color: #999; font-size: 28rpx; }
-.state-empty { text-align: center; padding: 60rpx 0; color: #ccc; font-size: 26rpx; }
+.state-loading { text-align: center; padding: 60rpx 0; color: var(--text-hint); font-size: 28rpx; }
+.state-empty { text-align: center; padding: 60rpx 0; color: var(--text-disabled); font-size: 26rpx; }

@@ -15,7 +15,7 @@
         <text class="text-sm text-secondary text-ellipsis mt-10">{{item.detail.desc || ''}}</text>
         <view wx:if="{{item.targetType === 'provider' && item.detail.level}}" class="mt-10">
           <text class="level-tag level-{{item.detail.level}}">{{item.detail.levelName}}</text>
-          <text class="text-sm text-secondary ml-10">⭐ {{item.detail.rating||0}}</text>
+          <text class="text-sm text-secondary ml-10">★ {{item.detail.rating||0}}</text>
         </view>
       </view>
     </view>

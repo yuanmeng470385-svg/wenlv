@@ -25,20 +25,28 @@ page {
 
 .mt-10 { margin-top: 10rpx; }
 .mt-20 { margin-top: 20rpx; }
+.mb-10 { margin-bottom: 10rpx; }
 .mb-20 { margin-bottom: 20rpx; }
+.ml-10 { margin-left: 10rpx; }
+.ml-20 { margin-left: 20rpx; }
+.mr-10 { margin-right: 10rpx; }
+.mr-20 { margin-right: 20rpx; }
 .p-20 { padding: 20rpx; }
 .p-30 { padding: 30rpx; }
 
 .text-primary { color: var(--color-primary); }
 .text-secondary { color: var(--text-secondary); }
+.text-hint { color: var(--text-hint); }
 .text-price { color: var(--color-price); }
+.text-success { color: var(--color-success); }
+.text-danger { color: var(--color-danger); }
 
 .card {
   background: var(--bg-white);
-  border-radius: 16rpx;
+  border-radius: var(--radius-md);
   margin: 20rpx;
   padding: 24rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+  box-shadow: var(--shadow-card);
 }
 
 .safe-bottom {
@@ -48,14 +56,77 @@ page {
 
 /* 图片占位 */
 .img-ph {
-  background: linear-gradient(135deg, #f5ebe0, #e8d5c4);
+  background: linear-gradient(135deg, var(--color-primary-bg), var(--color-primary-light));
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 44rpx;
-  color: #c4a882;
+  color: var(--color-primary);
   width: 100%;
   height: 100%;
   border-radius: inherit;
 }
 
+/* 标签 */
+.tag {
+  display: inline-block;
+  padding: 4rpx 14rpx;
+  font-size: 22rpx;
+  border-radius: var(--radius-sm);
+}
+.tag-primary { background: var(--color-primary-bg); color: var(--color-primary); }
+.tag-success { background: #F0F8EB; color: var(--color-success); }
+.tag-danger  { background: #FDF0F0; color: var(--color-danger); }
+.tag-warning { background: #FDF6EB; color: var(--color-warning); }
+.tag-info    { background: #EEF4FC; color: var(--color-info); }
+
+/* 按钮 */
+.btn-primary {
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 32rpx;
+  padding: 22rpx 40rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  text-align: center;
+  display: block;
+}
+.btn-outline {
+  background: var(--bg-white);
+  color: var(--text-primary);
+  border: 1rpx solid var(--border-color);
+  border-radius: 32rpx;
+  padding: 16rpx 28rpx;
+  font-size: 26rpx;
+  text-align: center;
+}
+.btn-danger {
+  background: var(--color-danger);
+  color: #fff;
+  border: none;
+  border-radius: 32rpx;
+  padding: 16rpx 28rpx;
+  font-size: 26rpx;
+  text-align: center;
+}
+
+/* 状态文字 */
+.status-success { color: var(--color-success); }
+.status-danger  { color: var(--color-danger); }
+.status-warning { color: var(--color-warning); }
+
+/* 分隔线 */
+.divider {
+  height: 1rpx;
+  background: var(--border-color);
+  margin: 20rpx 0;
+}
+
+/* 空状态 */
+.empty-state {
+  padding: 80rpx 0;
+  text-align: center;
+  color: var(--text-hint);
+  font-size: 28rpx;
+}

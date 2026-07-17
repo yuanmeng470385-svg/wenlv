@@ -1,5 +1,6 @@
 const app = getApp();
-const { switchRole: switchRoleApi } = require('../../services/userService');
+const { switchRole: switchRoleApi, updateUserInfo } = require('../../services/userService');
+const { uploadFile } = require('../../services/cloud');
 
 Page({
   data: {
@@ -144,5 +145,42 @@ Page({
         this.setData({ userInfo: res.userInfo, hasLogin: true });
       } catch (err) { console.error(err); }
     }
+  },
+
+  /**
+   * 修改头像：选择图片 -> 上传云存储 -> 更新数据库 -> 刷新页面
+   */
+  onChangeAvatar() {
+    if (!this.data.hasLogin) return;
+    wx.chooseMedia({
+      count: 1,
+      mediaType: ['image'],
+      sizeType: ['compressed'],
+      sourceType: ['album', 'camera'],
+      success: async (res) => {
+        const tempFilePath = res.tempFiles[0].tempFilePath;
+        wx.showLoading({ title: '上传中...', mask: true });
+        try {
+          // 上传到云存储
+          const cloudPath = `users/avatars/${Date.now()}_${Math.random().toString(36).slice(2, 8)}.jpg`;
+          const fileID = await uploadFile(cloudPath, tempFilePath);
+
+          // 更新数据库
+          await updateUserInfo({ avatarUrl: fileID });
+
+          // 更新 globalData 和页面数据
+          app.globalData.userInfo.avatarUrl = fileID;
+          const updatedUserInfo = { ...this.data.userInfo, avatarUrl: fileID };
+          this.setData({ userInfo: updatedUserInfo });
+
+          wx.hideLoading();
+          wx.showToast({ title: '头像已更新', icon: 'success' });
+        } catch (err) {
+          wx.hideLoading();
+          wx.showToast({ title: '头像更新失败', icon: 'none' });
+          console.error('[onChangeAvatar]', err);
+        }
+      },
+    });
   },
 });

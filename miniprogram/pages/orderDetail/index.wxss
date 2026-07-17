@@ -3,7 +3,7 @@
 .detail-item { padding: 20rpx 0; border-bottom: 1rpx solid var(--border-color); }
 .detail-item:last-child { border-bottom: none; }
 .info-section { margin-top: 20rpx; }
-.action-bar { position: fixed; bottom: 0; left: 0; right: 0; padding: 20rpx 30rpx; background: var(--bg-white); box-shadow: 0 -2rpx 12rpx rgba(0,0,0,0.04); }
+.action-bar { position: fixed; bottom: 0; left: 0; right: 0; padding: 20rpx 30rpx; background: var(--bg-white); box-shadow: var(--shadow-card); }
 .pay-btn { width: 100%; height: 88rpx; background: var(--color-price); color: #fff; border-radius: 44rpx; font-size: 32rpx; display: flex; align-items: center; justify-content: center; }
 .mock-pay-btn { width: 100%; height: 88rpx; background: var(--color-success); color: #fff; border-radius: 44rpx; font-size: 32rpx; display: flex; align-items: center; justify-content: center; }
 .cancel-btn { width: 100%; height: 72rpx; background: var(--bg-page); color: var(--text-secondary); border-radius: 36rpx; font-size: 26rpx; display: flex; align-items: center; justify-content: center; }

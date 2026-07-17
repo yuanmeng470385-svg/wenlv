@@ -1,9 +1,12 @@
 <view class="page-profile">
   <!-- 用户头部 -->
   <view class="user-header">
-    <view class="user-avatar">
+    <view class="user-avatar {{hasLogin ? 'avatar-editable' : ''}}" bindtap="{{hasLogin ? 'onChangeAvatar' : ''}}">
       <image wx:if="{{userInfo && userInfo.avatarUrl}}" src="{{userInfo.avatarUrl}}" mode="aspectFill" />
-      <text wx:else class="avt-ph">👤</text>
+      <text wx:else class="avt-ph">我</text>
+      <view wx:if="{{hasLogin}}" class="avatar-edit-mask">
+        <text class="avatar-edit-icon">📷</text>
+      </view>
     </view>
     <text class="user-name text-xl text-bold">{{displayName}}</text>
     <text class="user-role">{{roleLabel}}</text>
@@ -25,14 +28,14 @@
   <!-- 管理模式 -->
   <block wx:if="{{isAdminMode}}">
     <view class="menu-section">
-      <view class="menu-item flex-between" bindtap="onExitAdmin"><text>🔓 退出管理模式</text><text class="text-secondary">></text></view>
+      <view class="menu-item flex-between" bindtap="onExitAdmin"><text>退出管理模式</text><text class="text-secondary">></text></view>
     </view>
   </block>
 
   <!-- 用户模式菜单 -->
   <block wx:elif="{{activeRole === 'user'}}">
     <view wx:if="{{hasLogin}}" class="menu-card card" bindtap="onApplyProvider">
-      <view class="flex-between"><text>🎨 申请成为服务商</text><text class="text-secondary">></text></view>
+      <view class="flex-between"><text>申请成为服务商</text><text class="text-secondary">></text></view>
     </view>
     <view class="menu-section">
       <view wx:for="{{menuItems}}" wx:key="label" class="menu-item flex-between" data-url="{{item.url}}" bindtap="onMenuTap">

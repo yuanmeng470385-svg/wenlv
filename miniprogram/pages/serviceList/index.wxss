@@ -4,9 +4,9 @@
 .cat-item { padding: 14rpx 28rpx; font-size: 28rpx; border-radius: 30rpx; margin: 0 10rpx; color: var(--text-secondary); }
 .cat-item.active { background: var(--color-primary); color: #fff; }
 
-.search-bar { background: #fff; padding: 0 20rpx 16rpx; position: relative; }
-.search-input { width: 100%; height: 64rpx; background: #F5F5F5; border-radius: 32rpx; padding: 0 60rpx 0 30rpx; font-size: 26rpx; box-sizing: border-box; }
-.search-clear { position: absolute; right: 36rpx; top: 16rpx; font-size: 28rpx; color: #999; padding: 4rpx; }
+.search-bar { background: var(--bg-white); padding: 0 20rpx 16rpx; position: relative; }
+.search-input { width: 100%; height: 64rpx; background: var(--bg-page); border-radius: 32rpx; padding: 0 60rpx 0 30rpx; font-size: 26rpx; box-sizing: border-box; }
+.search-clear { position: absolute; right: 36rpx; top: 16rpx; font-size: 28rpx; color: var(--text-hint); padding: 4rpx; }
 
 .filter-bar { background: var(--bg-white); padding: 0 20rpx 16rpx; }
 .level-scroll { flex: 1; white-space: nowrap; }
@@ -26,8 +26,8 @@
 
 .level-tag { font-size: 20rpx; padding: 4rpx 12rpx; border-radius: 20rpx; margin-left: 10rpx; color: #fff; }
 .level-1 { background: var(--level-bronze); }
-.level-2 { background: var(--level-silver); color: #333; }
-.level-3 { background: var(--level-gold); color: #333; }
+.level-2 { background: var(--level-silver); color: var(--text-primary); }
+.level-3 { background: var(--level-gold); color: var(--text-primary); }
 .level-4 { background: var(--level-platinum); }
 .level-5 { background: var(--level-diamond); }
 

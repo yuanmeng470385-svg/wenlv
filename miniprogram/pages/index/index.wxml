@@ -1,7 +1,7 @@
 <!-- 管理员模式 -->
 <block wx:if="{{isAdminMode}}">
 <view class="page-admin">
-  <view class="admin-header">🔧 管理中心</view>
+  <view class="admin-header">管理中心</view>
 
   <!-- Banner管理 -->
   <view class="section card">
@@ -88,7 +88,7 @@
   <view class="cover-section">
     <image class="cover-img" src="{{provider.backgroundImage}}" mode="aspectFill" />
     <view class="cover-edit-btn" bindtap="onEditBackground">
-      <text class="edit-icon">✏️ 更换背景</text>
+      <text class="edit-icon">更换背景</text>
     </view>
   </view>
 
@@ -97,7 +97,7 @@
       <view class="avatar-wrap">
         <image class="p-avatar" src="{{provider.avatar}}" mode="aspectFill" />
         <view class="avatar-edit-btn" bindtap="onEditAvatar">
-          <text class="edit-icon-sm">✏️</text>
+          <text class="edit-icon-sm">+</text>
         </view>
       </view>
       <view class="flex-1 ml-20">
@@ -136,7 +136,7 @@
         <image src="{{item.images[0]}}" mode="aspectFill" class="work-img" />
         <view class="work-overlay">
           <text class="work-title text-ellipsis">{{item.title}}</text>
-          <text class="text-sm">❤️ {{item.likeCount || 0}}</text>
+          <text class="text-sm">♥ {{item.likeCount || 0}}</text>
         </view>
       </view>
     </view>
@@ -145,7 +145,7 @@
   <view wx:if="{{activeTab==='reviews'}}" class="tab-content">
     <view wx:for="{{reviews}}" wx:key="_id" class="review-card card">
       <view class="flex-between">
-        <text class="text-sm text-price">⭐ {{item.rating}}</text>
+        <text class="text-sm text-price">★ {{item.rating}}</text>
         <text class="text-sm text-hint">{{item.createTime}}</text>
       </view>
       <text class="mt-10">{{item.content}}</text>

@@ -10,7 +10,7 @@
         </view>
       </view>
       <view class="fav-btn" bindtap="onToggleFavorite">
-        <text class="fav-icon">{{isFavorited ? '❤️' : '🤍'}}</text>
+        <text class="fav-icon">{{isFavorited ? '♥' : '♡'}}</text>
       </view>
     </view>
     <view wx:if="{{provider.featureTags}}" class="tag-row mt-20">
@@ -44,7 +44,7 @@
         <image src="{{item.images[0]}}" mode="aspectFill" class="work-img" />
         <view class="work-overlay">
           <text class="work-title text-ellipsis">{{item.title}}</text>
-          <text class="text-sm">❤️ {{item.likeCount || 0}}</text>
+          <text class="text-sm">♥ {{item.likeCount || 0}}</text>
         </view>
       </view>
     </view>
@@ -53,7 +53,7 @@
   <view wx:if="{{activeTab === 'reviews'}}" class="tab-content">
     <view wx:for="{{reviews}}" wx:key="_id" class="review-card card">
       <view class="flex-between">
-        <text class="text-sm text-price">⭐ {{item.rating}}</text>
+        <text class="text-sm text-price">★ {{item.rating}}</text>
         <text class="text-sm text-hint">{{item.createTime}}</text>
       </view>
       <text class="mt-10">{{item.content}}</text>
@@ -61,7 +61,7 @@
   </view>
 
   <view class="bottom-bar safe-bottom flex-row">
-    <button class="call-btn" wx:if="{{provider.phone}}" bindtap="onCallPhone">📞 电话咨询</button>
+    <button class="call-btn" wx:if="{{provider.phone}}" bindtap="onCallPhone">电话咨询</button>
     <button class="book-btn flex-1" bindtap="onBookTap">立即预约</button>
   </view>
 </view>

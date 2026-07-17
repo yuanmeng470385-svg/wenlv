@@ -1,24 +1,25 @@
 /* CSS 变量定义 - 文旅摄影预约小程序 */
+/* 视觉升级 v2 - 更精致的暖色调 + 更大的间距圆角 */
 page {
-  /* 品牌色系 - 古风暖色调 */
-  --color-primary: #C48B5C;
-  --color-primary-dark: #A0703E;
-  --color-primary-light: #E8C9A0;
-  --color-primary-bg: #FBF6F0;
+  /* 品牌色系 - 雅致暖棕 */
+  --color-primary: #B8875E;
+  --color-primary-dark: #8B5E3C;
+  --color-primary-light: #E4D0BC;
+  --color-primary-bg: #F9F3EC;
 
   /* 功能色 */
   --color-price: #E8563A;
-  --color-success: #52C41A;
-  --color-warning: #FAAD14;
-  --color-danger: #FF4D4F;
-  --color-info: #1890FF;
+  --color-success: #52B818;
+  --color-warning: #F0A020;
+  --color-danger: #E04545;
+  --color-info: #4080E0;
 
   /* 等级色 */
-  --level-bronze: #CD7F32;
-  --level-silver: #C0C0C0;
-  --level-gold: #FFD700;
-  --level-platinum: #3A7BDE;
-  --level-diamond: #9B59B6;
+  --level-bronze: #C08A50;
+  --level-silver: #A0A8B0;
+  --level-gold: #D4A830;
+  --level-platinum: #4088D0;
+  --level-diamond: #9060C0;
 
   /* 文字色 */
   --text-primary: #1A1A1A;
@@ -27,18 +28,17 @@ page {
   --text-disabled: #CCCCCC;
 
   /* 背景色 */
-  --bg-page: #F5F5F5;
+  --bg-page: #F7F5F2;
   --bg-white: #FFFFFF;
   --bg-card: #FFFFFF;
-  --bg-mask: rgba(0, 0, 0, 0.5);
+  --bg-mask: rgba(0, 0, 0, 0.45);
 
   /* 边框 */
-  --border-color: #EBEBEB;
-  --border-radius: 12rpx;
+  --border-color: #E8E6E1;
 
   /* 阴影 */
-  --shadow-card: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
-  --shadow-float: 0 4rpx 24rpx rgba(0, 0, 0, 0.08);
+  --shadow-card: 0 1rpx 8rpx rgba(0, 0, 0, 0.03), 0 2rpx 16rpx rgba(0, 0, 0, 0.02);
+  --shadow-float: 0 4rpx 20rpx rgba(0, 0, 0, 0.06);
 
   /* 间距 */
   --spacing-xs: 8rpx;
@@ -53,4 +53,3 @@ page {
   --radius-lg: 24rpx;
   --radius-round: 50%;
 }
-

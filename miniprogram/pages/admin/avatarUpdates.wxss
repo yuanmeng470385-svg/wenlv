@@ -4,8 +4,8 @@
 .img-col { flex: 1; }
 .review-img { width: 100%; height: 200rpx; border-radius: 12rpx; margin-top: 10rpx; }
 .action-btns { display: flex; gap: 16rpx; justify-content: flex-end; }
-.btn-reject { background: #f5f5f5; color: #999; border: 1rpx solid #ddd; font-size: 26rpx; padding: 12rpx 32rpx; border-radius: 8rpx; }
-.btn-pass { background: #C48B5C; color: #fff; font-size: 26rpx; padding: 12rpx 32rpx; border-radius: 8rpx; }
+.btn-reject { background: var(--bg-page); color: var(--text-hint); border: 1rpx solid var(--border-color); font-size: 26rpx; padding: 12rpx 32rpx; border-radius: 8rpx; }
+.btn-pass { background: var(--color-primary); color: #fff; font-size: 26rpx; padding: 12rpx 32rpx; border-radius: 8rpx; }
 .mt-10 { margin-top: 10rpx; }
 .mt-20 { margin-top: 20rpx; }
 .empty-hint { padding: 120rpx 0; text-align: center; }

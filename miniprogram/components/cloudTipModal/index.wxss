@@ -17,7 +17,7 @@
 }
 .install_tip_detail {
   position: fixed;
-  background-color: white;
+  background-color: var(--bg-white);
   right: 0;
   bottom: 0;
   left: 0;

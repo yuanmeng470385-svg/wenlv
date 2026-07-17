@@ -1,25 +1,25 @@
 /* ========== 用户模式 ========== */
 .page-index { padding-bottom: 20rpx; }
 .banner-swiper { width: 100%; height: 360rpx; }
-.banner-item { width: 100%; height: 100%; background: linear-gradient(135deg, #E8C9A0, #C48B5C); display: flex; align-items: center; justify-content: center; }
+.banner-item { width: 100%; height: 100%; background: linear-gradient(135deg, var(--color-primary-light), var(--color-primary)); display: flex; align-items: center; justify-content: center; }
 .banner-title { font-size: 48rpx; color: #fff; font-weight: 700; }
 
-.category-section { padding: 30rpx 20rpx; background: #fff; }
+.category-section { padding: 30rpx 20rpx; background: var(--bg-white); }
 .category-grid { display: flex; justify-content: space-around; }
 .category-item { display: flex; flex-direction: column; align-items: center; }
-.category-icon-box { width: 100rpx; height: 100rpx; border-radius: 16rpx; background: #FBF6F0; display: flex; align-items: center; justify-content: center; margin-bottom: 12rpx; }
+.category-icon-box { width: 100rpx; height: 100rpx; border-radius: 16rpx; background: var(--color-primary-bg); display: flex; align-items: center; justify-content: center; margin-bottom: 12rpx; }
 .category-icon { font-size: 44rpx; }
-.category-name { font-size: 26rpx; color: #1A1A1A; }
+.category-name { font-size: 26rpx; color: var(--text-primary); }
 .section { margin-top: 20rpx; }
 .section-header { padding: 20rpx 30rpx; }
 .featured-grid { display: flex; flex-wrap: wrap; gap: 16rpx; padding: 0 20rpx; }
-.featured-item { width: calc(50% - 8rpx); border-radius: 12rpx; overflow: hidden; background: #fff; box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.04); }
+.featured-item { width: calc(50% - 8rpx); border-radius: 12rpx; overflow: hidden; background: var(--bg-white); box-shadow: var(--shadow-card); }
 .featured-img { width: 100%; height: 520rpx; }
 .featured-img.img-ph { height: 520rpx; font-size: 80rpx; }
 .featured-info { display: flex; align-items: center; padding: 16rpx; gap: 10rpx; }
 .featured-avatar { width: 48rpx; height: 48rpx; border-radius: 50%; flex-shrink: 0; }
-.featured-name { font-size: 24rpx; color: #333; flex: 1; }
-.img-ph-sm { width: 48rpx; height: 48rpx; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24rpx; background: linear-gradient(135deg, #f5ebe0, #e8d5c4); flex-shrink: 0; }
+.featured-name { font-size: 24rpx; color: var(--text-primary); flex: 1; }
+.img-ph-sm { width: 48rpx; height: 48rpx; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24rpx; background: linear-gradient(135deg, var(--color-primary-bg), var(--color-primary-light)); flex-shrink: 0; }
 
 /* ========== 商家模式 ========== */
 .page-detail { background: var(--bg-page); padding-bottom: 40rpx; }
@@ -33,10 +33,10 @@
 .avatar-edit-btn { position: absolute; bottom: 0; right: 0; background: rgba(0,0,0,0.5); border-radius: 50%; width: 36rpx; height: 36rpx; display: flex; align-items: center; justify-content: center; }
 .edit-icon-sm { color: #fff; font-size: 20rpx; }
 .tag-row { display: flex; flex-wrap: wrap; gap: 10rpx; }
-.feature-tag { padding: 6rpx 16rpx; font-size: 22rpx; border-radius: 8rpx; background: #FBF6F0; color: #C48B5C; }
+.feature-tag { padding: 6rpx 16rpx; font-size: 22rpx; border-radius: 8rpx; background: var(--color-primary-bg); color: var(--color-primary); }
 .tab-bar { display: flex; background: var(--bg-white); margin-top: 20rpx; }
 .tab-item { flex: 1; text-align: center; padding: 24rpx 0; font-size: 28rpx; color: var(--text-secondary); border-bottom: 4rpx solid transparent; }
-.tab-item.active { color: #C48B5C; border-bottom-color: #C48B5C; font-weight: 600; }
+.tab-item.active { color: var(--color-primary); border-bottom-color: var(--color-primary); font-weight: 600; }
 .tab-content { padding: 20rpx; }
 .service-card { display: flex; margin: 0 0 16rpx; }
 .s-cover { width: 160rpx; height: 160rpx; border-radius: 12rpx; margin-right: 20rpx; flex-shrink: 0; }
@@ -50,17 +50,17 @@
 .review-card { margin: 0 0 12rpx; }
 
 /* ========== 管理员模式 ========== */
-.page-admin { min-height: 100vh; background: #F5F5F5; padding-bottom: 40rpx; }
-.admin-header { background: linear-gradient(135deg, #1A1A2E, #16213E); padding: 40rpx 30rpx; color: #fff; font-size: 36rpx; font-weight: 700; }
-.banner-row { padding: 20rpx 0; border-bottom: 1rpx solid #f0f0f0; }
-.featured-row { padding: 20rpx 0; border-bottom: 1rpx solid #f0f0f0; }
+.page-admin { min-height: 100vh; background: var(--bg-page); padding-bottom: 40rpx; }
+.admin-header { background: linear-gradient(135deg, #2D1B69, #1A0F3C); padding: 40rpx 30rpx; color: #fff; font-size: 36rpx; font-weight: 700; }
+.banner-row { padding: 20rpx 0; border-bottom: 1rpx solid var(--bg-page); }
+.featured-row { padding: 20rpx 0; border-bottom: 1rpx solid var(--bg-page); }
 .mr-20 { margin-right: 20rpx; }
 .banner-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.6; }
 .banner-thumb { width: 100rpx; height: 60rpx; border-radius: 6rpx; flex-shrink: 0; }
-.banner-thumb-ph { width: 100rpx; height: 60rpx; border-radius: 6rpx; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: #f0f0f0; color: #999; font-size: 22rpx; border: 1rpx dashed #ccc; }
+.banner-thumb-ph { width: 100rpx; height: 60rpx; border-radius: 6rpx; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: var(--bg-page); color: var(--text-hint); font-size: 22rpx; border: 1rpx dashed var(--text-disabled); }
 
 /* ========== 共用 ========== */
-.img-ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 46rpx; background: linear-gradient(135deg, #f5ebe0, #e8d5c4); }
+.img-ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 46rpx; background: linear-gradient(135deg, var(--color-primary-bg), var(--color-primary-light)); }
 
 .empty-hint { padding: 60rpx 0; text-align: center; }
 .ml-10 { margin-left: 10rpx; } .ml-20 { margin-left: 20rpx; } .mt-10 { margin-top: 10rpx; } .mb-20 { margin-bottom: 20rpx; }

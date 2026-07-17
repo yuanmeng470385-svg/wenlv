@@ -1,15 +1,15 @@
-.page-form { min-height: 100vh; background: #F5F5F5; padding: 20rpx; padding-bottom: 60rpx; }
+.page-form { min-height: 100vh; background: var(--bg-page); padding: 20rpx; padding-bottom: 60rpx; }
 .form-section { margin: 0 0 20rpx; }
-.form-item { padding: 24rpx 0; border-bottom: 1rpx solid #EBEBEB; }
+.form-item { padding: 24rpx 0; border-bottom: 1rpx solid var(--border-color); }
 .form-label { font-size: 28rpx; font-weight: 600; display: block; margin-bottom: 12rpx; }
 .form-input { width: 100%; height: 60rpx; font-size: 28rpx; }
 .form-textarea { width: 100%; height: 120rpx; font-size: 28rpx; }
 
 .type-row { display: flex; gap: 12rpx; }
-.type-opt { flex: 1; text-align: center; padding: 20rpx 0; border-radius: 12rpx; border: 2rpx solid #EBEBEB; color: #666; font-size: 26rpx; }
-.type-opt.active { border-color: #C48B5C; background: #FBF6F0; color: #C48B5C; font-weight: 600; }
+.type-opt { flex: 1; text-align: center; padding: 20rpx 0; border-radius: 12rpx; border: 2rpx solid var(--border-color); color: var(--text-secondary); font-size: 26rpx; }
+.type-opt.active { border-color: var(--color-primary); background: var(--color-primary-bg); color: var(--color-primary); font-weight: 600; }
 
-.save-btn { width: 100%; height: 88rpx; background: #C48B5C; color: #fff; border-radius: 44rpx; font-size: 32rpx; display: flex; align-items: center; justify-content: center; }
+.save-btn { width: 100%; height: 88rpx; background: var(--color-primary); color: #fff; border-radius: 44rpx; font-size: 32rpx; display: flex; align-items: center; justify-content: center; }
 
 .p-20 { padding: 20rpx; }
 .mb-20 { margin-bottom: 20rpx; }

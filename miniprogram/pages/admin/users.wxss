@@ -1,9 +1,9 @@
 .page-admin-users { padding: 15px; }
 .search-bar { margin-bottom: 15px; }
-.search-input { flex: 1; border: 1px solid #ddd; border-radius: 6px; padding: 8px 12px; font-size: 14px; }
-.btn-search { margin-left: 10px; padding: 8px 16px; background: #C48B5C; color: #fff; border-radius: 6px; font-size: 13px; }
-.filter-item { padding: 4px 12px; margin-right: 10px; border-radius: 20px; background: #eee; font-size: 13px; }
-.filter-item.active { background: #C48B5C; color: #fff; }
+.search-input { flex: 1; border: 1px solid var(--border-color); border-radius: 6px; padding: 8px 12px; font-size: 14px; }
+.btn-search { margin-left: 10px; padding: 8px 16px; background: var(--color-primary); color: #fff; border-radius: 6px; font-size: 13px; }
+.filter-item { padding: 4px 12px; margin-right: 10px; border-radius: 20px; background: var(--bg-page); font-size: 13px; }
+.filter-item.active { background: var(--color-primary); color: #fff; }
 .user-card { margin-bottom: 10px; }
-.badge-banned { background: #f5222d; color: #fff; padding: 1px 6px; border-radius: 4px; font-size: 11px; }
+.badge-banned { background: var(--color-danger); color: #fff; padding: 1px 6px; border-radius: 4px; font-size: 11px; }
 .mt-5 { margin-top: 5px; }
