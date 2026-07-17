@@ -6,11 +6,14 @@ exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext();
   const openid = wxContext.OPENID;
   if (!openid) return { code: 1002, message: '未登录' };
-  const { categoryType, name, city, phone, description, featureTags, coverImages, portfolioImages } = event;
+  const { categoryType, name, city, phone, description, featureTags, coverImages, portfolioImages, avatar, backgroundImage } = event;
 
   try {
     if (!categoryType || !name || !phone) {
       return { code: 1001, message: '请填写完整的申请信息' };
+    }
+    if (!avatar || !backgroundImage) {
+      return { code: 1001, message: '请上传头像和背景图' };
     }
 
     const validTypes = ['photographer', 'makeup', 'hanfu_shop'];
@@ -61,8 +64,8 @@ exports.main = async (event, context) => {
         description: description || '',
         featureTags: featureTags || [],
         coverImages: coverImages || [],
-        avatar: '',
-        backgroundImage: '',
+        avatar: avatar || '',
+        backgroundImage: backgroundImage || '',
         orderCount: 0,
         status: 'pending_review',
         createTime: db.serverDate(),
