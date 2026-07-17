@@ -6,7 +6,7 @@ exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext();
   const openid = wxContext.OPENID;
   if (!openid) return { code: 1002, message: '未登录' };
-  const { serviceItemId, name, description, coverImage, priceType, price, originalPrice, duration, includes, maxDailyBooking, status } = event;
+  const { serviceItemId, name, description, coverImage, priceType, price, originalPrice, duration, includes, maxDailyBooking, status, icon } = event;
 
   try {
     const providerRes = await db.collection('providers').where({ userId: openid, status: 'active' }).get();
@@ -30,6 +30,7 @@ exports.main = async (event, context) => {
       duration: parseInt(duration) || 60,
       includes: includes || [],
       maxDailyBooking: parseInt(maxDailyBooking) || 5,
+      icon: icon || '',
       updateTime: db.serverDate(),
     };
 
