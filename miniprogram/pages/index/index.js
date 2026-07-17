@@ -50,7 +50,20 @@ Page({
         const [categories, featuredRes] = await Promise.all([
           getCategoryList(), callFunction('getFeaturedPortfolios'),
         ]);
-        this.setData({ categories: categories || [], featuredWorks: (featuredRes && featuredRes.list) || [] });
+        let works = (featuredRes && featuredRes.list) || [];
+        // 示例数据：不足6条时补demo
+        if (works.length < 6) {
+          const demos = [
+            { _id:'demo1',image:'',providerName:'古风摄影师阿杰',providerAvatar:'',providerCategory:'photographer',providerId:'demo1',likeCount:128 },
+            { _id:'demo2',image:'',providerName:'汉服妆造小雨',providerAvatar:'',providerCategory:'makeup',providerId:'demo2',likeCount:96 },
+            { _id:'demo3',image:'',providerName:'长安汉服体验馆',providerAvatar:'',providerCategory:'hanfu_shop',providerId:'demo3',likeCount:215 },
+            { _id:'demo4',image:'',providerName:'夜景人像专家',providerAvatar:'',providerCategory:'photographer',providerId:'demo4',likeCount:87 },
+            { _id:'demo5',image:'',providerName:'古韵妆造工作室',providerAvatar:'',providerCategory:'makeup',providerId:'demo5',likeCount:156 },
+            { _id:'demo6',image:'',providerName:'洛阳汉服租赁',providerAvatar:'',providerCategory:'hanfu_shop',providerId:'demo6',likeCount:203 },
+          ];
+          works = [...works, ...demos].slice(0, 6);
+        }
+        this.setData({ categories: categories || [], featuredWorks: works });
       } else {
         const { callFunction } = require('../../services/cloud');
         const { getProviderDetail } = require('../../services/serviceService');
