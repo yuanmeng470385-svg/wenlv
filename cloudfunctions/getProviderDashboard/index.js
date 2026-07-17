@@ -20,6 +20,9 @@ exports.main = async (event, context) => {
     const pendingOrders = await db.collection('orders')
       .where({ 'items.providerId': provider._id, orderStatus: db.command.in(['paid', 'confirmed']) }).count();
 
+    const totalOrders = await db.collection('orders')
+      .where({ 'items.providerId': provider._id }).count();
+
     const recentOrders = await db.collection('orders')
       .where({ 'items.providerId': provider._id }).orderBy('createTime', 'desc').limit(5).get();
 
@@ -41,7 +44,7 @@ exports.main = async (event, context) => {
         stats: {
           todayOrders: todayOrders.total,
           pendingOrders: pendingOrders.total,
-          totalOrders: provider.orderCount || 0,
+          totalOrders: totalOrders.total,
           totalRevenue,
           completedCount,
         },
