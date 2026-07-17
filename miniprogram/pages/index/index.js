@@ -46,11 +46,13 @@ Page({
     wx.showLoading({ title: '加载中...' });
     try {
       if (this.data.activeRole === 'user') {
-        const { callFunction } = require('../../services/cloud');
-        const [categories, featuredRes] = await Promise.all([
-          getCategoryList(), callFunction('getFeaturedPortfolios'),
-        ]);
-        let works = (featuredRes && featuredRes.list) || [];
+        const categories = await getCategoryList();
+        let works = [];
+        try {
+          const { callFunction } = require('../../services/cloud');
+          const featuredRes = await callFunction('getFeaturedPortfolios');
+          works = (featuredRes && featuredRes.list) || [];
+        } catch (e) { /* 云函数未部署，用demo */ }
         // 示例数据：不足6条时补demo
         if (works.length < 6) {
           const demos = [
