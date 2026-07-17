@@ -1,2 +1,41 @@
-<!--pages/admin/avatarUpdates.wxml-->
-<text>pages/admin/avatarUpdates.wxml</text>
+<view class="page-review">
+  <view wx:if="{{!list.length}}" class="empty-hint"><text class="text-secondary">暂无待审核申请</text></view>
+  <view wx:for="{{list}}" wx:key="_id" class="review-card card">
+    <text class="text-bold text-lg">{{item.name}}</text>
+    <text class="text-sm text-secondary">{{item.categoryType === 'photographer' ? '摄影师' : (item.categoryType === 'makeup' ? '妆造师' : '汉服店')}}</text>
+
+    <view wx:if="{{item.pendingAvatar}}" class="mt-20">
+      <text class="text-sm text-bold">申请更换头像</text>
+      <view class="img-compare">
+        <view class="img-col"><text class="text-sm text-hint">当前</text>
+          <image wx:if="{{item.avatar}}" src="{{item.avatar}}" mode="aspectFill" class="review-img" data-url="{{item.avatar}}" bindtap="previewImage" />
+          <text wx:else class="text-sm text-hint">无</text>
+        </view>
+        <view class="img-col"><text class="text-sm text-hint">新头像</text>
+          <image src="{{item.pendingAvatar}}" mode="aspectFill" class="review-img" data-url="{{item.pendingAvatar}}" bindtap="previewImage" />
+        </view>
+      </view>
+      <view class="action-btns mt-20">
+        <button class="btn-reject" data-id="{{item._id}}" data-field="avatar" bindtap="onReject">拒绝</button>
+        <button class="btn-pass" data-id="{{item._id}}" data-field="avatar" bindtap="onApprove">通过</button>
+      </view>
+    </view>
+
+    <view wx:if="{{item.pendingBackgroundImage}}" class="mt-20">
+      <text class="text-sm text-bold">申请更换背景图</text>
+      <view class="img-compare">
+        <view class="img-col"><text class="text-sm text-hint">当前</text>
+          <image wx:if="{{item.backgroundImage}}" src="{{item.backgroundImage}}" mode="aspectFill" class="review-img" data-url="{{item.backgroundImage}}" bindtap="previewImage" />
+          <text wx:else class="text-sm text-hint">无</text>
+        </view>
+        <view class="img-col"><text class="text-sm text-hint">新背景图</text>
+          <image src="{{item.pendingBackgroundImage}}" mode="aspectFill" class="review-img" data-url="{{item.pendingBackgroundImage}}" bindtap="previewImage" />
+        </view>
+      </view>
+      <view class="action-btns mt-20">
+        <button class="btn-reject" data-id="{{item._id}}" data-field="backgroundImage" bindtap="onReject">拒绝</button>
+        <button class="btn-pass" data-id="{{item._id}}" data-field="backgroundImage" bindtap="onApprove">通过</button>
+      </view>
+    </view>
+  </view>
+</view>
