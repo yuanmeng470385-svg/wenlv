@@ -7,11 +7,9 @@ Page({
     banners: [{ id: 1, title: '古风汉服摄影' },{ id: 2, title: '专业妆造服务' },{ id: 3, title: '汉服租赁体验' }],
     categories: [], hotProviders: [],
     activeRole: 'user', hasLogin: false,
-    dashboard: { todayOrders: 0, pendingOrders: 0, totalOrders: 0, rating: 0 },
+    dashboard: { todayOrders: 0, pendingOrders: 0, totalOrders: 0 },
     recentOrders: [],
     providerName: '',
-    providerLevel: '',
-    providerLevelNum: 0,
   },
 
   onLoad() { this.initPage(); },
@@ -54,8 +52,6 @@ Page({
           dashboard: res.stats || this.data.dashboard,
           recentOrders: res.recentOrders || [],
           providerName: res.providerName || '',
-          providerLevel: res.providerLevel || '',
-          providerLevelNum: res.providerLevelNum || 0,
         });
       }
     } catch (err) { console.error('加载失败:', err); }

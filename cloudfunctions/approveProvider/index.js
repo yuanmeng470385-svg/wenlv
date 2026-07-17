@@ -1,10 +1,8 @@
 const cloud = require('wx-server-sdk');
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 const db = cloud.database();
-const LEVEL_MAP = { 1: '初级', 2: '中级', 3: '高级', 4: '资深', 5: '首席' };
-
 exports.main = async (event, context) => {
-  const { providerId, action, level = 1, reason } = event;
+  const { providerId, action, reason } = event;
 
   try {
     const openid = cloud.getWXContext().OPENID;
@@ -38,24 +36,20 @@ exports.main = async (event, context) => {
     }
 
     // 通过
-    const isHanfu = provider.categoryType === 'hanfu_shop';
-    const finalLevel = isHanfu ? 0 : (level || 1);
-    const levelName = isHanfu ? '' : (LEVEL_MAP[finalLevel] || '初级');
-
     await db.collection('providers').doc(providerId).update({
-      data: { status: 'active', level: finalLevel, levelName, updateTime: db.serverDate() }
+      data: { status: 'active', updateTime: db.serverDate() }
     });
     await db.collection('portfolios').where({ providerId, status: 'pending_review' }).update({
       data: { status: 'approved' }
     });
     // 审计日志
-    await db.collection('auditLogs').add({ data: { adminOpenid: openid, action: 'approveProvider', targetId: providerId, detail: { level: finalLevel, levelName }, createTime: db.serverDate() } });
+    await db.collection('auditLogs').add({ data: { adminOpenid: openid, action: 'approveProvider', targetId: providerId, detail: {}, createTime: db.serverDate() } });
     // 通知申请人
     if (provider.userId) {
       const catName = provider.categoryType === 'photographer' ? '摄影师' : provider.categoryType === 'makeup' ? '妆造师' : '汉服店';
-      await db.collection('notifications').add({ data: { userId: provider.userId, type: 'provider_approved', title: '申请已通过', content: `您的${catName}申请已通过审核${isHanfu ? '' : '，等级：' + levelName}`, relatedId: providerId, read: false, createTime: db.serverDate() } }).catch(() => {});
+      await db.collection('notifications').add({ data: { userId: provider.userId, type: 'provider_approved', title: '申请已通过', content: `您的${catName}申请已通过审核`, relatedId: providerId, read: false, createTime: db.serverDate() } }).catch(() => {});
     }
 
-    return { code: 0, data: { level: finalLevel, levelName }, message: `已通过！${isHanfu ? '' : '等级: ' + levelName}` };
+    return { code: 0, data: {}, message: '已通过' };
   } catch (err) { return { code: 9999, message: err.message }; }
 };

@@ -38,9 +38,6 @@
 .status-text { color: #E8563A; font-weight: 600; }
 
 /* ========== 共用 ========== */
-.level-tag { font-size: 20rpx; padding: 4rpx 12rpx; border-radius: 20rpx; margin-left: 10rpx; color: #fff; }
-.level-1 { background: #CD7F32; } .level-2 { background: #C0C0C0; color: #333; } .level-3 { background: #FFD700; color: #333; } .level-4 { background: #3A7BDE; } .level-5 { background: #9B59B6; }
-
 .img-ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 46rpx; background: linear-gradient(135deg, #f5ebe0, #e8d5c4); }
 
 .empty-hint { padding: 60rpx 0; text-align: center; }

@@ -1,9 +1,5 @@
 <view class="page-detail" wx:if="{{provider}}">
-  <swiper class="cover-swiper" indicator-dots>
-    <swiper-item wx:for="{{provider.coverImages}}" wx:key="*this">
-      <image src="{{item}}" mode="aspectFill" class="cover-img" />
-    </swiper-item>
-  </swiper>
+  <image class="cover-img" src="{{provider.backgroundImage}}" mode="aspectFill" />
 
   <view class="p-info p-30">
     <view class="flex-row">
@@ -11,11 +7,6 @@
       <view class="flex-1 ml-20">
         <view class="flex-row">
           <text class="text-xl text-bold">{{provider.name}}</text>
-          <text wx:if="{{provider.level > 0}}" class="level-tag level-{{provider.level}}">{{provider.levelName}}</text>
-        </view>
-        <view class="flex-row mt-10">
-          <text class="text-price">⭐ {{provider.rating || '-'}}</text>
-          <text class="text-hint text-sm ml-10">{{provider.reviewCount}}评价</text>
         </view>
       </view>
       <view class="fav-btn" bindtap="onToggleFavorite">

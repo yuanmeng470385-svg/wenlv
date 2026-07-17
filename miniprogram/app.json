@@ -48,7 +48,7 @@
       },
       {
         "pagePath": "pages/orderList/index",
-        "text": "订单",
+        "text": "功能",
         "iconPath": "images/tab-order.png",
         "selectedIconPath": "images/tab-order-active.png"
       },

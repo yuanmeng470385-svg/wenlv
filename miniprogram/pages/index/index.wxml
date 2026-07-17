@@ -28,9 +28,8 @@
           <view wx:else class="img-ph">{{item.categoryType === 'photographer' ? '📷' : (item.categoryType === 'makeup' ? '💄' : '👘')}}</view>
         </view>
         <view class="flex-1 ml-20">
-          <view class="flex-row"><text class="text-bold text-ellipsis p-name">{{item.name}}</text><text wx:if="{{item.level>0}}" class="level-tag level-{{item.level}}">{{item.levelName}}</text></view>
+          <view class="flex-row"><text class="text-bold text-ellipsis p-name">{{item.name}}</text></view>
           <text class="text-sm text-secondary text-ellipsis mt-10">{{item.description}}</text>
-          <view class="flex-row mt-10"><text>⭐ {{item.rating||'暂无'}}</text><text class="text-hint text-sm ml-10">{{item.reviewCount}}评价</text></view>
         </view>
       </view>
     </view>
@@ -44,10 +43,6 @@
   <!-- 身份条 -->
   <view class="dash-header">
     <text class="text-lg">👋 {{providerName}}</text>
-    <view class="flex-row mt-10">
-      <text wx:if="{{providerLevelNum>0}}" class="level-tag level-{{providerLevelNum}}">{{providerLevel}}</text>
-      <text class="text-sm text-white ml-10">⭐ {{dashboard.rating||0}} | {{dashboard.totalOrders||0}}单</text>
-    </view>
   </view>
 
   <!-- 数据看板 -->
