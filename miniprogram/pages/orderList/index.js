@@ -33,11 +33,22 @@ Page({
 
   onShow() {
     const adminMode = app.isAdminMode ? app.isAdminMode() : false;
-    this.setData({ activeRole: app.getActiveRole(), isAdminMode: adminMode, page: 1, orders: [], hasMore: true });
+    const role = app.getActiveRole();
+    const hasLogin = app.checkLogin();
+    const roleChanged = role !== this._lastRole;
+    const loginChanged = hasLogin && !this._lastHasLogin;
+    this._lastRole = role;
+    this._lastHasLogin = hasLogin;
+    this.setData({ activeRole: role, isAdminMode: adminMode });
     if (adminMode) return;
-    this.loadOrders();
-    if (this.data.activeRole !== 'user') {
-      this.loadDashboard();
+    // 首次/切换身份/刚登录 → 重新加载，普通切Tab用缓存
+    if (!this._loaded || roleChanged || loginChanged) {
+      this._loaded = true;
+      this.setData({ page: 1, orders: [], hasMore: true });
+      this.loadOrders();
+      if (this.data.activeRole !== 'user') {
+        this.loadDashboard();
+      }
     }
   },
 

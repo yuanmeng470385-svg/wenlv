@@ -9,13 +9,17 @@
       <text class="text-bold text-lg">顶部Banner</text>
       <text class="text-sm text-primary" bindtap="onAddBanner">+ 新增</text>
     </view>
-    <view wx:for="{{adminBanners}}" wx:key="_id" class="banner-row flex-between">
-      <view class="flex-1">
-        <text class="text-bold">{{item.title}}</text>
-        <text wx:if="{{item.image}}" class="text-sm text-secondary">有图片</text>
-      </view>
+    <view wx:for="{{adminBanners}}" wx:key="_id" class="banner-row">
       <view class="flex-row">
-        <text class="text-sm text-primary mr-20" data-id="{{item._id}}" data-title="{{item.title}}" data-image="{{item.image}}" bindtap="onEditBanner">编辑</text>
+        <image wx:if="{{item.image}}" src="{{item.image}}" mode="aspectFill" class="banner-thumb" data-url="{{item.image}}" bindtap="previewBannerImage" />
+        <view wx:else class="banner-thumb banner-thumb-ph" data-id="{{item._id}}" bindtap="onBannerImage">+图片</view>
+        <view class="flex-1 ml-20">
+          <text class="text-bold">{{item.title}}</text>
+          <text wx:if="{{item.image}}" class="text-sm text-primary" data-id="{{item._id}}" bindtap="onBannerImage">更换图片</text>
+        </view>
+      </view>
+      <view class="flex-row mt-10">
+        <text class="text-sm text-primary mr-20" data-id="{{item._id}}" data-title="{{item.title}}" bindtap="onEditBanner">改标题</text>
         <text class="text-sm text-price" data-id="{{item._id}}" bindtap="onDeleteBanner">删除</text>
       </view>
     </view>
@@ -25,11 +29,11 @@
   <view class="section card mt-20">
     <view class="section-header">
       <text class="text-bold text-lg">优秀展示管理</text>
-      <text class="text-sm text-secondary">勾选后出现在首页</text>
+      <text class="text-sm text-secondary">点击进入管理该商家的作品</text>
     </view>
-    <view wx:for="{{allProviders}}" wx:key="_id" class="featured-row flex-between">
+    <view wx:for="{{allProviders}}" wx:key="_id" class="featured-row flex-between" data-id="{{item._id}}" data-name="{{item.name}}" bindtap="goManagePortfolios">
       <text>{{item.name}}</text>
-      <switch checked="{{item.isFeatured}}" data-id="{{item._id}}" data-checked="{{item.isFeatured}}" bindchange="onToggleFeatured" color="#C48B5C" />
+      <text class="text-sm text-primary">管理作品 ></text>
     </view>
   </view>
 </view>
@@ -38,7 +42,7 @@
 <!-- 用户模式 -->
 <block wx:elif="{{activeRole === 'user'}}">
 <view class="page-index">
-  <swiper class="banner-swiper" indicator-dots autoplay circular>
+  <swiper wx:if="{{banners.length}}" class="banner-swiper" indicator-dots autoplay circular>
     <swiper-item wx:for="{{banners}}" wx:key="_id">
       <view class="banner-item">
         <image wx:if="{{item.image}}" src="{{item.image}}" mode="aspectFill" class="banner-img" />
@@ -60,13 +64,16 @@
     <view class="section-header flex-between">
       <text class="text-lg text-bold">优秀展示</text>
     </view>
-    <view class="featured-grid">
+    <view wx:if="{{!featuredWorks.length}}" class="empty-hint">
+      <text class="text-secondary">暂无精选作品</text>
+    </view>
+    <view class="featured-grid" wx:else>
       <view class="featured-item" wx:for="{{featuredWorks}}" wx:key="_id" data-id="{{item.providerId}}" bindtap="onProviderTap">
         <image wx:if="{{item.image}}" src="{{item.image}}" mode="aspectFill" class="featured-img" />
-        <view wx:else class="featured-img img-ph">{{item.providerCategory === 'photographer' ? '📷' : (item.providerCategory === 'makeup' ? '💄' : '👘')}}</view>
+        <view wx:else class="featured-img img-ph">{{item.categoryEmoji}}</view>
         <view class="featured-info">
           <image wx:if="{{item.providerAvatar}}" src="{{item.providerAvatar}}" mode="aspectFill" class="featured-avatar" />
-          <view wx:else class="featured-avatar img-ph-sm">{{item.providerCategory === 'photographer' ? '📷' : (item.providerCategory === 'makeup' ? '💄' : '👘')}}</view>
+          <view wx:else class="featured-avatar img-ph-sm">{{item.categoryEmoji}}</view>
           <text class="featured-name text-ellipsis">{{item.providerName}}</text>
         </view>
       </view>
@@ -111,7 +118,7 @@
   <view wx:if="{{activeTab==='service'}}" class="tab-content">
     <view wx:for="{{serviceItems}}" wx:key="_id" class="service-card card">
       <image wx:if="{{item.icon}}" class="s-cover" src="{{item.icon}}" mode="aspectFill" />
-      <view wx:else class="s-cover s-cover-ph">{{provider.categoryType === 'photographer' ? '📷' : (provider.categoryType === 'makeup' ? '💄' : '👘')}}</view>
+      <view wx:else class="s-cover s-cover-ph">{{provider._categoryEmoji}}</view>
       <view class="s-info">
         <text class="text-lg text-bold">{{item.name}}</text>
         <text class="text-sm text-secondary mt-10">{{item.description}}</text>

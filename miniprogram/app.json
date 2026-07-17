@@ -27,7 +27,8 @@
     "pages/admin/refunds",
     "pages/admin/users",
     "pages/admin/avatarUpdates",
-    "pages/admin/deregistrations"
+    "pages/admin/deregistrations",
+    "pages/admin/providerPortfolios"
   ],
   "window": {
     "backgroundTextStyle": "dark",

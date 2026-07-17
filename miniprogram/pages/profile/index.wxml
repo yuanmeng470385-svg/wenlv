@@ -5,8 +5,8 @@
       <image wx:if="{{userInfo && userInfo.avatarUrl}}" src="{{userInfo.avatarUrl}}" mode="aspectFill" />
       <text wx:else class="avt-ph">👤</text>
     </view>
-    <text class="user-name text-xl text-bold">{{hasLogin ? (userInfo && userInfo.nickName) : '点击登录'}}</text>
-    <text class="user-role">{{isAdminMode ? '🔐 管理员' : (activeRole === 'user' ? '普通用户' : (activeRole === 'photographer' ? '摄影师' : (activeRole === 'makeup' ? '妆造师' : '汉服店')))}}</text>
+    <text class="user-name text-xl text-bold">{{displayName}}</text>
+    <text class="user-role">{{roleLabel}}</text>
     <button wx:if="{{!hasLogin}}" class="login-btn-sm" open-type="getUserInfo" bindgetuserinfo="onGetUserInfo">登录</button>
   </view>
 

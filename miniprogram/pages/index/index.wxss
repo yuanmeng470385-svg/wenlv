@@ -56,6 +56,8 @@
 .featured-row { padding: 20rpx 0; border-bottom: 1rpx solid #f0f0f0; }
 .mr-20 { margin-right: 20rpx; }
 .banner-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.6; }
+.banner-thumb { width: 100rpx; height: 60rpx; border-radius: 6rpx; flex-shrink: 0; }
+.banner-thumb-ph { width: 100rpx; height: 60rpx; border-radius: 6rpx; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: #f0f0f0; color: #999; font-size: 22rpx; border: 1rpx dashed #ccc; }
 
 /* ========== 共用 ========== */
 .img-ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 46rpx; background: linear-gradient(135deg, #f5ebe0, #e8d5c4); }

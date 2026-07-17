@@ -19,13 +19,29 @@ Page({
     allProviders: [],
   },
 
-  onLoad() { this.initPage(); },
+  onLoad() {
+    this._firstLoad = true;
+    this._lastRole = app.getActiveRole();
+    this.initPage();
+  },
 
   onShow() {
     const adminMode = app.isAdminMode ? app.isAdminMode() : false;
-    this.setData({ activeRole: app.getActiveRole(), hasLogin: app.checkLogin(), isAdminMode: adminMode });
-    if (adminMode && this.data.hasLogin) this.loadAdminData();
-    else if (this.data.hasLogin) this.loadData();
+    const role = app.getActiveRole();
+    const hasLogin = app.checkLogin();
+    const roleChanged = role !== this._lastRole;
+    const loginChanged = hasLogin && !this._lastHasLogin;
+    this._lastRole = role;
+    this._lastHasLogin = hasLogin;
+    this.setData({ activeRole: role, hasLogin: hasLogin, isAdminMode: adminMode });
+
+    if (adminMode && hasLogin) {
+      this.loadAdminData();
+    } else if (hasLogin && (this._firstLoad || roleChanged || loginChanged)) {
+      // 首次/切换身份/刚登录 → 拉数据；普通切Tab用缓存
+      this.loadData();
+    }
+    this._firstLoad = false;
   },
 
   async initPage() {
@@ -47,45 +63,65 @@ Page({
   },
 
   async loadData() {
-    wx.showLoading({ title: '加载中...' });
+    if (this._firstLoad) wx.showLoading({ title: '加载中...' });
     try {
       if (this.data.activeRole === 'user') {
         const { callFunction } = require('../../services/cloud');
-        const { getProviderList } = require('../../services/serviceService');
-        let banners = [];
-        try { const br = await callFunction('getBanners'); banners = br.list || []; } catch(e){}
-        let featuredRes = { list: [] };
-        try { featuredRes = await callFunction('getFeaturedProviders'); } catch(e){}
-        const [categories] = await Promise.all([getCategoryList()]);
-        let works = (featuredRes.list || []).map(p => ({
-          _id: p._id,
-          image: p.backgroundImage || p.avatar || '',
-          providerName: p.name,
-          providerAvatar: p.avatar || '',
-          providerCategory: p.categoryType,
-          providerId: p._id,
-        }));
-        // 不足6条补demo
-        if (works.length < 6) {
-          const demos = [
-            { _id:'demo1',image:'',providerName:'古风摄影师阿杰',providerAvatar:'',providerCategory:'photographer',providerId:'demo1' },
-            { _id:'demo2',image:'',providerName:'汉服妆造小雨',providerAvatar:'',providerCategory:'makeup',providerId:'demo2' },
-            { _id:'demo3',image:'',providerName:'长安汉服体验馆',providerAvatar:'',providerCategory:'hanfu_shop',providerId:'demo3' },
-            { _id:'demo4',image:'',providerName:'夜景人像专家',providerAvatar:'',providerCategory:'photographer',providerId:'demo4' },
-            { _id:'demo5',image:'',providerName:'古韵妆造工作室',providerAvatar:'',providerCategory:'makeup',providerId:'demo5' },
-            { _id:'demo6',image:'',providerName:'洛阳汉服租赁',providerAvatar:'',providerCategory:'hanfu_shop',providerId:'demo6' },
-          ];
-          works = [...works, ...demos].slice(0, 6);
-        }
-        this.setData({ banners, categories: categories || [], featuredWorks: works });
+        const { getCategoryList } = require('../../services/serviceService');
+
+        // 缓存：banners 和 categories 只拉一次
+        let banners = this.data.banners.length ? this.data.banners : [];
+        let categories = this.data.categories.length ? this.data.categories : [];
+
+        const promises = [];
+        if (!banners.length) promises.push(callFunction('getBanners').then(r => { banners = r.list || []; }).catch(()=>{}));
+        if (!categories.length) promises.push(getCategoryList().then(r => { categories = r || []; }).catch(()=>{}));
+        const featuredPromise = callFunction('getFeaturedPortfolios').then(r => {
+          const CATEGORY_EMOJI = { photographer: '📷', makeup: '💄', hanfu_shop: '👘' };
+          const works = (r.list || []).map(p => ({
+            _id: p._id,
+            image: p.image || '',
+            providerName: p.providerName,
+            providerAvatar: p.providerAvatar || '',
+            providerCategory: p.providerCategory,
+            providerId: p.providerId,
+            categoryEmoji: CATEGORY_EMOJI[p.providerCategory] || '📷',
+          }));
+          this.setData({ featuredWorks: works });
+        }).catch(() => {
+          // 回退：getFeaturedPortfolios 未部署时用 getFeaturedProviders
+          return callFunction('getFeaturedProviders').then(r => {
+            const CATEGORY_EMOJI = { photographer: '📷', makeup: '💄', hanfu_shop: '👘' };
+            const works = (r.list || []).map(p => ({
+              _id: p._id,
+              image: p.backgroundImage || p.avatar || '',
+              providerName: p.name,
+              providerAvatar: p.avatar || '',
+              providerCategory: p.categoryType,
+              providerId: p._id,
+              categoryEmoji: CATEGORY_EMOJI[p.categoryType] || '📷',
+            }));
+            this.setData({ featuredWorks: works });
+          }).catch(()=>{});
+        });
+        promises.push(featuredPromise);
+
+        await Promise.all(promises);
+        if (banners.length) this.setData({ banners });
+        if (categories.length) this.setData({ categories });
       } else {
+        // 商家模式 - 首次加载或切换身份才拉数据
+        if (this.data.provider && !this._firstLoad) return;
         const { callFunction } = require('../../services/cloud');
         const { getProviderDetail } = require('../../services/serviceService');
         const myRes = await callFunction('getMyProvider');
         if (myRes && myRes._id) {
           const detail = await getProviderDetail(myRes._id);
+          const CATEGORY_EMOJI = { photographer: '📷', makeup: '💄', hanfu_shop: '👘' };
+          const p = detail.provider;
+          if (p) p._categoryEmoji = CATEGORY_EMOJI[p.categoryType] || '📷';
           this.setData({
-            provider: detail.provider,
+            provider: p,
             serviceItems: detail.serviceItems || [],
             portfolios: detail.portfolios || [],
             reviews: detail.reviews || [],
@@ -94,7 +130,7 @@ Page({
         }
       }
     } catch (err) { console.error('加载失败:', err); }
-    finally { wx.hideLoading(); }
+    finally { if (this._firstLoad) wx.hideLoading(); }
   },
 
   onRoleChanged(role) { this.setData({ activeRole: role }); this.loadData(); },
@@ -157,14 +193,9 @@ Page({
     wx.showLoading({ title: '加载中...' });
     try {
       const { callFunction } = require('../../services/cloud');
-      const [bannerRes, providerRes] = await Promise.all([
-        callFunction('getBanners').catch(() => ({ list: [] })),
-        callFunction('getFeaturedProviders').catch(() => ({ list: [] })),
-      ]);
-      const featuredIds = new Set((providerRes.list || []).map(p => p._id));
+      const bannerRes = await callFunction('getBanners').catch(() => ({ list: [] }));
       const allRes = await require('../../services/serviceService').getProviderList({ page: 1, pageSize: 100 });
-      const allProviders = (allRes.list || []).map(p => ({ ...p, isFeatured: featuredIds.has(p._id) }));
-      this.setData({ adminBanners: bannerRes.list || [], allProviders });
+      this.setData({ adminBanners: bannerRes.list || [], allProviders: allRes.list || [] });
     } catch (err) { console.error(err); }
     finally { wx.hideLoading(); }
   },
@@ -217,6 +248,38 @@ Page({
         } catch (err) { wx.hideLoading(); wx.showToast({ title: '失败', icon: 'none' }); }
       }
     });
+  },
+
+  async onBannerImage(e) {
+    const bannerId = e.currentTarget.dataset.id;
+    // 保留原标题
+    const existing = this.data.adminBanners.find(b => b._id === bannerId);
+    const title = existing ? existing.title : 'Banner';
+    const res = await wx.chooseImage({ count: 1, sizeType: ['compressed'] });
+    if (!res.tempFilePaths.length) return;
+    wx.showLoading({ title: '上传中...' });
+    try {
+      const { uploadFile, callFunction } = require('../../services/cloud');
+      const cloudPath = `banners/${Date.now()}_${Math.random().toString(36).slice(2)}.jpg`;
+      const fileID = await uploadFile(cloudPath, res.tempFilePaths[0]);
+      await callFunction('saveBanner', { bannerId: bannerId || undefined, title, image: fileID });
+      wx.hideLoading();
+      wx.showToast({ title: '已保存', icon: 'success' });
+      this.loadAdminData();
+    } catch (err) {
+      wx.hideLoading();
+      wx.showToast({ title: '上传失败', icon: 'none' });
+    }
+  },
+
+  previewBannerImage(e) {
+    const url = e.currentTarget.dataset.url;
+    wx.previewImage({ urls: [url], current: url });
+  },
+
+  goManagePortfolios(e) {
+    const { id, name } = e.currentTarget.dataset;
+    wx.navigateTo({ url: `/pages/admin/providerPortfolios?providerId=${id}&providerName=${name}` });
   },
 
   async onToggleFeatured(e) {

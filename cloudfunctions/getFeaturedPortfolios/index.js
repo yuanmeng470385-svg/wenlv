@@ -4,11 +4,10 @@ const db = cloud.database();
 
 exports.main = async (event, context) => {
   try {
-    // 获取审核通过的作品，按点赞数排序
+    // 获取管理员设为精选的审核通过作品，按点赞数排序
     const portfolios = await db.collection('portfolios')
-      .where({ status: 'approved' })
+      .where({ status: 'approved', isFeatured: true })
       .orderBy('likeCount', 'desc')
-      .limit(20)
       .get();
 
     // 批量获取对应商家信息

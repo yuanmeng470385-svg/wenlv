@@ -1,0 +1,17 @@
+<view class="page-list">
+  <view class="admin-header-sm">{{providerName}} 的作品</view>
+
+  <view wx:if="{{!list.length}}" class="empty-hint"><text class="text-secondary">该商家暂无作品</text></view>
+
+  <view wx:for="{{list}}" wx:key="_id" class="portfolio-row flex-between">
+    <view class="flex-row flex-1">
+      <image wx:if="{{item.images && item.images[0]}}" src="{{item.images[0]}}" mode="aspectFill" class="thumb" data-url="{{item.images[0]}}" bindtap="previewImage" />
+      <view wx:else class="thumb img-ph">🖼️</view>
+      <view class="ml-20">
+        <text class="text-bold text-ellipsis">{{item.title}}</text>
+        <text class="text-sm text-secondary">❤️ {{item.likeCount || 0}}</text>
+      </view>
+    </view>
+    <switch checked="{{item.isFeatured}}" data-id="{{item._id}}" bindchange="onToggleFeatured" color="#C48B5C" />
+  </view>
+</view>

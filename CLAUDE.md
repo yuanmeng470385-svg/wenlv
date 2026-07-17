@@ -2,77 +2,166 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## 项目概述
+## Project Overview
 
-文旅摄影预约微信小程序 — 摄影师/妆造师/汉服店 O2O 预约平台。前端原生微信小程序 + 后端微信云开发。目录 `D:\gongsi\wenlv`。
+文旅摄影预约微信小程序 — O2O booking platform for photographers, makeup artists, and hanfu clothing shops. Native WeChat Mini Program + WeChat Cloud Development (云开发).
 
-## 开发环境
+- **Cloud Environment ID:** `cloud1-d1gv9n7j56c0a3448`
+- **AppID:** `wxce7801ec430c768e`
+- **GitHub:** `https://github.com/yuanmeng470385-svg/wenlv` (branch `main`)
 
-- 微信开发者工具打开项目根目录 `D:\gongsi\wenlv`
-- 云环境 ID: `cloud1-d1gv9n7j56c0a3448`（配置在 `miniprogram/app.js` 和 `cloudbaserc.js`）
-- AppID: `wxce7801ec430c768e`
-- 云函数部署：右键云函数文件夹 →「创建并部署：云端安装依赖（不上传 node_modules）」
-- 测试数据：云开发控制台 → 云函数 → `initTestData` → 测试
-- 模拟支付：下单后选「模拟支付(测试模式)」，调用 `mockPay` 云函数，跳过真实微信支付
+## Commands
 
-## 架构
+### WeChat DevTools CLI
 
 ```
-miniprogram/              前端
-  services/cloud.js       云函数统一调用封装 (callFunction)
-  services/userService.js 用户相关
-  services/serviceService.js 服务商/作品
-  services/orderService.js 订单/支付/评价/互动
+# Path
+D:\微信开发工具\微信web开发者工具\cli.bat
 
-cloudfunctions/           后端 (49个云函数)
-  无外部API，全部使用 wx-server-sdk 操作云数据库
+# Open project
+cli.bat open --project D:\gongsi\wenlv
+
+# Preview
+cli.bat preview --project D:\gongsi\wenlv --qr-output preview.png --qr-format image
+
+# Upload (confirm with user first)
+cli.bat upload -p D:\gongsi\wenlv -v <version> -d <notes>
+
+# Batch deploy cloud functions (no manual right-click needed)
+cli.bat cloud functions deploy --env cloud1-d1gv9n7j56c0a3448 --names fn1 fn2 ... --remote-npm-install --project D:\gongsi\wenlv
 ```
 
-## 角色与身份系统
+DevTools service port must be enabled (工具 → 设置 → 安全 → 服务端口, port 10987). First CLI call is slow — use timeout >= 30s.
 
-4种角色存储在 `users.roles[]` 数组中，一个用户可有多身份。`activeRole` 控制当前视角。
+### Manual Cloud Function Deploy
+
+In WeChat DevTools, right-click each cloud function → "上传并部署". New functions may need 20-45s wait before deployable. Cloud functions cannot be invoked/deleted via CLI — use Cloud Development Console for that.
+
+### Automated Testing
+
+Use `miniprogram-automator` package:
+1. `cli.bat auto --project D:\gongsi\wenlv --auto-port 9420`
+2. Connect: `automator.connect({wsEndpoint:'ws://127.0.0.1:9420'})`
+3. Call functions: `mini.callWxMethod('cloud.callFunction', {name, data})`
+4. End with `mini.disconnect()` (not `close()`)
+
+### Git
+
+Git identity is repo-level: yuan / yuanmeng470385@gmail.com. Connection to GitHub requires proxy (127.0.0.1:7897 + openssl backend).
+
+## Architecture
 
 ```
-user (普通用户) → 浏览/预约/评价
-photographer (摄影师) → 商家后台，有 1-5 星等级
-makeup (妆造师) → 商家后台，有 1-5 星等级
-hanfu_shop (汉服店) → 商家后台，无等级
-admin (管理员) → 在 DB 中手动添加 roles:["user","admin"]，审核所有业务
+wenlv/
+├── miniprogram/          # Frontend (pages + services)
+│   ├── app.js            # App entry, cloud.init, globalData
+│   ├── app.json          # Page registry + tabBar config
+│   ├── pages/
+│   │   ├── index/        # Homepage (3 modes: admin / user / provider)
+│   │   ├── orderList/    # "功能" tab (admin: review, user: orders, provider: dashboard)
+│   │   ├── profile/      # "我的" tab (login, role switch, admin login, deregister)
+│   │   ├── serviceDetail/# Provider detail (public view)
+│   │   ├── booking/      # 4-step booking flow
+│   │   ├── admin/        # Admin pages (flat files, NOT index/ subdirectories)
+│   │   └── provider/     # Provider self-service pages
+│   └── services/         # Shared JS modules
+│       ├── cloud.js      # callFunction wrapper (unified {code,data,message})
+│       └── serviceService.js  # Provider/category API wrappers
+├── cloudfunctions/       # ~70 cloud functions (wx-server-sdk)
+│   └── <name>/
+│       ├── index.js      # Handler (must be self-contained)
+│       └── package.json  # {"dependencies":{"wx-server-sdk":"latest"}}
+└── docs/superpowers/     # Design specs and implementation plans
 ```
 
-3个 TabBar 页面（`index`, `orderList`, `profile`）按 `activeRole` 切换显示内容：用户模式(浏览预约) vs 商家模式(仪表盘/接单管理)。
+## Key Patterns
 
-## 订单状态机
+### Cloud Function Conventions
+
+All cloud functions return `{ code: 0, data: ..., message: "..." }`. `code !== 0` = error. The frontend `callFunction` wrapper in `services/cloud.js` throws on non-zero codes.
+
+**Auth guards are INLINE** — cross-directory `require` fails in WeChat Cloud Functions, so never extract shared auth middleware:
+- Admin: query `users` by `_openid`, check `roles.includes('admin')`
+- User: `const openid = cloud.getWXContext().OPENID; if (!openid) return {code:1002}`
+- Provider: resolve provider from `providers.where({userId: openid})`
+
+Error codes: `1001` (bad params), `1002` (unauthorized), `1003` (not found), `2001` (state conflict, e.g. wrong order status), `2002` (business rule violation), `2003` (payment failure), `9999` (internal).
+
+**Money is in 分 (cents)**, divide by 100 for display.
+
+### Frontend Patterns
+
+**WXML constraints:**
+- No nested ternary expressions (`a?b:(c?d:e)`) — pre-compute in JS and bind flat values
+- `catchtap` prevents event bubbling (use on action buttons inside clickable cards)
+- `wx:key` must be unique
+
+**Page lifecycle optimization:**
+- `onShow` fires on every tab switch — avoid repeated cloud calls
+- Cache with flags (`_firstLoad`, `_loaded`, `_lastHasLogin`) — track `loginChanged = hasLogin && !this._lastHasLogin`
+- Only show `wx.showLoading` on first load, not tab switches
+
+**Other frontend patterns:**
+- Emoji/category labels must be pre-computed in JS (e.g., `_categoryEmoji`, `categoryEmoji`, `roleLabel`, `displayName`) — WXML can't do multi-way branch logic
+- Phone numbers are masked in public cloud functions (e.g., `138****1111`); full numbers only via `getContactPhone`
+- `services/orderService.js` wraps order/payment/review APIs; `services/userService.js` wraps auth; `services/serviceService.js` wraps provider/category lookups
+- `utils/priceUtil.js`: `fenToYuan`, `yuanToFen`, `formatPrice`, `calcTotalFee`, `calcRefundAmount`
+- `utils/timeUtil.js`: `getDateList`, `getDefaultTimeSlots`, `hoursBetween`, `isMoreThan24Hours`
+- `utils/validator.js`: `isValidPhone`, `isRequired`, `validateBookingForm`
+- `utils/util.js`: `formatTime`, `generateOrderNo`, `debounce`, `throttle`
+
+**Admin pages** are flat files: `pages/admin/providers.js` (not `pages/admin/providers/index.js`). Register as `pages/admin/providers` in `app.json`.
+
+### Role System
+
+`users.roles[]`: `user`, `photographer`/`makeup`/`hanfu_shop` (provider), `admin`.
+Admin mode: `app.globalData.isAdminMode` + `wx.setStorageSync('adminMode', true)` for persistence.
+Admin login requires: user has `admin` role in DB + correct password (cloud function `adminLogin`, default password `admin123`, configurable via `config` collection with key `adminPassword`).
+
+### Database Collections
+
+`users`, `providers`, `portfolios`, `serviceItems`, `orders`, `reviews`, `banners`, `likes`, `favorites`, `notifications`, `config`, `auditLogs`, `categories`.
+
+Portfolio lifecycle: `pending_review` → admin approves → `approved` (or `rejected`). Auto-approval when provider registration is approved.
+
+### Tab Bar
+
+Three tabs: 首页 (index), 功能 (orderList), 我的 (profile). Index page renders admin/user/provider views based on `isAdminMode` and `activeRole`.
+
+### Featured/精选 System
+
+Two-tier system (transitioning from provider-level to portfolio-level):
+- Admin toggles individual portfolios as featured via `pages/admin/providerPortfolios`
+- Cloud functions: `togglePortfolioFeatured`, `getProviderPortfolios`, `getFeaturedPortfolios` (filters `{status:'approved', isFeatured:true}`)
+- Legacy (fallback): `toggleFeatured` + `getFeaturedProviders` (provider-level)
+- Banner management on homepage: `saveBanner` already supports `image` field
+
+### Order State Machine
 
 ```
 pending_pay → paid → confirmed → in_progress → pending_complete → completed → reviewed
     ↓           ↓         ↓             ↓
-cancelled   pending_refund(管理员审批通过后→cancelled)
+cancelled   pending_refund (admin approves → cancelled)
 ```
 
-- 用户取消：<24h 全额退，24h 内退50%，已过期不可取消；退款需管理员 `approveRefund` 审批
-- 商家操作：`providerHandleOrder` (confirm/reject/start/complete)；complete 后进入 `pending_complete` 待客户确认
-- 客户确认：`confirmComplete` 将 `pending_complete` → `completed`
-- 超时自动取消：`cancelExpiredOrders` 取消超过24h无人接单的 paid 订单
-- 商家休假：`toggleProviderOpen` 一键暂停/恢复接单（不影响已有订单）
+- Provider actions (`providerHandleOrder`): `confirm`, `reject` (auto-refunds), `start`, `complete`
+- Customer auto-cancel: unpaid orders expire; `paid` orders not accepted within 24h → auto-cancelled
+- Cancel refund: <24h = full refund, 24h-48h = 50%, expired = cannot cancel
+- `confirmComplete` transitions `pending_complete` → `completed`
+- STATUS_MAP in `orderList/index.js` maps status keys to Chinese labels
 
-## 数据库集合 (10个)
+### Design System
 
-`users`, `providers`, `serviceItems`, `orders`, `payments`, `portfolios`, `reviews`, `favorites`, `likes`, `categories`, `timeSlots`
+Brand colors (warm Chinese style): primary `#C48B5C`, primary-dark `#A0703E`, primary-light `#E8C9A0`, price `#E8563A`. Global CSS variables in `styles/variables.wxss`.
 
-- 金额单位：**分**（price/priceUtil.js 提供 fenToYuan/formatPrice）
-- 审核状态：`pending_review` → `approved`/`rejected`；套餐和服务商都需审核
-- `orders.items[]` 是数组，支持一次下单多个服务项（组合套餐）
+Pricing models (`serviceItems.priceType`): `fixed` (套餐), `hourly` (按时), `project` (按项目). Combo orders via `orders.items[]`.
 
-## 关键设计模式
+### Test Data
 
-- 页面文件用 Bash `cat > file << 'ENDOFFILE'` 创建（Write 工具对新文件需先用 Bash 建）
-- 所有云函数统一返回 `{ code: 0, data: ..., message: "..." }`；code≠0 为错误
-- 云函数通过 `wxContext.OPENID` 获取用户身份，商家云函数查 `providers` 表确认身份
-- 前端 services 层封装所有云函数调用，页面不直接调 `wx.cloud.callFunction`
-- WXML 不支持 JS 函数调用，角色图标/标签需在 JS 中预计算为数据字段（见 `profile/index.js` 的 `roleList`）
-- 测试数据中图片字段为空，页面用 `wx:if/wx:else` 显示 emoji 占位
+`initTestData` cloud function (admin-only) seeds: 3 photographers, 3 makeup artists, 2 hanfu shops, 18 service items, 7 portfolios, 3 categories.
 
-## TabBar 图标
+## Constraints
 
-`miniprogram/images/tab-*.png` 是 Python 生成的简单形状 PNG。如需替换：6个文件，未选中灰色 #999，选中暖色 #C48B5C，建议 81x81。
+- Never modify payment functions (`payOrder`, `mockPay`, `payCallback`, etc.)
+- Cross-directory `require` in cloud functions will fail — always inline
+- New cloud functions need deployment before use; add frontend fallbacks for undeployed functions

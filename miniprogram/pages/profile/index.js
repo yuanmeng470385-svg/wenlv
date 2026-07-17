@@ -21,14 +21,18 @@ Page({
     const roleList = switchableRoles.map(r => ({ key: r, icon: iconMap[r] || '👤', label: labelMap[r] || r }));
     const isAdmin = rawRoles.includes('admin');
     const isAdminMode = app.isAdminMode ? app.isAdminMode() : false;
+    const ROLE_LABEL_MAP = { user: '普通用户', photographer: '摄影师', makeup: '妆造师', hanfu_shop: '汉服店' };
+    const roleLabel = isAdminMode ? '🔐 管理员' : (ROLE_LABEL_MAP[g.activeRole] || '普通用户');
+    const displayName = g.hasLogin && g.userInfo ? (g.userInfo.nickName || '用户') : '点击登录';
     this.setData({
       userInfo: g.userInfo, activeRole: g.activeRole,
-      hasLogin: g.hasLogin, roles: switchableRoles, roleList, isAdmin, isAdminMode,
+      hasLogin: g.hasLogin, roles: switchableRoles, roleList, isAdmin, isAdminMode, roleLabel, displayName,
     });
     this.loadUnreadCount();
   },
 
   async loadUnreadCount() {
+    if (!this.data.hasLogin) return;
     try {
       const res = await require('../../services/cloud').callFunction('getNotifications', { page: 1, pageSize: 1 });
       this.setData({ unreadCount: res.unreadCount || 0 });
