@@ -12,4 +12,6 @@ Page({
   goServiceItems() { wx.navigateTo({ url: '/pages/admin/serviceItems' }); },
   goRefunds() { wx.navigateTo({ url: '/pages/admin/refunds' }); },
   goUsers() { wx.navigateTo({ url: '/pages/admin/users' }); },
+  goAvatarUpdates() { wx.navigateTo({ url: '/pages/admin/avatarUpdates' }); },
+  goDeregistrations() { wx.navigateTo({ url: '/pages/admin/deregistrations' }); },
 });

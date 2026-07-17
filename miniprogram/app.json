@@ -25,7 +25,9 @@
     "pages/admin/portfolios",
     "pages/admin/serviceItems",
     "pages/admin/refunds",
-    "pages/admin/users"
+    "pages/admin/users",
+    "pages/admin/avatarUpdates",
+    "pages/admin/deregistrations"
   ],
   "window": {
     "backgroundTextStyle": "dark",

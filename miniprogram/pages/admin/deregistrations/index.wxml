@@ -1,0 +1,23 @@
+<view class="page-review">
+  <view wx:if="{{!list.length}}" class="empty-hint"><text class="text-secondary">暂无待审核注销申请</text></view>
+  <view wx:for="{{list}}" wx:key="_id" class="review-card card">
+    <view class="flex-row">
+      <text class="text-bold text-lg">{{item.name}}</text>
+      <text class="text-sm text-secondary ml-10">
+        {{item.categoryType === 'photographer' ? '摄影师' : (item.categoryType === 'makeup' ? '妆造师' : '汉服店')}}
+      </text>
+    </view>
+    <view class="mt-10"><text class="text-sm text-secondary">📞 {{item.phone}}</text></view>
+    <view class="flex-between mt-10">
+      <text class="text-sm text-secondary">总订单: {{item.totalOrders}}</text>
+      <text class="text-sm" style="color: {{item.unfinishedOrders > 0 ? '#E74C3C' : '#52C41A'}}">
+        未完成: {{item.unfinishedOrders}}
+      </text>
+    </view>
+    <text class="text-sm text-hint mt-10">申请时间: {{item.updateTime}}</text>
+    <view class="action-btns mt-20">
+      <button class="btn-reject" data-id="{{item._id}}" bindtap="onReject">拒绝</button>
+      <button class="btn-pass" data-id="{{item._id}}" bindtap="onApprove">同意注销</button>
+    </view>
+  </view>
+</view>

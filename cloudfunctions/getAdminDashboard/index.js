@@ -10,11 +10,19 @@ exports.main = async (event, context) => {
     if (!(_admin.data[0] && (_admin.data[0].roles || []).includes('admin'))) {
       return { code: 1002, message: '无管理员权限' };
     }
-    const [pendingProviders, pendingPortfolios, pendingServiceItems, pendingRefunds, totalOrders, totalUsers] = await Promise.all([
+    const [pendingProviders, pendingPortfolios, pendingServiceItems, pendingRefunds,
+           pendingAvatars, pendingDeregistrations, totalOrders, totalUsers] = await Promise.all([
       db.collection('providers').where({ status: 'pending_review' }).count(),
       db.collection('portfolios').where({ status: 'pending_review' }).count(),
       db.collection('serviceItems').where({ status: 'pending_review' }).count(),
       db.collection('orders').where({ orderStatus: 'pending_refund' }).count(),
+      db.collection('providers').where(
+        db.command.or([
+          { pendingAvatar: db.command.neq(null) },
+          { pendingBackgroundImage: db.command.neq(null) },
+        ])
+      ).count(),
+      db.collection('providers').where({ status: 'pending_deregister' }).count(),
       db.collection('orders').count(),
       db.collection('users').count(),
     ]);
@@ -28,6 +36,8 @@ exports.main = async (event, context) => {
         pendingPortfolios: pendingPortfolios.total,
         pendingServiceItems: pendingServiceItems.total,
         pendingRefunds: pendingRefunds.total,
+        pendingAvatarUpdates: pendingAvatars.total,
+        pendingDeregistrations: pendingDeregistrations.total,
         activeProviders: providerTotal.total,
         totalOrders: totalOrders.total,
         totalUsers: totalUsers.total,

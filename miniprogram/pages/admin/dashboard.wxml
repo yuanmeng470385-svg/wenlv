@@ -14,6 +14,12 @@
     <view class="stat-card warn" bindtap="goRefunds">
       <text class="stat-num">{{stats.pendingRefunds||0}}</text><text class="stat-label">待审退款</text>
     </view>
+    <view class="stat-card warn" bindtap="goAvatarUpdates">
+      <text class="stat-num">{{stats.pendingAvatarUpdates||0}}</text><text class="stat-label">待审头像/背景</text>
+    </view>
+    <view class="stat-card warn" bindtap="goDeregistrations">
+      <text class="stat-num">{{stats.pendingDeregistrations||0}}</text><text class="stat-label">待审注销</text>
+    </view>
   </view>
 
   <view class="menu-section">
@@ -21,6 +27,8 @@
     <view class="menu-item flex-between" bindtap="goServiceItems"><text>📦 套餐审核</text><text class="text-secondary">></text></view>
     <view class="menu-item flex-between" bindtap="goPortfolios"><text>🖼️ 作品审核</text><text class="text-secondary">></text></view>
     <view class="menu-item flex-between" bindtap="goRefunds"><text>💰 退款审核</text><text class="text-secondary">></text></view>
+    <view class="menu-item flex-between" bindtap="goAvatarUpdates"><text>🖼️ 头像/背景图修改审核</text><text class="text-secondary">></text></view>
+    <view class="menu-item flex-between" bindtap="goDeregistrations"><text>⚠️ 商家注销审核</text><text class="text-secondary">></text></view>
   </view>
 
   <view class="menu-section mt-20">
