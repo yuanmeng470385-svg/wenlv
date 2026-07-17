@@ -1,4 +1,16 @@
 <view class="page-form">
+  <view class="upload-section card">
+    <text class="text-bold">套餐图标（1张）</text>
+    <view class="upload-grid mt-20">
+      <view wx:if="{{icon}}" class="upload-item">
+        <image src="{{icon}}" mode="aspectFill" />
+      </view>
+      <view wx:else class="upload-btn" bindtap="onUploadIcon">
+        <text class="text-xl text-hint">+</text>
+      </view>
+    </view>
+  </view>
+
   <view class="form-section card">
     <view class="form-item">
       <text class="form-label">套餐名称 *</text>

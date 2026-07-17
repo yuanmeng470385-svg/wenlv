@@ -2,6 +2,7 @@ Page({
   data: {
     isEdit: false,
     serviceItemId: '',
+    icon: '',
     form: {
       name: '', description: '', priceType: 'fixed',
       price: '', originalPrice: '', duration: '60',
@@ -21,6 +22,7 @@ Page({
       this.setData({
         isEdit: true,
         serviceItemId: item._id,
+        icon: item.icon || '',
         form: {
           name: item.name || '',
           description: item.description || '',
@@ -42,8 +44,19 @@ Page({
   },
 
   onPriceTypeChange(e) {
+
     const form = { ...this.data.form, priceType: e.currentTarget.dataset.type };
     this.setData({ form });
+  },
+
+  async onUploadIcon() {
+    const res = await wx.chooseImage({ count: 1, sizeType: ['compressed'] });
+    wx.showLoading({ title: '上传中...' });
+    const { uploadFile } = require('../../services/cloud');
+    const cloudPath = `serviceItems/icons/${Date.now()}_${Math.random().toString(36).slice(2)}.jpg`;
+    const fileID = await uploadFile(cloudPath, res.tempFilePaths[0]);
+    this.setData({ icon: fileID });
+    wx.hideLoading();
   },
 
   async onSubmit() {
@@ -64,6 +77,7 @@ Page({
         duration: parseInt(f.duration) || 60,
         includes: f.includes.split(',').map(s => s.trim()).filter(Boolean),
         maxDailyBooking: parseInt(f.maxDailyBooking) || 5,
+        icon: this.data.icon || '',
       });
       wx.showToast({ title: this.data.isEdit ? '套餐已更新' : '套餐已创建', icon: 'success' });
       setTimeout(() => wx.navigateBack(), 1200);
