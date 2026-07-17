@@ -37,40 +37,73 @@
 </view>
 </block>
 
-<!-- 商家模式 -->
+<!-- 商家模式 - 自己的店铺详情页 -->
 <block wx:else>
-<view class="page-dashboard">
-  <!-- 身份条 -->
-  <view class="dash-header">
-    <text class="text-lg">👋 {{providerName}}</text>
+<view class="page-detail" wx:if="{{provider}}">
+  <view class="cover-section">
+    <image class="cover-img" src="{{provider.backgroundImage}}" mode="aspectFill" />
+    <view class="cover-edit-btn" bindtap="onEditBackground">
+      <text class="edit-icon">✏️ 更换背景</text>
+    </view>
   </view>
 
-  <!-- 数据看板 -->
-  <view class="stats-row">
-    <view class="stat-card"><text class="stat-num">{{dashboard.todayOrders}}</text><text class="stat-label">今日预约</text></view>
-    <view class="stat-card"><text class="stat-num highlight">{{dashboard.pendingOrders}}</text><text class="stat-label">待处理</text></view>
-    <view class="stat-card"><text class="stat-num">{{dashboard.totalOrders}}</text><text class="stat-label">总订单</text></view>
-  </view>
-
-  <!-- 快捷入口 -->
-  <view class="quick-row">
-    <view class="quick-item" bindtap="goUploadWork"><text class="quick-icon">📤</text><text class="quick-label">上传作品</text></view>
-    <view class="quick-item" bindtap="goMyWorks"><text class="quick-icon">🖼️</text><text class="quick-label">作品管理</text></view>
-    <view class="quick-item" bindtap="goServiceItems"><text class="quick-icon">📦</text><text class="quick-label">套餐管理</text></view>
-    <view class="quick-item" bindtap="goSchedule"><text class="quick-icon">📅</text><text class="quick-label">档期管理</text></view>
-    <view class="quick-item" bindtap="goEditProfile"><text class="quick-icon">✏️</text><text class="quick-label">编辑资料</text></view>
-  </view>
-
-  <!-- 近期订单 -->
-  <view class="section">
-    <view class="section-header flex-between"><text class="text-lg text-bold">近期订单</text></view>
-    <view wx:if="{{!recentOrders.length}}" class="empty-hint"><text class="text-secondary">暂无订单</text></view>
-    <view wx:for="{{recentOrders}}" wx:key="_id" class="order-row card" data-id="{{item._id}}" bindtap="goOrderDetail">
-      <view class="flex-between mb-20">
-        <text class="text-sm text-bold">{{item.orderNo}}</text>
-        <text class="status-text text-sm">{{item.orderStatus === 'paid' ? '待确认' : (item.orderStatus === 'confirmed' ? '已确认' : (item.orderStatus === 'in_progress' ? '进行中' : item.orderStatus))}}</text>
+  <view class="p-info p-30">
+    <view class="flex-row">
+      <view class="avatar-wrap">
+        <image class="p-avatar" src="{{provider.avatar}}" mode="aspectFill" />
+        <view class="avatar-edit-btn" bindtap="onEditAvatar">
+          <text class="edit-icon-sm">✏️</text>
+        </view>
       </view>
-      <text class="text-sm text-secondary" wx:for="{{item.items}}" wx:key="serviceItemId" wx:for-item="si">{{si.appointmentDate}} {{si.appointmentTime}} | {{si.name}} | ¥{{si.price/100}}</text>
+      <view class="flex-1 ml-20">
+        <text class="text-xl text-bold">{{provider.name}}</text>
+      </view>
+    </view>
+    <view wx:if="{{provider.featureTags}}" class="tag-row mt-20">
+      <text wx:for="{{provider.featureTags}}" wx:key="*this" class="feature-tag">{{item}}</text>
+    </view>
+  </view>
+
+  <view class="tab-bar">
+    <view class="tab-item {{activeTab==='service'?'active':''}}" data-tab="service" bindtap="onTabChange"><text>服务项目</text></view>
+    <view class="tab-item {{activeTab==='works'?'active':''}}" data-tab="works" bindtap="onTabChange"><text>作品展示</text></view>
+    <view class="tab-item {{activeTab==='reviews'?'active':''}}" data-tab="reviews" bindtap="onTabChange"><text>用户评价</text></view>
+  </view>
+
+  <view wx:if="{{activeTab==='service'}}" class="tab-content">
+    <view wx:for="{{serviceItems}}" wx:key="_id" class="service-card card">
+      <image wx:if="{{item.icon}}" class="s-cover" src="{{item.icon}}" mode="aspectFill" />
+      <view wx:else class="s-cover s-cover-ph">{{provider.categoryType === 'photographer' ? '📷' : (provider.categoryType === 'makeup' ? '💄' : '👘')}}</view>
+      <view class="s-info">
+        <text class="text-lg text-bold">{{item.name}}</text>
+        <text class="text-sm text-secondary mt-10">{{item.description}}</text>
+        <view class="flex-between mt-10">
+          <text class="text-price text-lg">¥{{item.price/100}}</text>
+          <text class="text-sm text-secondary">时长 {{item.duration}}分钟</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{activeTab==='works'}}" class="tab-content">
+    <view class="work-grid">
+      <view wx:for="{{portfolios}}" wx:key="_id" class="work-item">
+        <image src="{{item.images[0]}}" mode="aspectFill" class="work-img" />
+        <view class="work-overlay">
+          <text class="work-title text-ellipsis">{{item.title}}</text>
+          <text class="text-sm">❤️ {{item.likeCount || 0}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{activeTab==='reviews'}}" class="tab-content">
+    <view wx:for="{{reviews}}" wx:key="_id" class="review-card card">
+      <view class="flex-between">
+        <text class="text-sm text-price">⭐ {{item.rating}}</text>
+        <text class="text-sm text-hint">{{item.createTime}}</text>
+      </view>
+      <text class="mt-10">{{item.content}}</text>
     </view>
   </view>
 </view>
