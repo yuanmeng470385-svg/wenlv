@@ -10,11 +10,6 @@
     <button wx:if="{{!hasLogin}}" class="login-btn-sm" open-type="getUserInfo" bindgetuserinfo="onGetUserInfo">登录</button>
   </view>
 
-  <!-- 管理员入口（仅当是admin但不是admin模式时显示） -->
-  <view wx:if="{{isAdmin && !isAdminMode}}" class="admin-entry card" bindtap="goAdmin">
-    <view class="flex-between"><text>🔧 管理中心</text><text class="text-secondary">></text></view>
-  </view>
-
   <!-- 身份切换 -->
   <view wx:if="{{hasLogin && roles.length > 1}}" class="role-section card">
     <text class="section-title text-sm text-secondary">切换身份</text>
@@ -43,7 +38,6 @@
       <view wx:for="{{menuItems}}" wx:key="label" class="menu-item flex-between" data-url="{{item.url}}" bindtap="onMenuTap">
         <text>{{item.icon}} {{item.label}}</text><text class="text-secondary">></text>
       </view>
-      <view wx:if="{{hasLogin}}" class="menu-item flex-between" bindtap="onAdminLogin"><text>🔐 管理员登录</text><text class="text-secondary">></text></view>
     </view>
   </block>
 
