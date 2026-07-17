@@ -1,9 +1,49 @@
+<!-- 管理员模式 -->
+<block wx:if="{{isAdminMode}}">
+<view class="page-admin">
+  <view class="admin-header">🔧 管理中心</view>
+
+  <!-- Banner管理 -->
+  <view class="section card">
+    <view class="section-header flex-between">
+      <text class="text-bold text-lg">顶部Banner</text>
+      <text class="text-sm text-primary" bindtap="onAddBanner">+ 新增</text>
+    </view>
+    <view wx:for="{{adminBanners}}" wx:key="_id" class="banner-row flex-between">
+      <view class="flex-1">
+        <text class="text-bold">{{item.title}}</text>
+        <text wx:if="{{item.image}}" class="text-sm text-secondary">有图片</text>
+      </view>
+      <view class="flex-row">
+        <text class="text-sm text-primary mr-20" data-id="{{item._id}}" data-title="{{item.title}}" data-image="{{item.image}}" bindtap="onEditBanner">编辑</text>
+        <text class="text-sm text-price" data-id="{{item._id}}" bindtap="onDeleteBanner">删除</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 精选商家管理 -->
+  <view class="section card mt-20">
+    <view class="section-header">
+      <text class="text-bold text-lg">优秀展示管理</text>
+      <text class="text-sm text-secondary">勾选后出现在首页</text>
+    </view>
+    <view wx:for="{{allProviders}}" wx:key="_id" class="featured-row flex-between">
+      <text>{{item.name}}</text>
+      <switch checked="{{item.isFeatured}}" data-id="{{item._id}}" data-checked="{{item.isFeatured}}" bindchange="onToggleFeatured" color="#C48B5C" />
+    </view>
+  </view>
+</view>
+</block>
+
 <!-- 用户模式 -->
-<block wx:if="{{activeRole === 'user'}}">
+<block wx:elif="{{activeRole === 'user'}}">
 <view class="page-index">
   <swiper class="banner-swiper" indicator-dots autoplay circular>
-    <swiper-item wx:for="{{banners}}" wx:key="id">
-      <view class="banner-item"><text class="banner-title">{{item.title}}</text></view>
+    <swiper-item wx:for="{{banners}}" wx:key="_id">
+      <view class="banner-item">
+        <image wx:if="{{item.image}}" src="{{item.image}}" mode="aspectFill" class="banner-img" />
+        <text class="banner-title">{{item.title}}</text>
+      </view>
     </swiper-item>
   </swiper>
 

@@ -20,9 +20,10 @@ Page({
     const switchableRoles = rawRoles.filter(r => r !== 'admin');
     const roleList = switchableRoles.map(r => ({ key: r, icon: iconMap[r] || '👤', label: labelMap[r] || r }));
     const isAdmin = rawRoles.includes('admin');
+    const isAdminMode = app.isAdminMode ? app.isAdminMode() : false;
     this.setData({
       userInfo: g.userInfo, activeRole: g.activeRole,
-      hasLogin: g.hasLogin, roles: switchableRoles, roleList, isAdmin,
+      hasLogin: g.hasLogin, roles: switchableRoles, roleList, isAdmin, isAdminMode,
     });
     this.loadUnreadCount();
   },
@@ -61,6 +62,37 @@ Page({
   goOrders() { wx.switchTab({ url: '/pages/orderList/index' }); },
   goEditProfile() { wx.navigateTo({ url: '/pages/provider/editProfile' }); },
   goAdmin() { wx.navigateTo({ url: '/pages/admin/dashboard' }); },
+
+  onAdminLogin() {
+    wx.showModal({
+      title: '管理员登录',
+      editable: true,
+      placeholderText: '请输入管理员密码',
+      success: async (res) => {
+        if (!res.confirm || !res.content) return;
+        wx.showLoading({ title: '验证中...' });
+        try {
+          const { callFunction } = require('../../services/cloud');
+          await callFunction('adminLogin', { password: res.content });
+          app.enterAdminMode();
+          wx.hideLoading();
+          wx.showToast({ title: '已进入管理模式', icon: 'success' });
+          this.setData({ isAdminMode: true });
+          wx.switchTab({ url: '/pages/index/index' });
+        } catch (err) {
+          wx.hideLoading();
+          wx.showToast({ title: (err && err.message) || '验证失败', icon: 'none' });
+        }
+      }
+    });
+  },
+
+  onExitAdmin() {
+    app.exitAdminMode();
+    this.setData({ isAdminMode: false });
+    wx.showToast({ title: '已退出管理模式', icon: 'success' });
+    wx.switchTab({ url: '/pages/index/index' });
+  },
 
   onDeregister() {
     wx.showModal({

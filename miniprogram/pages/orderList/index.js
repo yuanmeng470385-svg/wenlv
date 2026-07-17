@@ -28,10 +28,13 @@ Page({
     ],
     orders: [], page: 1, total: 0, hasMore: true,
     dashboard: { todayOrders: 0, pendingOrders: 0, totalOrders: 0 },
+    isAdminMode: false,
   },
 
   onShow() {
-    this.setData({ activeRole: app.getActiveRole(), page: 1, orders: [], hasMore: true });
+    const adminMode = app.isAdminMode ? app.isAdminMode() : false;
+    this.setData({ activeRole: app.getActiveRole(), isAdminMode: adminMode, page: 1, orders: [], hasMore: true });
+    if (adminMode) return;
     this.loadOrders();
     if (this.data.activeRole !== 'user') {
       this.loadDashboard();
@@ -122,4 +125,12 @@ Page({
   goServiceItems() { wx.navigateTo({ url: '/pages/provider/serviceItems' }); },
   goSchedule() { wx.navigateTo({ url: '/pages/provider/schedule' }); },
   goEditProfile() { wx.navigateTo({ url: '/pages/provider/editProfile' }); },
+
+  // 管理员审核页面
+  goAdminProviders() { wx.navigateTo({ url: '/pages/admin/providers' }); },
+  goAdminPortfolios() { wx.navigateTo({ url: '/pages/admin/portfolios' }); },
+  goAdminServiceItems() { wx.navigateTo({ url: '/pages/admin/serviceItems' }); },
+  goAdminRefunds() { wx.navigateTo({ url: '/pages/admin/refunds' }); },
+  goAdminAvatarUpdates() { wx.navigateTo({ url: '/pages/admin/avatarUpdates' }); },
+  goAdminDeregistrations() { wx.navigateTo({ url: '/pages/admin/deregistrations' }); },
 });

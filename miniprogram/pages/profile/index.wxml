@@ -6,12 +6,12 @@
       <text wx:else class="avt-ph">👤</text>
     </view>
     <text class="user-name text-xl text-bold">{{hasLogin ? (userInfo && userInfo.nickName) : '点击登录'}}</text>
-    <text class="user-role">{{activeRole === 'user' ? '普通用户' : (activeRole === 'photographer' ? '摄影师' : (activeRole === 'makeup' ? '妆造师' : '汉服店'))}}</text>
+    <text class="user-role">{{isAdminMode ? '🔐 管理员' : (activeRole === 'user' ? '普通用户' : (activeRole === 'photographer' ? '摄影师' : (activeRole === 'makeup' ? '妆造师' : '汉服店')))}}</text>
     <button wx:if="{{!hasLogin}}" class="login-btn-sm" open-type="getUserInfo" bindgetuserinfo="onGetUserInfo">登录</button>
   </view>
 
-  <!-- 管理员入口 -->
-  <view wx:if="{{isAdmin}}" class="admin-entry card" bindtap="goAdmin">
+  <!-- 管理员入口（仅当是admin但不是admin模式时显示） -->
+  <view wx:if="{{isAdmin && !isAdminMode}}" class="admin-entry card" bindtap="goAdmin">
     <view class="flex-between"><text>🔧 管理中心</text><text class="text-secondary">></text></view>
   </view>
 
@@ -27,8 +27,15 @@
     </view>
   </view>
 
+  <!-- 管理模式 -->
+  <block wx:if="{{isAdminMode}}">
+    <view class="menu-section">
+      <view class="menu-item flex-between" bindtap="onExitAdmin"><text>🔓 退出管理模式</text><text class="text-secondary">></text></view>
+    </view>
+  </block>
+
   <!-- 用户模式菜单 -->
-  <block wx:if="{{activeRole === 'user'}}">
+  <block wx:elif="{{activeRole === 'user'}}">
     <view wx:if="{{hasLogin}}" class="menu-card card" bindtap="onApplyProvider">
       <view class="flex-between"><text>🎨 申请成为服务商</text><text class="text-secondary">></text></view>
     </view>
@@ -36,6 +43,7 @@
       <view wx:for="{{menuItems}}" wx:key="label" class="menu-item flex-between" data-url="{{item.url}}" bindtap="onMenuTap">
         <text>{{item.icon}} {{item.label}}</text><text class="text-secondary">></text>
       </view>
+      <view wx:if="{{hasLogin}}" class="menu-item flex-between" bindtap="onAdminLogin"><text>🔐 管理员登录</text><text class="text-secondary">></text></view>
     </view>
   </block>
 
@@ -47,7 +55,7 @@
     </view>
   </block>
 
-  <view wx:if="{{hasLogin}}" class="menu-section safe-bottom">
+  <view wx:if="{{hasLogin && !isAdminMode}}" class="menu-section safe-bottom">
     <view class="menu-item flex-between" bindtap="onLogout"><text>🚪 退出登录</text><text class="text-secondary">></text></view>
   </view>
 </view>

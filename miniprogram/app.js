@@ -16,6 +16,7 @@ App({
       openid: null,
       activeRole: 'user',
       hasLogin: false,
+      isAdminMode: false,
     };
   },
 
@@ -29,6 +30,20 @@ App({
 
   checkLogin() {
     return this.globalData.hasLogin;
+  },
+
+  isAdminMode() {
+    return this.globalData.isAdminMode || wx.getStorageSync('adminMode');
+  },
+
+  enterAdminMode() {
+    this.globalData.isAdminMode = true;
+    wx.setStorageSync('adminMode', true);
+  },
+
+  exitAdminMode() {
+    this.globalData.isAdminMode = false;
+    wx.removeStorageSync('adminMode');
   },
 });
 

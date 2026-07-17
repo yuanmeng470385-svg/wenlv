@@ -49,6 +49,14 @@
 .work-title { display: block; margin-bottom: 4rpx; }
 .review-card { margin: 0 0 12rpx; }
 
+/* ========== 管理员模式 ========== */
+.page-admin { min-height: 100vh; background: #F5F5F5; padding-bottom: 40rpx; }
+.admin-header { background: linear-gradient(135deg, #1A1A2E, #16213E); padding: 40rpx 30rpx; color: #fff; font-size: 36rpx; font-weight: 700; }
+.banner-row { padding: 20rpx 0; border-bottom: 1rpx solid #f0f0f0; }
+.featured-row { padding: 20rpx 0; border-bottom: 1rpx solid #f0f0f0; }
+.mr-20 { margin-right: 20rpx; }
+.banner-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.6; }
+
 /* ========== 共用 ========== */
 .img-ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 46rpx; background: linear-gradient(135deg, #f5ebe0, #e8d5c4); }
 

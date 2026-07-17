@@ -4,9 +4,9 @@ const app = getApp();
 
 Page({
   data: {
-    banners: [{ id: 1, title: '古风汉服摄影' },{ id: 2, title: '专业妆造服务' },{ id: 3, title: '汉服租赁体验' }],
+    banners: [],
     categories: [], featuredWorks: [],
-    activeRole: 'user', hasLogin: false,
+    activeRole: 'user', hasLogin: false, isAdminMode: false,
     dashboard: { todayOrders: 0, pendingOrders: 0, totalOrders: 0 },
     recentOrders: [],
     providerName: '',
@@ -15,13 +15,17 @@ Page({
     portfolios: [],
     reviews: [],
     activeTab: 'service',
+    adminBanners: [],
+    allProviders: [],
   },
 
   onLoad() { this.initPage(); },
 
   onShow() {
-    this.setData({ activeRole: app.getActiveRole(), hasLogin: app.checkLogin() });
-    if (this.data.hasLogin) this.loadData();
+    const adminMode = app.isAdminMode ? app.isAdminMode() : false;
+    this.setData({ activeRole: app.getActiveRole(), hasLogin: app.checkLogin(), isAdminMode: adminMode });
+    if (adminMode && this.data.hasLogin) this.loadAdminData();
+    else if (this.data.hasLogin) this.loadData();
   },
 
   async initPage() {
@@ -46,18 +50,20 @@ Page({
     wx.showLoading({ title: '加载中...' });
     try {
       if (this.data.activeRole === 'user') {
+        const { callFunction } = require('../../services/cloud');
         const { getProviderList } = require('../../services/serviceService');
-        const [categories, providerRes] = await Promise.all([
-          getCategoryList(), getProviderList({ page: 1, pageSize: 6 }),
-        ]);
-        let works = (providerRes && providerRes.list || []).map(p => ({
+        let banners = [];
+        try { const br = await callFunction('getBanners'); banners = br.list || []; } catch(e){}
+        let featuredRes = { list: [] };
+        try { featuredRes = await callFunction('getFeaturedProviders'); } catch(e){}
+        const [categories] = await Promise.all([getCategoryList()]);
+        let works = (featuredRes.list || []).map(p => ({
           _id: p._id,
           image: p.backgroundImage || p.avatar || '',
           providerName: p.name,
           providerAvatar: p.avatar || '',
           providerCategory: p.categoryType,
           providerId: p._id,
-          likeCount: 0,
         }));
         // 不足6条补demo
         if (works.length < 6) {
@@ -71,7 +77,7 @@ Page({
           ];
           works = [...works, ...demos].slice(0, 6);
         }
-        this.setData({ categories: categories || [], featuredWorks: works });
+        this.setData({ banners, categories: categories || [], featuredWorks: works });
       } else {
         const { callFunction } = require('../../services/cloud');
         const { getProviderDetail } = require('../../services/serviceService');
@@ -144,5 +150,81 @@ Page({
       wx.hideLoading();
       wx.showToast({ title: (err && err.message) || '提交失败', icon: 'none' });
     }
+  },
+
+  // ===== 管理员功能 =====
+  async loadAdminData() {
+    wx.showLoading({ title: '加载中...' });
+    try {
+      const { callFunction } = require('../../services/cloud');
+      const [bannerRes, providerRes] = await Promise.all([
+        callFunction('getBanners').catch(() => ({ list: [] })),
+        callFunction('getFeaturedProviders').catch(() => ({ list: [] })),
+      ]);
+      const featuredIds = new Set((providerRes.list || []).map(p => p._id));
+      const allRes = await require('../../services/serviceService').getProviderList({ page: 1, pageSize: 100 });
+      const allProviders = (allRes.list || []).map(p => ({ ...p, isFeatured: featuredIds.has(p._id) }));
+      this.setData({ adminBanners: bannerRes.list || [], allProviders });
+    } catch (err) { console.error(err); }
+    finally { wx.hideLoading(); }
+  },
+
+  onAddBanner() {
+    wx.showModal({
+      title: '新增Banner', editable: true, placeholderText: '请输入标题',
+      success: async (res) => {
+        if (!res.confirm || !res.content) return;
+        wx.showLoading({ title: '保存中...' });
+        try {
+          const { callFunction } = require('../../services/cloud');
+          await callFunction('saveBanner', { title: res.content });
+          wx.hideLoading(); wx.showToast({ title: '已添加', icon: 'success' });
+          this.loadAdminData();
+        } catch (err) { wx.hideLoading(); wx.showToast({ title: '失败', icon: 'none' }); }
+      }
+    });
+  },
+
+  onEditBanner(e) {
+    const { id, title } = e.currentTarget.dataset;
+    wx.showModal({
+      title: '编辑Banner', editable: true, placeholderText: '请输入新标题', content: title,
+      success: async (res) => {
+        if (!res.confirm || !res.content) return;
+        wx.showLoading({ title: '保存中...' });
+        try {
+          const { callFunction } = require('../../services/cloud');
+          await callFunction('saveBanner', { bannerId: id, title: res.content });
+          wx.hideLoading(); wx.showToast({ title: '已更新', icon: 'success' });
+          this.loadAdminData();
+        } catch (err) { wx.hideLoading(); wx.showToast({ title: '失败', icon: 'none' }); }
+      }
+    });
+  },
+
+  onDeleteBanner(e) {
+    const id = e.currentTarget.dataset.id;
+    wx.showModal({
+      title: '确认删除', content: '删除后不可恢复',
+      success: async (res) => {
+        if (!res.confirm) return;
+        wx.showLoading({ title: '删除中...' });
+        try {
+          const { callFunction } = require('../../services/cloud');
+          await callFunction('deleteBanner', { bannerId: id });
+          wx.hideLoading(); wx.showToast({ title: '已删除', icon: 'success' });
+          this.loadAdminData();
+        } catch (err) { wx.hideLoading(); wx.showToast({ title: '失败', icon: 'none' }); }
+      }
+    });
+  },
+
+  async onToggleFeatured(e) {
+    const { id } = e.currentTarget.dataset;
+    const featured = e.detail.value;
+    try {
+      const { callFunction } = require('../../services/cloud');
+      await callFunction('toggleFeatured', { providerId: id, featured });
+    } catch (err) { wx.showToast({ title: '操作失败', icon: 'none' }); }
   },
 });
