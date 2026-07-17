@@ -2,7 +2,7 @@
   <view wx:if="{{loading}}" class="empty-hint"><text class="text-secondary">加载中...</text></view>
   <view wx:elif="{{!list.length}}" class="empty-hint"><text class="text-secondary">暂无待审核服务商</text></view>
 
-  <view wx:for="{{list}}" wx:key="_id" class="review-card card">
+  <view wx:for="{{list}}" wx:key="_id" class="review-card card" data-id="{{item._id}}" bindtap="onCardTap">
     <!-- 基本信息 -->
     <view class="flex-row">
       <text class="cat-icon">{{getCategoryIcon(item.categoryType)}}</text>
@@ -38,8 +38,8 @@
 
     <!-- 操作按钮 -->
     <view class="action-btns mt-20">
-      <button class="btn-reject" data-id="{{item._id}}" bindtap="onReject">驳回</button>
-      <button class="btn-pass" data-id="{{item._id}}" data-type="{{item.categoryType}}" bindtap="onPass">通过审核</button>
+      <button class="btn-reject" data-id="{{item._id}}" catchtap="onReject">驳回</button>
+      <button class="btn-pass" data-id="{{item._id}}" data-type="{{item.categoryType}}" catchtap="onPass">通过审核</button>
     </view>
   </view>
 </view>

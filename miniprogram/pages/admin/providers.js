@@ -53,4 +53,8 @@ Page({
     const { url, urls } = e.currentTarget.dataset;
     wx.previewImage({ current: url, urls: JSON.parse(urls) });
   },
+
+  onCardTap(e) {
+    wx.navigateTo({ url: '/pages/serviceDetail/index?id=' + e.currentTarget.dataset.id });
+  },
 });

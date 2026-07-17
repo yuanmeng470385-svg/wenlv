@@ -2,7 +2,7 @@
   <view wx:if="{{loading}}" class="empty-hint"><text class="text-secondary">加载中...</text></view>
   <view wx:elif="{{!list.length}}" class="empty-hint"><text class="text-secondary">暂无待审核作品</text></view>
 
-  <view wx:for="{{list}}" wx:key="_id" class="review-card card">
+  <view wx:for="{{list}}" wx:key="_id" class="review-card card" data-id="{{item._id}}" bindtap="onCardTap">
     <text class="text-bold">{{item.title}}</text>
     <text class="text-sm text-secondary mt-10">服务商: {{item.providerName}}</text>
     <text class="text-sm text-secondary mt-10">{{item.description}}</text>
@@ -10,8 +10,8 @@
       <text wx:for="{{item.styleTags}}" wx:key="*this" class="feature-tag">{{item}}</text>
     </view>
     <view class="action-btns mt-20">
-      <button class="btn-reject" data-id="{{item._id}}" data-action="rejected" bindtap="onAction">驳回</button>
-      <button class="btn-pass" data-id="{{item._id}}" data-action="approved" bindtap="onAction">通过</button>
+      <button class="btn-reject" data-id="{{item._id}}" data-action="rejected" catchtap="onAction">驳回</button>
+      <button class="btn-pass" data-id="{{item._id}}" data-action="approved" catchtap="onAction">通过</button>
     </view>
   </view>
 </view>

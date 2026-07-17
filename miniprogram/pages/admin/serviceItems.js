@@ -21,4 +21,22 @@ Page({
       this.loadData();
     } catch (e) { wx.hideLoading(); wx.showToast({ title: '操作失败', icon: 'none' }); }
   },
+
+  onCardTap(e) {
+    const id = e.currentTarget.dataset.id;
+    const item = this.data.list.find(i => i._id === id);
+    if (!item) return;
+    const lines = [
+      '套餐名称：' + (item.name || ''),
+      '服务商：' + (item.providerName || ''),
+      '价格类型：' + this.getTypeLabel(item.priceType),
+      '售价：¥' + ((item.price || 0) / 100).toFixed(2),
+      '原价：¥' + ((item.originalPrice || 0) / 100).toFixed(2),
+      '时长：' + (item.duration || 0) + '分钟',
+      '每日限单：' + (item.maxDailyBooking || 0),
+      '包含内容：' + (item.includes || []).join('、'),
+      '描述：' + (item.description || '无'),
+    ].join('\n');
+    wx.showModal({ title: '套餐详情', content: lines, showCancel: false, confirmText: '关闭' });
+  },
 });

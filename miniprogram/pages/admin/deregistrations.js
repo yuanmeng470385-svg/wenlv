@@ -40,4 +40,8 @@ Page({
       this.loadList();
     } catch (err) { wx.showToast({ title: '操作失败', icon: 'none' }); }
   },
+
+  onCardTap(e) {
+    wx.navigateTo({ url: '/pages/serviceDetail/index?id=' + e.currentTarget.dataset.id });
+  },
 });

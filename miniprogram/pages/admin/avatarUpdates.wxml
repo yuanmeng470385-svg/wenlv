@@ -1,6 +1,6 @@
 <view class="page-review">
   <view wx:if="{{!list.length}}" class="empty-hint"><text class="text-secondary">暂无待审核申请</text></view>
-  <view wx:for="{{list}}" wx:key="_id" class="review-card card">
+  <view wx:for="{{list}}" wx:key="_id" class="review-card card" data-id="{{item._id}}" bindtap="onCardTap">
     <text class="text-bold text-lg">{{item.name}}</text>
     <text class="text-sm text-secondary">{{item.categoryType === 'photographer' ? '摄影师' : (item.categoryType === 'makeup' ? '妆造师' : '汉服店')}}</text>
 
@@ -16,8 +16,8 @@
         </view>
       </view>
       <view class="action-btns mt-20">
-        <button class="btn-reject" data-id="{{item._id}}" data-field="avatar" bindtap="onReject">拒绝</button>
-        <button class="btn-pass" data-id="{{item._id}}" data-field="avatar" bindtap="onApprove">通过</button>
+        <button class="btn-reject" data-id="{{item._id}}" data-field="avatar" catchtap="onReject">拒绝</button>
+        <button class="btn-pass" data-id="{{item._id}}" data-field="avatar" catchtap="onApprove">通过</button>
       </view>
     </view>
 
@@ -33,8 +33,8 @@
         </view>
       </view>
       <view class="action-btns mt-20">
-        <button class="btn-reject" data-id="{{item._id}}" data-field="backgroundImage" bindtap="onReject">拒绝</button>
-        <button class="btn-pass" data-id="{{item._id}}" data-field="backgroundImage" bindtap="onApprove">通过</button>
+        <button class="btn-reject" data-id="{{item._id}}" data-field="backgroundImage" catchtap="onReject">拒绝</button>
+        <button class="btn-pass" data-id="{{item._id}}" data-field="backgroundImage" catchtap="onApprove">通过</button>
       </view>
     </view>
   </view>

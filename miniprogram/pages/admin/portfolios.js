@@ -23,4 +23,8 @@ Page({
       this.loadData();
     } catch (e) { wx.hideLoading(); wx.showToast({ title: '操作失败', icon: 'none' }); }
   },
+
+  onCardTap(e) {
+    wx.navigateTo({ url: '/pages/portfolioDetail/index?id=' + e.currentTarget.dataset.id });
+  },
 });

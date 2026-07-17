@@ -1,6 +1,6 @@
 <view class="page-review">
   <view wx:if="{{!list.length}}" class="empty-hint"><text class="text-secondary">暂无待审核注销申请</text></view>
-  <view wx:for="{{list}}" wx:key="_id" class="review-card card">
+  <view wx:for="{{list}}" wx:key="_id" class="review-card card" data-id="{{item._id}}" bindtap="onCardTap">
     <view class="flex-row">
       <text class="text-bold text-lg">{{item.name}}</text>
       <text class="text-sm text-secondary ml-10">
@@ -16,8 +16,8 @@
     </view>
     <text class="text-sm text-hint mt-10">申请时间: {{item.updateTime}}</text>
     <view class="action-btns mt-20">
-      <button class="btn-reject" data-id="{{item._id}}" bindtap="onReject">拒绝</button>
-      <button class="btn-pass" data-id="{{item._id}}" bindtap="onApprove">同意注销</button>
+      <button class="btn-reject" data-id="{{item._id}}" catchtap="onReject">拒绝</button>
+      <button class="btn-pass" data-id="{{item._id}}" catchtap="onApprove">同意注销</button>
     </view>
   </view>
 </view>
