@@ -79,16 +79,12 @@ exports.main = async (event, context) => {
       });
     }
 
-    // 生成订单号
-    const now = new Date();
-    const y = now.getFullYear();
-    const mo = String(now.getMonth() + 1).padStart(2, '0');
-    const d = String(now.getDate()).padStart(2, '0');
-    const h = String(now.getHours()).padStart(2, '0');
-    const mi = String(now.getMinutes()).padStart(2, '0');
-    const s = String(now.getSeconds()).padStart(2, '0');
-    const rand = Math.floor(Math.random() * 9000 + 1000);
-    const orderNo = `WL${y}${mo}${d}${h}${mi}${s}${rand}`;
+    // 生成订单号：商家名-套餐名
+    const firstItem = orderItems[0];
+    const provider = await db.collection('providers').doc(firstItem.providerId).get();
+    const pName = (provider.data && provider.data.name) ? provider.data.name : '未知商家';
+    const itemNames = orderItems.map(i => i.name).join('+');
+    const orderNo = `${pName}-${itemNames}`;
 
     // 写入订单
     const orderData = {

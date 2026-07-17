@@ -13,7 +13,8 @@
     <view wx:for="{{orders}}" wx:key="_id" class="order-card card" data-id="{{item._id}}" bindtap="onOrderTap">
       <view class="flex-between mb-20"><text class="text-sm text-bold">{{item.orderNo}}</text><text class="text-sm text-primary">{{item.orderStatus}}</text></view>
       <view wx:for="{{item.items}}" wx:key="serviceItemId" wx:for-item="si" class="order-item">
-        <text>{{si.name}}</text><text class="text-sm text-secondary">{{si.appointmentDate}} {{si.appointmentTime}}</text>
+        <text>{{si.name}}<text wx:if="{{si.providerDeleted}}" class="text-sm text-hint">(商家已注销)</text></text>
+        <text class="text-sm text-secondary">{{si.appointmentDate}} {{si.appointmentTime}}</text>
       </view>
       <view class="flex-between mt-20 pt-20"><text class="text-price text-lg">¥{{item.totalFee/100}}</text></view>
     </view>
