@@ -35,12 +35,24 @@
   </view>
 
   <view class="upload-section card">
-    <text class="text-bold">封面图（最多3张）</text>
+    <text class="text-bold">商家头像（1张，必填）</text>
     <view class="upload-grid mt-20">
-      <view wx:for="{{coverImages}}" wx:key="*this" class="upload-item">
-        <image src="{{item}}" mode="aspectFill" />
+      <view wx:if="{{avatar}}" class="upload-item">
+        <image src="{{avatar}}" mode="aspectFill" />
       </view>
-      <view wx:if="{{coverImages.length < 3}}" class="upload-btn" bindtap="onUploadCover">
+      <view wx:else class="upload-btn" bindtap="onUploadAvatar">
+        <text class="text-xl text-hint">+</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="upload-section card">
+    <text class="text-bold">背景图（1张，必填，建议750×400）</text>
+    <view class="upload-grid mt-20">
+      <view wx:if="{{backgroundImage}}" class="upload-item">
+        <image src="{{backgroundImage}}" mode="aspectFill" />
+      </view>
+      <view wx:else class="upload-btn" bindtap="onUploadBackground">
         <text class="text-xl text-hint">+</text>
       </view>
     </view>
