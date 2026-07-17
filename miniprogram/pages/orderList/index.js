@@ -15,11 +15,23 @@ Page({
       { key: 'completed', label: '已完成' },{ key: 'cancelled', label: '已取消' },
     ],
     orders: [], page: 1, total: 0, hasMore: true,
+    dashboard: { todayOrders: 0, pendingOrders: 0, totalOrders: 0 },
   },
 
   onShow() {
     this.setData({ activeRole: app.getActiveRole(), page: 1, orders: [], hasMore: true });
     this.loadOrders();
+    if (this.data.activeRole !== 'user') {
+      this.loadDashboard();
+    }
+  },
+
+  async loadDashboard() {
+    try {
+      const { callFunction } = require('../../services/cloud');
+      const res = await callFunction('getProviderDashboard');
+      this.setData({ dashboard: res.stats || this.data.dashboard });
+    } catch (e) { /* ignore */ }
   },
 
   get tabs() {
@@ -91,4 +103,10 @@ Page({
   onReachBottom() {
     if (this.data.hasMore) { this.setData({ page: this.data.page + 1 }); this.loadOrders(); }
   },
+
+  goUploadWork() { wx.navigateTo({ url: '/pages/provider/uploadWork' }); },
+  goMyWorks() { wx.navigateTo({ url: '/pages/provider/myWorks' }); },
+  goServiceItems() { wx.navigateTo({ url: '/pages/provider/serviceItems' }); },
+  goSchedule() { wx.navigateTo({ url: '/pages/provider/schedule' }); },
+  goEditProfile() { wx.navigateTo({ url: '/pages/provider/editProfile' }); },
 });

@@ -10,5 +10,15 @@
 .action-btns { display: flex; justify-content: flex-end; gap: 12rpx; }
 .btn-confirm { padding: 12rpx 28rpx; font-size: 24rpx; background: #C48B5C; color: #fff; border-radius: 30rpx; }
 .btn-refuse { padding: 12rpx 28rpx; font-size: 24rpx; background: #f5f5f5; color: #999; border-radius: 30rpx; }
+.dash-top { background: #F5F5F5; padding-top: 10rpx; }
+.stats-row { display: flex; gap: 12rpx; padding: 0 20rpx 10rpx; }
+.stat-card { flex: 1; background: #fff; border-radius: 16rpx; padding: 24rpx 16rpx; text-align: center; box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.04); }
+.stat-num { display: block; font-size: 40rpx; font-weight: 700; color: #1A1A1A; }
+.stat-num.highlight { color: #E8563A; }
+.stat-label { display: block; font-size: 22rpx; color: #999; margin-top: 6rpx; }
+.quick-row { display: flex; flex-wrap: wrap; gap: 12rpx; padding: 0 20rpx; margin-bottom: 16rpx; }
+.quick-item { flex: 1 1 calc(33.33% - 12rpx); min-width: 160rpx; background: #fff; border-radius: 16rpx; padding: 24rpx 10rpx; text-align: center; box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.04); }
+.quick-icon { display: block; font-size: 44rpx; margin-bottom: 8rpx; }
+.quick-label { font-size: 24rpx; color: #666; }
 .empty-hint { padding: 120rpx 0; text-align: center; }
 .mb-10 { margin-bottom: 10rpx; } .mb-20 { margin-bottom: 20rpx; } .mt-10 { margin-top: 10rpx; } .mt-20 { margin-top: 20rpx; }

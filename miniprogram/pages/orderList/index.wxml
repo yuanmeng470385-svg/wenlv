@@ -20,6 +20,21 @@
   </block>
 
   <block wx:else>
+    <view class="dash-top">
+      <view class="stats-row">
+        <view class="stat-card"><text class="stat-num">{{dashboard.todayOrders}}</text><text class="stat-label">今日预约</text></view>
+        <view class="stat-card"><text class="stat-num highlight">{{dashboard.pendingOrders}}</text><text class="stat-label">待处理</text></view>
+        <view class="stat-card"><text class="stat-num">{{dashboard.totalOrders}}</text><text class="stat-label">总订单</text></view>
+      </view>
+      <view class="quick-row">
+        <view class="quick-item" bindtap="goUploadWork"><text class="quick-icon">📤</text><text class="quick-label">上传作品</text></view>
+        <view class="quick-item" bindtap="goMyWorks"><text class="quick-icon">🖼️</text><text class="quick-label">作品管理</text></view>
+        <view class="quick-item" bindtap="goServiceItems"><text class="quick-icon">📦</text><text class="quick-label">套餐管理</text></view>
+        <view class="quick-item" bindtap="goSchedule"><text class="quick-icon">📅</text><text class="quick-label">档期管理</text></view>
+        <view class="quick-item" bindtap="goEditProfile"><text class="quick-icon">✏️</text><text class="quick-label">编辑资料</text></view>
+      </view>
+    </view>
+
     <view wx:for="{{orders}}" wx:key="_id" class="order-card card" data-id="{{item._id}}" bindtap="onOrderTap">
       <view class="flex-between mb-20">
         <text class="text-sm text-bold">{{item.orderNo}}</text>
