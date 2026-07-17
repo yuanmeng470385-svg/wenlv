@@ -4,7 +4,7 @@ Page({
   async loadList() {
     wx.showLoading({ title: '加载中...' });
     try {
-      const { callFunction } = require('../../../services/cloud');
+      const { callFunction } = require('../../../../services/cloud');
       const res = await callFunction('getPendingDeregistrations');
       this.setData({ list: res.list || [] });
     } catch (e) { wx.showToast({ title: '加载失败', icon: 'none' }); }
@@ -19,7 +19,7 @@ Page({
         if (!res.confirm) return;
         wx.showLoading({ title: '处理中...' });
         try {
-          const { callFunction } = require('../../../services/cloud');
+          const { callFunction } = require('../../../../services/cloud');
           await callFunction('approveDeregister', { providerId: id, action: 'approve' });
           wx.hideLoading();
           wx.showToast({ title: '已注销', icon: 'success' });
@@ -34,7 +34,7 @@ Page({
   async onReject(e) {
     const id = e.currentTarget.dataset.id;
     try {
-      const { callFunction } = require('../../../services/cloud');
+      const { callFunction } = require('../../../../services/cloud');
       await callFunction('approveDeregister', { providerId: id, action: 'reject' });
       wx.showToast({ title: '已拒绝', icon: 'success' });
       this.loadList();
