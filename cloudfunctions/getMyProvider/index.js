@@ -12,6 +12,7 @@ exports.main = async (event, context) => {
 
     const p = providerRes.data[0];
     return { code: 0, data: {
+      _id: p._id,
       name: p.name, phone: p.phone || '', description: p.description || '',
       featureTags: (p.featureTags || []).join(', '),
     }, message: 'success' };

@@ -58,6 +58,7 @@ Page({
   goMyWorks() { wx.navigateTo({ url: '/pages/provider/myWorks' }); },
   goServiceItems() { wx.navigateTo({ url: '/pages/provider/serviceItems' }); },
   goSchedule() { wx.navigateTo({ url: '/pages/provider/schedule' }); },
+  goOrders() { wx.switchTab({ url: '/pages/orderList/index' }); },
   goEditProfile() { wx.navigateTo({ url: '/pages/provider/editProfile' }); },
   goAdmin() { wx.navigateTo({ url: '/pages/admin/dashboard' }); },
 

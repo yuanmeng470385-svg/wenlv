@@ -48,15 +48,14 @@
       <view class="menu-item flex-between" bindtap="goMyWorks"><text>🖼️ 作品管理</text><text class="text-secondary">></text></view>
       <view class="menu-item flex-between" bindtap="goServiceItems"><text>📦 套餐管理</text><text class="text-secondary">></text></view>
       <view class="menu-item flex-between" bindtap="goSchedule"><text>📅 档期管理</text><text class="text-secondary">></text></view>
+      <view class="menu-item flex-between" bindtap="goOrders"><text>📋 订单</text><text class="text-secondary">></text></view>
       <view class="menu-item flex-between" bindtap="goEditProfile"><text>✏️ 编辑资料</text><text class="text-secondary">></text></view>
       <view class="menu-item flex-between" data-url="/pages/messages/index" bindtap="onMenuTap"><text>🔔 消息通知</text><text class="text-secondary">></text></view>
-    </view>
-    <view class="menu-card danger-card" bindtap="onDeregister">
-      <view class="flex-between"><text>⚠️ 注销商家身份</text><text class="text-secondary">></text></view>
+      <view class="menu-item flex-between" bindtap="onDeregister"><text>⚠️ 注销商家身份</text><text class="text-secondary">></text></view>
     </view>
   </block>
 
-  <view wx:if="{{hasLogin}}" class="logout-section safe-bottom">
-    <button class="logout-btn" bindtap="onLogout">退出登录</button>
+  <view wx:if="{{hasLogin}}" class="menu-section safe-bottom">
+    <view class="menu-item flex-between" bindtap="onLogout"><text>🚪 退出登录</text><text class="text-secondary">></text></view>
   </view>
 </view>
