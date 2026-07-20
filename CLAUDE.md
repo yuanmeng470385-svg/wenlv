@@ -84,7 +84,7 @@ All cloud functions return `{ code: 0, data: ..., message: "..." }`. `code !== 0
 **Auth guards are INLINE** — cross-directory `require` fails in WeChat Cloud Functions, so never extract shared auth middleware:
 - Admin: query `users` by `_openid`, check `roles.includes('admin')`
 - User: `const openid = cloud.getWXContext().OPENID; if (!openid) return {code:1002}`
-- Provider: resolve provider from `providers.where({userId: openid})`
+- Provider: resolve provider from `providers.where({userId: openid})` — **MUST also filter by `categoryType`** when the user has multiple identities: accept `role` param, add `query.categoryType = role`, and NEVER use `providerRes.data[0]` blindly. Frontend callers pass `role: app.getActiveRole()`. If this is wrong, all identities share the same data.
 
 Error codes: `1001` (bad params), `1002` (unauthorized), `1003` (not found), `2001` (state conflict, e.g. wrong order status), `2002` (business rule violation), `2003` (payment failure), `9999` (internal).
 
@@ -100,6 +100,7 @@ Error codes: `1001` (bad params), `1002` (unauthorized), `1003` (not found), `20
 **Page lifecycle optimization:**
 - `onShow` fires on every tab switch — avoid repeated cloud calls
 - Cache with flags (`_firstLoad`, `_loaded`, `_lastHasLogin`) — track `loginChanged = hasLogin && !this._lastHasLogin`
+- On role switch: clear provider data (`setData({ provider: null })`) before calling `loadData()`, otherwise cache guard `if (this.data.provider && !this._firstLoad) return` blocks reload
 - Only show `wx.showLoading` on first load, not tab switches
 
 **Other frontend patterns:**
@@ -163,7 +164,8 @@ cancelled   pending_refund (admin approves → cancelled)
 - Provider actions (`providerHandleOrder`): `confirm`, `reject` (auto-refunds), `start`, `complete`
 - Customer auto-cancel: unpaid orders expire; `paid` orders not accepted within 24h → auto-cancelled
 - Cancel refund: <24h = full refund, 24h-48h = 50%, expired = cannot cancel
-- `confirmComplete` transitions `pending_complete` → `completed`
+- `confirmComplete` transitions `pending_complete` → `completed` (both customer AND provider can call it)
+- Provider tabs include `pending_complete` (待确认完成); `completed` tab auto-includes `reviewed` orders
 - STATUS_MAP in `orderList/index.js` maps status keys to Chinese labels
 
 ### Star Rating System
