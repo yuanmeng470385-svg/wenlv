@@ -110,7 +110,7 @@ Page({
         wx.showLoading({ title: '提交中...' });
         try {
           const { callFunction } = require('../../services/cloud');
-          await callFunction('requestDeregister');
+          await callFunction('requestDeregister', { role: app.getActiveRole() });
           wx.hideLoading();
           wx.showToast({ title: '已提交审核', icon: 'success' });
         } catch (err) {

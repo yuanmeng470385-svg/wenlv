@@ -7,17 +7,19 @@ exports.main = async (event, context) => {
   if (!openid) return { code: 1002, message: '未登录' };
 
   try {
-    const providerRes = await db.collection('providers')
-      .where({ userId: openid, status: 'active' }).get();
+    const { role } = event;
+    const provQuery = { userId: openid, status: 'active' };
+    if (role) provQuery.categoryType = role;
+    const providerRes = await db.collection('providers').where(provQuery).get();
     if (providerRes.data.length === 0) {
-      return { code: 1003, message: '您还不是服务商' };
+      return { code: 1003, message: '您还不是该类型的服务商' };
     }
     const provider = providerRes.data[0];
 
     const unfinishedOrders = await db.collection('orders')
       .where({
         'items.providerId': provider._id,
-        orderStatus: db.command.nin(['completed', 'reviewed', 'cancelled']),
+        orderStatus: db.command.nin(['pending_pay', 'completed', 'reviewed', 'cancelled', 'pending_complete', 'pending_refund']),
       }).count();
     if (unfinishedOrders.total > 0) {
       return { code: 2001, message: '您有未完成的订单，暂无法注销' };
