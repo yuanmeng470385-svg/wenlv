@@ -29,8 +29,9 @@ exports.main = async (event, context) => {
     }
 
     if (status) {
-      // "已完成" 同时包含已评价的订单
-      if (status === 'completed') {
+      if (Array.isArray(status)) {
+        where.orderStatus = db.command.in(status);
+      } else if (status === 'completed') {
         where.orderStatus = db.command.in(['completed', 'reviewed']);
       } else {
         where.orderStatus = status;

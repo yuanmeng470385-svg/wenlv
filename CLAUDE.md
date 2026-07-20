@@ -64,6 +64,7 @@ wenlv/
 │   │   ├── booking/      # 4-step booking flow
 │   │   ├── admin/        # Admin pages (flat files, NOT index/ subdirectories)
 │   │   └── provider/     # Provider self-service pages
+│   ├── components/       # Shared components (icon, empty-state, error-state, loading-skeleton)
 │   └── services/         # Shared JS modules
 │       ├── cloud.js      # callFunction wrapper (unified {code,data,message})
 │       └── serviceService.js  # Provider/category API wrappers
@@ -112,6 +113,13 @@ Error codes: `1001` (bad params), `1002` (unauthorized), `1003` (not found), `20
 
 **Admin pages** are flat files: `pages/admin/providers.js` (not `pages/admin/providers/index.js`). Register as `pages/admin/providers` in `app.json`.
 
+**Shared components** in `components/`: `<icon>` (named icons as alternative to emoji), `<empty-state>`, `<error-state>`, `<loading-skeleton>`. Register per-page via `usingComponents` in the page's `.json` file.
+
+**WXSS compatibility:**
+- `gap` in flexbox is NOT supported on older WeChat WebViews — use `justify-content: space-between` + margin/padding instead
+- `calc()` can produce rounding errors on mobile — prefer `width: 50%` + `box-sizing: border-box` + inner padding for 2-column grids
+- CSS variables (`var(--bg-page)`, `var(--bg-white)`, `var(--color-primary)`, etc.) are defined in `styles/variables.wxss` — use them instead of hardcoded colors
+
 ### Role System
 
 `users.roles[]`: `user`, `photographer`/`makeup`/`hanfu_shop` (provider), `admin`.
@@ -136,6 +144,14 @@ Two-tier system (transitioning from provider-level to portfolio-level):
 - Legacy (fallback): `toggleFeatured` + `getFeaturedProviders` (provider-level)
 - Banner management on homepage: `saveBanner` already supports `image` field
 
+### Hanfu Shop Location (hanfuLocation)
+
+Hanfu shops use a dedicated discovery page (`pages/hanfuLocation/`) instead of the regular `serviceList`:
+- Auto-locates user via `wx.getLocation` + reverse geocode via `searchNearbyShops` cloud function (Tencent Maps API)
+- Manual city input strips "市" suffix for consistency
+- `getProviderList` uses `db.RegExp` for city filter (case-insensitive), NOT exact match
+- Nearby external shops shown alongside platform-registered ones
+
 ### Order State Machine
 
 ```
@@ -149,6 +165,14 @@ cancelled   pending_refund (admin approves → cancelled)
 - Cancel refund: <24h = full refund, 24h-48h = 50%, expired = cannot cancel
 - `confirmComplete` transitions `pending_complete` → `completed`
 - STATUS_MAP in `orderList/index.js` maps status keys to Chinese labels
+
+### Star Rating System
+
+- Review page (`pages/review/create`) has 1-5 star selector using `<icon name="star-filled">` / `<icon name="star">`
+- `createReview` cloud function auto-computes average rating per provider after each review: sums all reviews → `Math.round(avg * 10) / 10` (1 decimal)
+- Stored in `providers.rating` and `providers.reviewCount`
+- Displayed on: `serviceDetail` header, provider self-view (`index.wxml`), `serviceList` cards
+- `getProviderList` sorts by `rating desc` by default
 
 ### Design System
 

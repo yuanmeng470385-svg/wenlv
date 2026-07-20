@@ -19,11 +19,13 @@ Page({
     userTabs: [
       { key: 'all', label: '全部' },{ key: 'pending_pay', label: '待付款' },
       { key: 'paid', label: '已付款' },{ key: 'confirmed', label: '已确认' },
-      { key: 'in_progress', label: '进行中' },{ key: 'completed', label: '已完成' },
+      { key: 'in_progress', label: '进行中' },{ key: 'pending_complete', label: '待确认' },
+      { key: 'completed', label: '已完成' },
     ],
     providerTabs: [
       { key: 'all', label: '全部' },{ key: 'paid', label: '待确认' },
       { key: 'confirmed', label: '已确认' },{ key: 'in_progress', label: '进行中' },
+      { key: 'pending_complete', label: '待确认完成' },
       { key: 'completed', label: '已完成' },{ key: 'cancelled', label: '已取消' },
     ],
     orders: [], page: 1, total: 0, hasMore: true,
@@ -73,7 +75,10 @@ Page({
       const fnName = isProvider ? 'getProviderOrders' : 'getOrderList';
       const params = { page: this.data.page, pageSize: 10 };
       if (isProvider) params.role = this.data.activeRole;
-      if (this.data.currentTab !== 'all') params.status = this.data.currentTab;
+      if (this.data.currentTab !== 'all') {
+        // 已完成tab同时包含completed和reviewed（用户和商家都一样）
+        params.status = this.data.currentTab === 'completed' ? ['completed', 'reviewed'] : this.data.currentTab;
+      }
 
       const res = await callFunction(fnName, params);
       const rawList = this.data.page === 1 ? res.list : [...this.data.orders, ...res.list];
@@ -106,6 +111,28 @@ Page({
       wx.hideLoading();
       wx.showToast({ title: '操作失败', icon: 'none' });
     }
+  },
+
+  async onConfirmComplete(e) {
+    const orderId = e.currentTarget.dataset.id;
+    wx.showModal({
+      title: '确认完成', content: '确认该订单已完成服务？',
+      success: async (res) => {
+        if (!res.confirm) return;
+        wx.showLoading({ title: '处理中...' });
+        try {
+          const { callFunction } = require('../../services/cloud');
+          await callFunction('confirmComplete', { orderId });
+          wx.hideLoading();
+          wx.showToast({ title: '已确认完成', icon: 'success' });
+          this.setData({ page: 1, orders: [], hasMore: true });
+          this.loadOrders();
+        } catch (err) {
+          wx.hideLoading();
+          wx.showToast({ title: (err && err.message) || '操作失败', icon: 'none' });
+        }
+      }
+    });
   },
 
   async onCallCustomer(e) {

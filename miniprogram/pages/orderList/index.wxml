@@ -69,6 +69,7 @@
         <button wx:if="{{item.orderStatus === 'paid'}}" class="btn-confirm" data-id="{{item._id}}" data-action="confirm" catchtap="onProviderAction">确认接单</button>
         <button wx:if="{{item.orderStatus === 'confirmed'}}" class="btn-confirm" data-id="{{item._id}}" data-action="start" catchtap="onProviderAction">开始服务</button>
         <button wx:if="{{item.orderStatus === 'in_progress'}}" class="btn-confirm" data-id="{{item._id}}" data-action="complete" catchtap="onProviderAction">完成服务</button>
+        <button wx:if="{{item.orderStatus === 'pending_complete'}}" class="btn-confirm" data-id="{{item._id}}" catchtap="onConfirmComplete">确认完成</button>
       </view>
     </view>
   </block>

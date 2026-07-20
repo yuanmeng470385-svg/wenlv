@@ -25,7 +25,9 @@ exports.main = async (event, context) => {
     const itemMatch = { providerId: provider._id };
     if (role) itemMatch.categoryType = role;
     const where = { items: db.command.elemMatch(itemMatch) };
-    if (status) where.orderStatus = status;
+    if (status) {
+      where.orderStatus = Array.isArray(status) ? db.command.in(status) : status;
+    }
 
     const total = (await db.collection('orders').where(where).count()).total;
     const list = await db.collection('orders').where(where).orderBy('createTime', 'desc').skip((page - 1) * pageSize).limit(pageSize).get();
