@@ -13,7 +13,10 @@ exports.main = async (event, context) => {
 
   try {
     // 找到服务商
-    const providerRes = await db.collection('providers').where({ userId: openid, status: 'active' }).get();
+    const { role } = event;
+    const query = { userId: openid, status: 'active' };
+    if (role) query.categoryType = role;
+    const providerRes = await db.collection('providers').where(query).get();
     if (providerRes.data.length === 0) return { code: 1003, message: '您不是服务商' };
     const provider = providerRes.data[0];
 

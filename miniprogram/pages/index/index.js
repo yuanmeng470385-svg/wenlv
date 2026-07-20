@@ -114,7 +114,7 @@ Page({
         if (this.data.provider && !this._firstLoad) return;
         const { callFunction } = require('../../services/cloud');
         const { getProviderDetail } = require('../../services/serviceService');
-        const myRes = await callFunction('getMyProvider');
+        const myRes = await callFunction('getMyProvider', { role: this.data.activeRole });
         if (myRes && myRes._id) {
           const detail = await getProviderDetail(myRes._id);
           const CATEGORY_EMOJI = { photographer: '📷', makeup: '💄', hanfu_shop: '👘' };

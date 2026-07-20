@@ -1,5 +1,5 @@
-const { uploadFile } = require('../../services/cloud');
-const { callFunction } = require('../../services/cloud');
+const { uploadFile, callFunction } = require('../../services/cloud');
+const app = getApp();
 
 Page({
   data: {
@@ -35,6 +35,7 @@ Page({
     this.setData({ uploading: true });
     try {
       await callFunction('uploadPortfolio', {
+        role: app.getActiveRole(),
         title: this.data.title,
         description: this.data.description,
         images: this.data.images,

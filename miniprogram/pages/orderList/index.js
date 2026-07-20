@@ -57,7 +57,7 @@ Page({
   async loadDashboard() {
     try {
       const { callFunction } = require('../../services/cloud');
-      const res = await callFunction('getProviderDashboard');
+      const res = await callFunction('getProviderDashboard', { role: this.data.activeRole });
       this.setData({ dashboard: res.stats || this.data.dashboard });
     } catch (e) { /* ignore */ }
   },

@@ -1,9 +1,11 @@
+const app = getApp();
+
 Page({
   data: { name: '', phone: '', description: '', featureTags: '' },
   onLoad() { this.loadProfile(); },
   async loadProfile() {
     const { callFunction } = require('../../services/cloud');
-    try { const data = await callFunction('getMyProvider'); this.setData(data); } catch (e) {}
+    try { const data = await callFunction('getMyProvider', { role: app.getActiveRole() }); this.setData(data); } catch (e) {}
   },
   onInputChange(e) { this.setData({ [e.currentTarget.dataset.field]: e.detail.value }); },
   async onSubmit() {

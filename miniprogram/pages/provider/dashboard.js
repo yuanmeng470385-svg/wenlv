@@ -1,3 +1,5 @@
+const app = getApp();
+
 Page({
   data: {
     stats: { todayOrders: 0, pendingOrders: 0, totalIncome: 0, totalOrders: 0 },
@@ -12,7 +14,7 @@ Page({
     wx.showLoading({ title: '加载中...' });
     try {
       const { callFunction } = require('../../services/cloud');
-      const data = await callFunction('getProviderDashboard');
+      const data = await callFunction('getProviderDashboard', { role: app.getActiveRole() });
       this.setData({
         stats: data.stats || this.data.stats,
         recentOrders: data.recentOrders || [],

@@ -1,3 +1,5 @@
+const app = getApp();
+
 Page({
   data: {
     isEdit: false,
@@ -68,6 +70,7 @@ Page({
     try {
       const { callFunction } = require('../../services/cloud');
       await callFunction('saveServiceItem', {
+        role: app.getActiveRole(),
         serviceItemId: this.data.isEdit ? this.data.serviceItemId : null,
         name: f.name.trim(),
         description: f.description.trim(),

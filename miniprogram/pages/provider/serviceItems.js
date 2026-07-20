@@ -1,3 +1,5 @@
+const app = getApp();
+
 Page({
   data: { items: [], loading: true },
 
@@ -7,7 +9,7 @@ Page({
     this.setData({ loading: true });
     try {
       const { callFunction } = require('../../services/cloud');
-      const data = await callFunction('getMyServiceItems');
+      const data = await callFunction('getMyServiceItems', { role: app.getActiveRole() });
       this.setData({ items: data || [] });
     } catch (err) {
       wx.showToast({ title: '加载失败', icon: 'none' });
@@ -31,6 +33,7 @@ Page({
     try {
       const { callFunction } = require('../../services/cloud');
       await callFunction('saveServiceItem', {
+        role: app.getActiveRole(),
         serviceItemId: item._id, name: item.name, price: item.price / 100,
         priceType: item.priceType, duration: item.duration, status: newStatus,
         description: item.description, originalPrice: item.originalPrice / 100,

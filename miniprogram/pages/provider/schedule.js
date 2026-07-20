@@ -1,3 +1,5 @@
+const app = getApp();
+
 Page({
   data: { dateList: [], timeSlots: [], selectedDate: '', selectedLabel: '' },
   onLoad() {
@@ -16,7 +18,7 @@ Page({
     wx.showLoading({ title: '加载中...' });
     try {
       const { callFunction } = require('../../services/cloud');
-      const data = await callFunction('getMyTimeSlots', { date });
+      const data = await callFunction('getMyTimeSlots', { date, role: app.getActiveRole() });
       this.setData({ timeSlots: data.slots || [] });
     } catch (e) { wx.showToast({ title: '加载失败', icon: 'none' }); }
     finally { wx.hideLoading(); }
@@ -26,7 +28,7 @@ Page({
     const time = e.currentTarget.dataset.time;
     try {
       const { callFunction } = require('../../services/cloud');
-      await callFunction('toggleTimeSlot', { date: this.data.selectedDate, time });
+      await callFunction('toggleTimeSlot', { date: this.data.selectedDate, time, role: app.getActiveRole() });
       this.onSelectDate({ currentTarget: { dataset: { date: this.data.selectedDate, label: this.data.selectedLabel } } });
     } catch (e) { wx.showToast({ title: '操作失败', icon: 'none' }); }
   },
@@ -36,7 +38,7 @@ Page({
     wx.showLoading({ title: '处理中...' });
     try {
       const { callFunction } = require('../../services/cloud');
-      await callFunction('toggleTimeSlot', { date: this.data.selectedDate, action });
+      await callFunction('toggleTimeSlot', { date: this.data.selectedDate, action, role: app.getActiveRole() });
       wx.hideLoading();
       wx.showToast({ title: action === 'all_on' ? '全天已开启' : '全天已关闭', icon: 'success' });
       this.onSelectDate({ currentTarget: { dataset: { date: this.data.selectedDate, label: this.data.selectedLabel } } });

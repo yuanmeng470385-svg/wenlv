@@ -1,4 +1,5 @@
 const { callFunction } = require('../../services/cloud');
+const app = getApp();
 
 Page({
   data: { works: [], page: 1, hasMore: true },
@@ -9,7 +10,7 @@ Page({
     if (!this.data.hasMore) return;
     wx.showLoading({ title: '加载中...' });
     try {
-      const data = await callFunction('getMyPortfolios', { page: this.data.page, pageSize: 20 });
+      const data = await callFunction('getMyPortfolios', { page: this.data.page, pageSize: 20, role: app.getActiveRole() });
       const list = this.data.page === 1 ? data.list : [...this.data.works, ...data.list];
       this.setData({ works: list, hasMore: list.length < data.total });
     } catch (err) { console.error(err); }
