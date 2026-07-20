@@ -70,12 +70,14 @@
     <empty-state wx:if="{{!featuredWorks.length}}" text="暂无精选作品" icon="photo" />
     <view class="featured-grid" wx:else>
       <view class="featured-item" wx:for="{{featuredWorks}}" wx:key="_id" data-id="{{item.providerId}}" bindtap="onProviderTap">
-        <image wx:if="{{item.image}}" src="{{item.image}}" mode="aspectFill" class="featured-img" />
-        <view wx:else class="featured-img img-ph">{{item.categoryEmoji}}</view>
-        <view class="featured-info">
-          <image wx:if="{{item.providerAvatar}}" src="{{item.providerAvatar}}" mode="aspectFill" class="featured-avatar" />
-          <view wx:else class="featured-avatar img-ph-sm">{{item.categoryEmoji}}</view>
-          <text class="featured-name text-ellipsis">{{item.providerName}}</text>
+        <view class="featured-item-inner">
+          <image wx:if="{{item.image}}" src="{{item.image}}" mode="aspectFill" class="featured-img" />
+          <view wx:else class="featured-img img-ph">{{item.categoryEmoji}}</view>
+          <view class="featured-info">
+            <image wx:if="{{item.providerAvatar}}" src="{{item.providerAvatar}}" mode="aspectFill" class="featured-avatar" />
+            <view wx:else class="featured-avatar img-ph-sm">{{item.categoryEmoji}}</view>
+            <text class="featured-name text-ellipsis">{{item.providerName}}</text>
+          </view>
         </view>
       </view>
     </view>
