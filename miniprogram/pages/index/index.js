@@ -38,7 +38,8 @@ Page({
     if (adminMode && hasLogin) {
       this.loadAdminData();
     } else if (hasLogin && (this._firstLoad || roleChanged || loginChanged)) {
-      // 首次/切换身份/刚登录 → 拉数据；普通切Tab用缓存
+      // 切换身份时清空旧缓存，否则 loadData 里 provider 还在直接 return 了
+      if (roleChanged) this.setData({ provider: null, serviceItems: [], portfolios: [], reviews: [] });
       this.loadData();
     }
     this._firstLoad = false;
