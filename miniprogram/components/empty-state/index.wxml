@@ -1,0 +1,12 @@
+<view class="empty-state">
+  <view class="empty-icon">
+    <icon name="{{icon}}" size="120" color="#E4D0BC" />
+  </view>
+  <view class="empty-text">{{text}}</view>
+  <view wx:if="{{subText}}" class="empty-sub-text">{{subText}}</view>
+  <button
+    wx:if="{{showBtn}}"
+    class="empty-btn"
+    bindtap="onAction"
+  >{{btnText}}</button>
+</view>

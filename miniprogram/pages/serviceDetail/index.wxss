@@ -28,6 +28,7 @@
 .bottom-bar { display: flex; gap: 16rpx; }
 .call-btn { width: 180rpx; height: 88rpx; background: var(--bg-white); color: var(--color-primary); border: 2rpx solid var(--color-primary); font-size: 26rpx; border-radius: 44rpx; display: flex; align-items: center; justify-content: center; padding: 0; }
 .book-btn { height: 88rpx; background: var(--color-primary); color: #fff; font-size: 32rpx; border-radius: 44rpx; display: flex; align-items: center; justify-content: center; }
-.ml-10 { margin-left: 10rpx; } .ml-20 { margin-left: 20rpx; } .p-30 { padding: 30rpx; }
+.ml-10 { margin-left: 10rpx; } .ml-20 { margin-left: 20rpx; } .mr-10 { margin-right: 10rpx; } .p-30 { padding: 30rpx; }
 .empty-hint { padding: 80rpx 0; text-align: center; }
+.icon-row { display: flex; align-items: center; gap: 4rpx; }
 .mt-10 { margin-top: 10rpx; } .mt-20 { margin-top: 20rpx; }

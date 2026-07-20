@@ -7,10 +7,10 @@
   </view>
 
   <view class="quick-actions">
-    <view class="action-card" bindtap="goUploadWork"><text class="text-xl">📤</text><text>上传作品</text></view>
-    <view class="action-card" bindtap="goMyWorks"><text class="text-xl">🖼️</text><text>作品管理</text></view>
-    <view class="action-card" bindtap="goSchedule"><text class="text-xl">📅</text><text>档期管理</text></view>
-    <view class="action-card" bindtap="goEditProfile"><text class="text-xl">✏️</text><text>编辑资料</text></view>
+    <view class="action-card" bindtap="goUploadWork"><view class="icon-row"><icon name="upload" size="40rpx" /><text>上传作品</text></view></view>
+    <view class="action-card" bindtap="goMyWorks"><view class="icon-row"><icon name="photo" size="40rpx" /><text>作品管理</text></view></view>
+    <view class="action-card" bindtap="goSchedule"><view class="icon-row"><icon name="calendar" size="40rpx" /><text>档期管理</text></view></view>
+    <view class="action-card" bindtap="goEditProfile"><view class="icon-row"><icon name="edit" size="40rpx" /><text>编辑资料</text></view></view>
   </view>
 
   <view class="section card"><text class="text-bold text-lg">最近订单</text>

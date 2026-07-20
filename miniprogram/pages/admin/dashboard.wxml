@@ -1,5 +1,5 @@
 <view class="page-admin">
-  <view class="admin-header">🔧 管理中心</view>
+  <view class="admin-header"><view class="icon-row"><icon name="wrench" size="36rpx" /><text>管理中心</text></view></view>
 
   <view class="stats-grid">
     <view class="stat-card warn" bindtap="goProviders">
@@ -23,15 +23,15 @@
   </view>
 
   <view class="menu-section">
-    <view class="menu-item flex-between" bindtap="goProviders"><text>🏪 服务商入驻审核</text><text class="text-secondary">></text></view>
-    <view class="menu-item flex-between" bindtap="goServiceItems"><text>📦 套餐审核</text><text class="text-secondary">></text></view>
-    <view class="menu-item flex-between" bindtap="goPortfolios"><text>🖼️ 作品审核</text><text class="text-secondary">></text></view>
-    <view class="menu-item flex-between" bindtap="goRefunds"><text>💰 退款审核</text><text class="text-secondary">></text></view>
-    <view class="menu-item flex-between" bindtap="goAvatarUpdates"><text>🖼️ 头像/背景图修改审核</text><text class="text-secondary">></text></view>
-    <view class="menu-item flex-between" bindtap="goDeregistrations"><text>⚠️ 商家注销审核</text><text class="text-secondary">></text></view>
+    <view class="menu-item flex-between" bindtap="goProviders"><view class="icon-row"><icon name="shop" size="36rpx" /><text>服务商入驻审核</text></view><icon name="chevron-right" size="28rpx" /></view>
+    <view class="menu-item flex-between" bindtap="goServiceItems"><view class="icon-row"><icon name="package" size="36rpx" /><text>套餐审核</text></view><icon name="chevron-right" size="28rpx" /></view>
+    <view class="menu-item flex-between" bindtap="goPortfolios"><view class="icon-row"><icon name="photo" size="36rpx" /><text>作品审核</text></view><icon name="chevron-right" size="28rpx" /></view>
+    <view class="menu-item flex-between" bindtap="goRefunds"><view class="icon-row"><icon name="money" size="36rpx" /><text>退款审核</text></view><icon name="chevron-right" size="28rpx" /></view>
+    <view class="menu-item flex-between" bindtap="goAvatarUpdates"><view class="icon-row"><icon name="photo" size="36rpx" /><text>头像/背景图修改审核</text></view><icon name="chevron-right" size="28rpx" /></view>
+    <view class="menu-item flex-between" bindtap="goDeregistrations"><view class="icon-row"><icon name="warning" size="36rpx" /><text>商家注销审核</text></view><icon name="chevron-right" size="28rpx" /></view>
   </view>
 
   <view class="menu-section mt-20">
-    <view class="menu-item flex-between" bindtap="goUsers"><text>👤 用户管理</text><text class="text-secondary">></text></view>
+    <view class="menu-item flex-between" bindtap="goUsers"><view class="icon-row"><icon name="user" size="36rpx" /><text>用户管理</text></view><icon name="chevron-right" size="28rpx" /></view>
   </view>
 </view>

@@ -54,7 +54,10 @@
   <view class="category-section">
     <view class="category-grid">
       <view class="category-item" wx:for="{{categories}}" wx:key="_id" data-type="{{item.type}}" bindtap="onCategoryTap">
-        <view class="category-icon-box"><text class="category-icon">{{item.icon || '📷'}}</text></view>
+        <view class="category-icon-box">
+          <icon wx:if="{{!item.icon}}" name="camera" size="52rpx" />
+          <text wx:else class="category-icon">{{item.icon}}</text>
+        </view>
         <text class="category-name">{{item.name}}</text>
       </view>
     </view>
@@ -64,9 +67,7 @@
     <view class="section-header flex-between">
       <text class="text-lg text-bold">优秀展示</text>
     </view>
-    <view wx:if="{{!featuredWorks.length}}" class="empty-hint">
-      <text class="text-secondary">暂无精选作品</text>
-    </view>
+    <empty-state wx:if="{{!featuredWorks.length}}" text="暂无精选作品" icon="photo" />
     <view class="featured-grid" wx:else>
       <view class="featured-item" wx:for="{{featuredWorks}}" wx:key="_id" data-id="{{item.providerId}}" bindtap="onProviderTap">
         <image wx:if="{{item.image}}" src="{{item.image}}" mode="aspectFill" class="featured-img" />
@@ -102,6 +103,10 @@
       </view>
       <view class="flex-1 ml-20">
         <text class="text-xl text-bold">{{provider.name}}</text>
+        <view wx:if="{{provider.rating}}" class="flex-row mt-10">
+          <view class="icon-row mr-10"><icon name="star-filled" size="28rpx" /><text class="text-price text-bold">{{provider.rating}}</text></view>
+          <text class="text-sm text-hint">({{provider.reviewCount}}条评价)</text>
+        </view>
       </view>
     </view>
     <view wx:if="{{provider.featureTags}}" class="tag-row mt-20">
@@ -136,7 +141,7 @@
         <image src="{{item.images[0]}}" mode="aspectFill" class="work-img" />
         <view class="work-overlay">
           <text class="work-title text-ellipsis">{{item.title}}</text>
-          <text class="text-sm">♥ {{item.likeCount || 0}}</text>
+          <view class="icon-row"><icon name="heart-filled" size="28rpx" /><text class="text-sm">{{item.likeCount || 0}}</text></view>
         </view>
       </view>
     </view>
@@ -145,7 +150,7 @@
   <view wx:if="{{activeTab==='reviews'}}" class="tab-content">
     <view wx:for="{{reviews}}" wx:key="_id" class="review-card card">
       <view class="flex-between">
-        <text class="text-sm text-price">★ {{item.rating}}</text>
+        <view class="icon-row"><icon name="star-filled" size="28rpx" /><text class="text-sm text-price">{{item.rating}}</text></view>
         <text class="text-sm text-hint">{{item.createTime}}</text>
       </view>
       <text class="mt-10">{{item.content}}</text>

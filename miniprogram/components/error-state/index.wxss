@@ -1,0 +1,38 @@
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80rpx 60rpx;
+  box-sizing: border-box;
+}
+
+.error-icon {
+  margin-bottom: 24rpx;
+}
+
+.error-message {
+  font-size: 28rpx;
+  color: #666666;
+  line-height: 40rpx;
+  text-align: center;
+}
+
+.retry-btn {
+  margin-top: 40rpx;
+  padding: 0 64rpx;
+  height: 72rpx;
+  line-height: 72rpx;
+  font-size: 28rpx;
+  color: #FFFFFF;
+  background: #B8875E;
+  border: none;
+  border-radius: 36rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.retry-btn::after {
+  border: none;
+}

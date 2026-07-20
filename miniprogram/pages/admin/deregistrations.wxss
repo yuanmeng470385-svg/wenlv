@@ -7,3 +7,4 @@
 .mt-20 { margin-top: 20rpx; }
 .ml-10 { margin-left: 10rpx; }
 .empty-hint { padding: 120rpx 0; text-align: center; }
+.icon-row { display: flex; align-items: center; gap: 8rpx; }

@@ -8,3 +8,4 @@
 .stat-label { display: block; font-size: 24rpx; color: var(--text-hint); margin-top: 8rpx; }
 .menu-section { background: var(--bg-white); margin-top: 20rpx; }
 .menu-item { padding: 30rpx; border-bottom: 1rpx solid var(--border-color); }
+.icon-row { display: flex; align-items: center; gap: 8rpx; }

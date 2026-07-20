@@ -37,3 +37,5 @@
 .py-20 { padding-top: 20rpx; padding-bottom: 20rpx; }
 
 .empty-hint { padding: 120rpx 0; text-align: center; }
+
+.icon-row { display: flex; align-items: center; gap: 4rpx; }

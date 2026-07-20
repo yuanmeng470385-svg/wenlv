@@ -16,7 +16,7 @@ exports.main = async (event, context) => {
     console.log(`[getProviderList] caller=${openid || 'anonymous'}`, JSON.stringify(event));
     const where = { status: 'active' };
     if (categoryType) where.categoryType = categoryType;
-    if (city) where.city = city;
+    if (city) where.city = db.RegExp({ regexp: city.trim(), options: 'i' });
     if (level !== undefined) where.level = level;
     if (keyword && keyword.trim()) {
       const kw = keyword.trim();

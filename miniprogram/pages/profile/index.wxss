@@ -26,3 +26,5 @@
 .menu-section { margin-top: 20rpx; background: var(--bg-white); }
 .menu-item { padding: 30rpx; border-bottom: 1rpx solid var(--border-color); }
 .menu-item:last-child { border-bottom: none; }
+
+.icon-row { display: flex; align-items: center; gap: 4rpx; }

@@ -6,10 +6,10 @@
   <view wx:for="{{list}}" wx:key="_id" class="portfolio-row flex-between">
     <view class="flex-row flex-1">
       <image wx:if="{{item.images && item.images[0]}}" src="{{item.images[0]}}" mode="aspectFill" class="thumb" data-url="{{item.images[0]}}" bindtap="previewImage" />
-      <view wx:else class="thumb img-ph">🖼️</view>
+      <view wx:else class="thumb img-ph"><icon name="photo" size="40rpx" /></view>
       <view class="ml-20">
         <text class="text-bold text-ellipsis">{{item.title}}</text>
-        <text class="text-sm text-secondary">❤️ {{item.likeCount || 0}}</text>
+        <view class="icon-row"><icon name="heart" size="28rpx" /><text class="text-sm text-secondary">{{item.likeCount || 0}}</text></view>
       </view>
     </view>
     <switch checked="{{item.isFeatured}}" data-id="{{item._id}}" bindchange="onToggleFeatured" color="#C48B5C" />

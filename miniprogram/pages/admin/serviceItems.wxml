@@ -6,7 +6,7 @@
     <text class="text-sm text-secondary mt-10">服务商: {{item.providerName}} | {{getTypeLabel(item.priceType)}}</text>
     <view class="flex-between mt-10">
       <text class="text-price text-lg">¥{{item.price/100}}</text>
-      <text class="text-sm text-secondary">⏱ {{item.duration}}分钟</text>
+      <view class="icon-row"><icon name="clock" size="28rpx" /><text class="text-sm text-secondary">{{item.duration}}分钟</text></view>
     </view>
     <text class="text-sm text-secondary mt-10">{{item.description}}</text>
     <view class="action-btns mt-20">

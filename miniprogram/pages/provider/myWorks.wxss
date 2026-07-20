@@ -4,3 +4,4 @@
 .work-info { display: flex; flex-direction: column; gap: 6rpx; }
 .del-btn { padding: 8rpx 16rpx; font-size: 24rpx; }
 .empty-hint { padding: 120rpx 0; text-align: center; }
+.icon-row { display: flex; align-items: center; gap: 4rpx; }

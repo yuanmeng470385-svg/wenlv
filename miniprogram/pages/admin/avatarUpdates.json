@@ -1,4 +1,4 @@
 {
-  "usingComponents": {},
+  "usingComponents": {"icon":"/components/icon/index"},
   "navigationBarTitleText": "头像/背景图审核"
 }

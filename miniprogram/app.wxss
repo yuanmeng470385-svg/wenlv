@@ -80,35 +80,60 @@ page {
 .tag-warning { background: #FDF6EB; color: var(--color-warning); }
 .tag-info    { background: #EEF4FC; color: var(--color-info); }
 
-/* 按钮 */
+/* 图标 + 文字行 */
+.icon-row { display: flex; align-items: center; gap: 4rpx; }
+.icon-row-wide { display: flex; align-items: center; gap: 8rpx; }
+
+/* 按钮统一体系 */
 .btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--btn-height);
+  padding: 0 var(--spacing-lg);
   background: var(--color-primary);
   color: #fff;
   border: none;
-  border-radius: 32rpx;
-  padding: 22rpx 40rpx;
-  font-size: 30rpx;
+  border-radius: var(--btn-radius);
+  font-size: var(--btn-font-size);
   font-weight: 600;
-  text-align: center;
-  display: block;
 }
+.btn-primary:active { opacity: 0.85; }
+
 .btn-outline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--btn-height);
+  padding: 0 var(--spacing-lg);
   background: var(--bg-white);
   color: var(--text-primary);
   border: 1rpx solid var(--border-color);
-  border-radius: 32rpx;
-  padding: 16rpx 28rpx;
-  font-size: 26rpx;
-  text-align: center;
+  border-radius: var(--btn-radius);
+  font-size: var(--btn-font-size);
 }
+.btn-outline:active { background: var(--bg-page); }
+
 .btn-danger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--btn-height);
+  padding: 0 var(--spacing-lg);
   background: var(--color-danger);
   color: #fff;
   border: none;
-  border-radius: 32rpx;
-  padding: 16rpx 28rpx;
+  border-radius: var(--btn-radius);
+  font-size: var(--btn-font-size);
+  font-weight: 600;
+}
+.btn-danger:active { opacity: 0.85; }
+
+.btn-sm {
+  height: 64rpx;
+  padding: 0 24rpx;
   font-size: 26rpx;
-  text-align: center;
+  border-radius: 32rpx;
 }
 
 /* 状态文字 */

@@ -6,3 +6,4 @@
 .btn-reject { padding: 14rpx 40rpx; font-size: 26rpx; background: var(--bg-page); color: var(--text-hint); border-radius: 30rpx; }
 .empty-hint { padding: 120rpx 0; text-align: center; }
 .mt-10 { margin-top: 10rpx; } .mt-20 { margin-top: 20rpx; }
+.icon-row { display: flex; align-items: center; gap: 8rpx; }

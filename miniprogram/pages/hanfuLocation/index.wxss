@@ -111,3 +111,4 @@
 /* 状态 */
 .state-loading { text-align: center; padding: 60rpx 0; color: var(--text-hint); font-size: 28rpx; }
 .state-empty { text-align: center; padding: 60rpx 0; color: var(--text-disabled); font-size: 26rpx; }
+.icon-row { display: flex; align-items: center; gap: 4rpx; }

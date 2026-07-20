@@ -43,11 +43,11 @@
         <view class="stat-card"><text class="stat-num">{{dashboard.totalOrders}}</text><text class="stat-label">总订单</text></view>
       </view>
       <view class="quick-row">
-        <view class="quick-item" bindtap="goUploadWork"><text class="quick-icon">📤</text><text class="quick-label">上传作品</text></view>
-        <view class="quick-item" bindtap="goMyWorks"><text class="quick-icon">🖼️</text><text class="quick-label">作品管理</text></view>
-        <view class="quick-item" bindtap="goServiceItems"><text class="quick-icon">📦</text><text class="quick-label">套餐管理</text></view>
-        <view class="quick-item" bindtap="goSchedule"><text class="quick-icon">📅</text><text class="quick-label">档期管理</text></view>
-        <view class="quick-item" bindtap="goEditProfile"><text class="quick-icon">✏️</text><text class="quick-label">编辑资料</text></view>
+        <view class="quick-item" bindtap="goUploadWork"><icon name="upload" size="44rpx" /><text class="quick-label">上传作品</text></view>
+        <view class="quick-item" bindtap="goMyWorks"><icon name="photo" size="44rpx" /><text class="quick-label">作品管理</text></view>
+        <view class="quick-item" bindtap="goServiceItems"><icon name="package" size="44rpx" /><text class="quick-label">套餐管理</text></view>
+        <view class="quick-item" bindtap="goSchedule"><icon name="calendar" size="44rpx" /><text class="quick-label">档期管理</text></view>
+        <view class="quick-item" bindtap="goEditProfile"><icon name="edit" size="44rpx" /><text class="quick-label">编辑资料</text></view>
       </view>
     </view>
 
@@ -62,7 +62,7 @@
       </view>
       <view class="flex-row mt-10">
         <text class="text-sm text-secondary">{{item.contactName}} {{item.contactPhone}}</text>
-        <text class="call-icon ml-10" catchtap="onCallCustomer" data-id="{{item._id}}">📞</text>
+        <icon name="phone" size="36rpx" class="ml-10" catchtap="onCallCustomer" data-id="{{item._id}}" />
       </view>
       <view class="action-btns mt-20">
         <button wx:if="{{item.orderStatus === 'paid'}}" class="btn-refuse" data-id="{{item._id}}" data-action="reject" catchtap="onProviderAction">拒绝</button>
@@ -73,6 +73,6 @@
     </view>
   </block>
 
-  <view wx:if="{{!orders.length}}" class="empty-hint"><text class="text-secondary">暂无订单</text></view>
+  <empty-state wx:if="{{!orders.length}}" text="暂无订单" />
   </block>
 </view>

@@ -4,7 +4,7 @@
     <view class="work-info flex-1">
       <text class="text-bold">{{item.title}}</text>
       <text class="text-sm text-secondary">状态: {{item.status}}</text>
-      <text class="text-sm text-secondary">❤️ {{item.likeCount || 0}}</text>
+      <view class="icon-row"><icon name="heart-filled" size="24rpx" /><text class="text-sm text-secondary">{{item.likeCount || 0}}</text></view>
     </view>
     <text class="del-btn text-price" data-id="{{item._id}}" bindtap="onDelete">删除</text>
   </view>

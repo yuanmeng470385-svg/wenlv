@@ -1,0 +1,48 @@
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80rpx 60rpx;
+  box-sizing: border-box;
+  background: transparent;
+}
+
+.empty-icon {
+  margin-bottom: 32rpx;
+  opacity: 0.6;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #666666;
+  line-height: 40rpx;
+  text-align: center;
+}
+
+.empty-sub-text {
+  font-size: 24rpx;
+  color: #999999;
+  line-height: 36rpx;
+  text-align: center;
+  margin-top: 12rpx;
+}
+
+.empty-btn {
+  margin-top: 40rpx;
+  padding: 0 48rpx;
+  height: 72rpx;
+  line-height: 72rpx;
+  font-size: 28rpx;
+  color: #B8875E;
+  background: transparent;
+  border: 2rpx solid #B8875E;
+  border-radius: 36rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-btn::after {
+  border: none;
+}

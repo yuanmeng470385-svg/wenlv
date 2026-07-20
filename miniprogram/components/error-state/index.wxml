@@ -1,0 +1,11 @@
+<view class="error-state">
+  <view class="error-icon">
+    <icon name="{{icon}}" size="80" color="#B8875E" />
+  </view>
+  <view class="error-message">{{message}}</view>
+  <button
+    wx:if="{{showRetry}}"
+    class="retry-btn"
+    bindtap="onRetry"
+  >重试</button>
+</view>

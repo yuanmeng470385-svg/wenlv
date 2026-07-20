@@ -5,7 +5,7 @@
       <image wx:if="{{userInfo && userInfo.avatarUrl}}" src="{{userInfo.avatarUrl}}" mode="aspectFill" />
       <text wx:else class="avt-ph">我</text>
       <view wx:if="{{hasLogin}}" class="avatar-edit-mask">
-        <text class="avatar-edit-icon">📷</text>
+        <icon name="camera" size="26rpx" />
       </view>
     </view>
     <text class="user-name text-xl text-bold">{{displayName}}</text>
@@ -47,13 +47,13 @@
   <!-- 商家模式菜单 -->
   <block wx:else>
     <view class="menu-section">
-      <view class="menu-item flex-between" data-url="/pages/messages/index" bindtap="onMenuTap"><text>🔔 消息通知</text><text class="text-secondary">></text></view>
-      <view class="menu-item flex-between" bindtap="onDeregister"><text>⚠️ 注销商家身份</text><text class="text-secondary">></text></view>
+      <view class="menu-item flex-between" data-url="/pages/messages/index" bindtap="onMenuTap"><view class="icon-row"><icon name="bell" size="36rpx" /><text>消息通知</text></view><text class="text-secondary">></text></view>
+      <view class="menu-item flex-between" bindtap="onDeregister"><view class="icon-row"><icon name="warning" size="36rpx" /><text>注销商家身份</text></view><text class="text-secondary">></text></view>
     </view>
   </block>
 
   <view wx:if="{{hasLogin && !isAdminMode}}" class="menu-section safe-bottom">
-    <view class="menu-item flex-between" bindtap="onAdminLogin"><text>🔐 管理员登录</text><text class="text-secondary">></text></view>
-    <view class="menu-item flex-between" bindtap="onLogout"><text>🚪 退出登录</text><text class="text-secondary">></text></view>
+    <view class="menu-item flex-between" bindtap="onAdminLogin"><view class="icon-row"><icon name="lock" size="36rpx" /><text>管理员登录</text></view><text class="text-secondary">></text></view>
+    <view class="menu-item flex-between" bindtap="onLogout"><view class="icon-row"><icon name="logout" size="36rpx" /><text>退出登录</text></view><text class="text-secondary">></text></view>
   </view>
 </view>

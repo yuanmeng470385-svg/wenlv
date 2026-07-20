@@ -10,3 +10,4 @@
 .level-1 { background: #CD7F32; } .level-2 { background: #C0C0C0; color: var(--text-primary); } .level-3 { background: #FFD700; color: var(--text-primary); } .level-4 { background: #3A7BDE; } .level-5 { background: #9B59B6; }
 .ml-10 { margin-left: 10rpx; } .ml-20 { margin-left: 20rpx; } .mt-10 { margin-top: 10rpx; }
 .text-ellipsis { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 400rpx; }
+.icon-row { display: flex; align-items: center; gap: 4rpx; }

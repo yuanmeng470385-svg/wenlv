@@ -14,20 +14,20 @@
     </view>
 
     <view class="meta-row mt-20">
-      <text wx:if="{{portfolio.shootDate}}" class="text-sm text-secondary">📅 {{portfolio.shootDate}}</text>
-      <text wx:if="{{portfolio.shootLocation}}" class="text-sm text-secondary">📍 {{portfolio.shootLocation}}</text>
-      <text wx:if="{{portfolio.makeupDuration}}" class="text-sm text-secondary">⏱ 妆造 {{portfolio.makeupDuration}}分钟</text>
-      <text wx:if="{{portfolio.hanfuType}}" class="text-sm text-secondary">👘 {{portfolio.hanfuType}}</text>
+      <view wx:if="{{portfolio.shootDate}}" class="icon-row"><icon name="calendar" size="28rpx" /><text class="text-sm text-secondary">{{portfolio.shootDate}}</text></view>
+      <view wx:if="{{portfolio.shootLocation}}" class="icon-row"><icon name="location" size="28rpx" /><text class="text-sm text-secondary">{{portfolio.shootLocation}}</text></view>
+      <view wx:if="{{portfolio.makeupDuration}}" class="icon-row"><icon name="clock" size="28rpx" /><text class="text-sm text-secondary">妆造 {{portfolio.makeupDuration}}分钟</text></view>
+      <view wx:if="{{portfolio.hanfuType}}" class="icon-row"><icon name="kimono" size="28rpx" /><text class="text-sm text-secondary">{{portfolio.hanfuType}}</text></view>
     </view>
   </view>
 
   <view class="action-bar safe-bottom flex-between">
     <view class="action-btn" bindtap="onLike">
-      <text class="action-icon">{{isLiked ? '♥' : '♡'}}</text>
+      <icon wx:if="{{isLiked}}" name="heart-filled" size="44rpx" /><icon wx:else name="heart" size="44rpx" />
       <text class="text-sm">{{portfolio.likeCount || 0}}</text>
     </view>
     <view class="action-btn" bindtap="onFavorite">
-      <text class="action-icon">{{isFavorited ? '★' : '☆'}}</text>
+      <icon wx:if="{{isFavorited}}" name="star-filled" size="44rpx" /><icon wx:else name="star" size="44rpx" />
       <text class="text-sm">收藏</text>
     </view>
   </view>

@@ -54,12 +54,13 @@
 .admin-header { background: linear-gradient(135deg, #2D1B69, #1A0F3C); padding: 40rpx 30rpx; color: #fff; font-size: 36rpx; font-weight: 700; }
 .banner-row { padding: 20rpx 0; border-bottom: 1rpx solid var(--bg-page); }
 .featured-row { padding: 20rpx 0; border-bottom: 1rpx solid var(--bg-page); }
-.mr-20 { margin-right: 20rpx; }
+.mr-10 { margin-right: 10rpx; } .mr-20 { margin-right: 20rpx; }
 .banner-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.6; }
 .banner-thumb { width: 100rpx; height: 60rpx; border-radius: 6rpx; flex-shrink: 0; }
 .banner-thumb-ph { width: 100rpx; height: 60rpx; border-radius: 6rpx; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: var(--bg-page); color: var(--text-hint); font-size: 22rpx; border: 1rpx dashed var(--text-disabled); }
 
 /* ========== 共用 ========== */
+.icon-row { display: flex; align-items: center; gap: 4rpx; }
 .img-ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 46rpx; background: linear-gradient(135deg, var(--color-primary-bg), var(--color-primary-light)); }
 
 .empty-hint { padding: 60rpx 0; text-align: center; }

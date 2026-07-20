@@ -11,5 +11,5 @@
     <text class="text-sm text-secondary mt-10">{{item.content}}</text>
     <view wx:if="{{!item.read}}" class="unread-dot"></view>
   </view>
-  <view wx:if="{{!messages.length}}" class="empty-hint"><text class="text-secondary">暂无消息</text></view>
+  <empty-state wx:if="{{!messages.length}}" text="暂无消息" />
 </view>

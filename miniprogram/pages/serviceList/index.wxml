@@ -10,7 +10,7 @@
   <!-- 搜索栏 -->
   <view class="search-bar">
     <input class="search-input" placeholder="搜索服务商名称、标签..." value="{{keyword}}" confirm-type="search" bindinput="onSearchInput" bindconfirm="onSearch" />
-    <text wx:if="{{keyword}}" class="search-clear" bindtap="onClearSearch">✕</text>
+    <view wx:if="{{keyword}}" class="search-clear" bindtap="onClearSearch"><icon name="close" size="28rpx" /></view>
   </view>
 
   <view class="filter-bar flex-row" wx:if="{{categoryType !== 'hanfu_shop'}}">
@@ -39,7 +39,7 @@
           </view>
           <text class="text-sm text-secondary text-ellipsis mt-10">{{item.description}}</text>
           <view class="flex-row mt-10">
-            <text class="text-sm text-price">⭐ {{item.rating || '-'}}</text>
+            <view class="icon-row"><icon name="star-filled" size="28rpx" /><text class="text-sm text-price">{{item.rating || '-'}}</text></view>
             <text class="text-sm text-hint ml-10">{{item.reviewCount}}评价 | {{item.orderCount}}单</text>
           </view>
         </view>
@@ -49,6 +49,6 @@
       </view>
     </view>
 
-    <view wx:if="{{!providers.length}}" class="empty-hint"><text class="text-secondary">暂无{{categoryName}}</text></view>
+    <empty-state wx:if="{{!providers.length}}" text="暂无{{categoryName}}" icon="shop" />
   </view>
 </view>

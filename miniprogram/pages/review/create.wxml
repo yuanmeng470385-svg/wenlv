@@ -18,7 +18,7 @@
     <view class="star-row mt-20">
       <text wx:for="{{[1,2,3,4,5]}}" wx:key="*this"
         class="star {{item <= rating ? 'active' : ''}}"
-        data-rating="{{item}}" bindtap="onRatingChange">{{item <= rating ? '⭐' : '☆'}}</text>
+        data-rating="{{item}}" bindtap="onRatingChange"><icon wx:if="{{item <= rating}}" name="star-filled" size="48rpx" /><icon wx:else name="star" size="48rpx" /></text>
     </view>
   </view>
 

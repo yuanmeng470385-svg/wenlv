@@ -10,3 +10,4 @@
 .mt-10 { margin-top: 10rpx; }
 .mt-20 { margin-top: 20rpx; }
 .text-right { text-align: right; }
+.icon-row { display: flex; align-items: center; gap: 4rpx; }

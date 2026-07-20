@@ -5,3 +5,4 @@
 .thumb.img-ph { width: 100rpx; height: 100rpx; border-radius: 8rpx; font-size: 40rpx; display: flex; align-items: center; justify-content: center; background: var(--bg-page); }
 .empty-hint { padding: 120rpx 0; text-align: center; }
 .ml-20 { margin-left: 20rpx; }
+.icon-row { display: flex; align-items: center; gap: 8rpx; }

@@ -51,7 +51,7 @@ Page({
       placeholderText: '请输入城市名（如：杭州）',
       success: (res) => {
         if (res.confirm && res.content && res.content.trim()) {
-          const city = res.content.trim();
+          const city = res.content.trim().replace(/市$/, '');
           this.setData({ city, locating: false });
           this.loadAll();
         }

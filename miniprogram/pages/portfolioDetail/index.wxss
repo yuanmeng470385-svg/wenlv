@@ -10,3 +10,4 @@
 .action-icon { font-size: 48rpx; }
 .mt-10 { margin-top: 10rpx; }
 .mt-20 { margin-top: 20rpx; }
+.icon-row { display: flex; align-items: center; gap: 4rpx; }

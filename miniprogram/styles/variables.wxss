@@ -52,4 +52,22 @@ page {
   --radius-md: 16rpx;
   --radius-lg: 24rpx;
   --radius-round: 50%;
+
+  /* ---- 按钮体系 ---- */
+  --btn-height: 88rpx;
+  --btn-radius: 44rpx;
+  --btn-padding: 22rpx 40rpx;
+  --btn-font-size: 30rpx;
+
+  /* ---- 图标体系 ---- */
+  --icon-size-sm: 28rpx;
+  --icon-size-md: 36rpx;
+  --icon-size-lg: 44rpx;
+  --icon-size-xl: 80rpx;
+  --icon-color: #666666;
+  --icon-color-light: #E4D0BC;
+
+  /* ---- 骨架屏 ---- */
+  --skeleton-color: #F0EDE8;
+  --skeleton-shimmer: #E8E5E0;
 }

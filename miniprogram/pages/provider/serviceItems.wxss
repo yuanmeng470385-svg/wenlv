@@ -10,3 +10,4 @@
 .p-20 { padding: 20rpx 30rpx; }
 .mb-10 { margin-bottom: 10rpx; }
 .ml-10 { margin-left: 10rpx; }
+.icon-row { display: flex; align-items: center; gap: 4rpx; }

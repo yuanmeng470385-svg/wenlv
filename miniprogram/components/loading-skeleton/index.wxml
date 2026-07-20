@@ -1,0 +1,61 @@
+<view class="skeleton skeleton-{{type}}">
+  <!-- Card type: 2-column grid -->
+  <block wx:if="{{type === 'card'}}">
+    <view class="card-grid">
+      <view
+        wx:for="{{skeletonItems}}"
+        wx:key="index"
+        class="card-item shimmer-block"
+      >
+        <view class="card-image shimmer-inner"></view>
+      </view>
+    </view>
+  </block>
+
+  <!-- List type: avatar + text lines -->
+  <block wx:if="{{type === 'list'}}">
+    <view
+      wx:for="{{skeletonItems}}"
+      wx:key="index"
+      class="list-item"
+    >
+      <view class="list-avatar shimmer-block">
+        <view class="shimmer-inner"></view>
+      </view>
+      <view class="list-content">
+        <view class="list-line list-line-long shimmer-block">
+          <view class="shimmer-inner"></view>
+        </view>
+        <view class="list-line list-line-short shimmer-block">
+          <view class="shimmer-inner"></view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- Detail type -->
+  <block wx:if="{{type === 'detail'}}">
+    <view class="detail-banner shimmer-block">
+      <view class="shimmer-inner"></view>
+    </view>
+    <view class="detail-line detail-line-long shimmer-block">
+      <view class="shimmer-inner"></view>
+    </view>
+    <view class="detail-line detail-line-mid shimmer-block">
+      <view class="shimmer-inner"></view>
+    </view>
+    <view class="detail-line detail-line-short shimmer-block">
+      <view class="shimmer-inner"></view>
+    </view>
+    <view class="detail-line detail-line-mid shimmer-block">
+      <view class="shimmer-inner"></view>
+    </view>
+  </block>
+
+  <!-- Banner type -->
+  <block wx:if="{{type === 'banner'}}">
+    <view class="banner-block shimmer-block">
+      <view class="shimmer-inner"></view>
+    </view>
+  </block>
+</view>

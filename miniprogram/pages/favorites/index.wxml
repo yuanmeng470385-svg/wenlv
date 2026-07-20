@@ -4,18 +4,18 @@
     <view class="tab-item {{activeTab === 'portfolio' ? 'active' : ''}}" data-tab="portfolio" bindtap="onTabChange"><text>作品</text></view>
   </view>
 
-  <view wx:if="{{!list.length}}" class="empty-hint"><text class="text-secondary">暂无收藏</text></view>
+  <empty-state wx:if="{{!list.length}}" text="暂无收藏" />
 
   <view wx:for="{{list}}" wx:key="_id" class="fav-item card" data-item="{{item}}" bindtap="onItemTap">
     <view class="flex-row">
       <image wx:if="{{item.detail.image}}" src="{{item.detail.image}}" mode="aspectFill" class="fav-thumb" />
-      <view wx:else class="fav-thumb img-ph">{{item.targetType === 'provider' ? '📷' : '🖼️'}}</view>
+      <view wx:else class="fav-thumb img-ph"><icon wx:if="{{item.targetType === 'provider'}}" name="camera" size="44rpx" /><icon wx:else name="photo" size="44rpx" /></view>
       <view class="flex-1 ml-20">
         <text class="text-bold text-ellipsis">{{item.detail.name}}</text>
         <text class="text-sm text-secondary text-ellipsis mt-10">{{item.detail.desc || ''}}</text>
         <view wx:if="{{item.targetType === 'provider' && item.detail.level}}" class="mt-10">
           <text class="level-tag level-{{item.detail.level}}">{{item.detail.levelName}}</text>
-          <text class="text-sm text-secondary ml-10">★ {{item.detail.rating||0}}</text>
+          <view class="icon-row ml-10"><icon name="star-filled" size="24rpx" /><text class="text-sm text-secondary">{{item.detail.rating||0}}</text></view>
         </view>
       </view>
     </view>

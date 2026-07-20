@@ -8,3 +8,4 @@
 .section { margin: 0 0 20rpx; }
 .order-row { padding: 16rpx 0; border-bottom: 1rpx solid var(--border-color); display: flex; justify-content: space-between; }
 .empty-hint { padding: 40rpx 0; text-align: center; }
+.icon-row { display: flex; align-items: center; gap: 4rpx; }

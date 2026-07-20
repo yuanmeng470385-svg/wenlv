@@ -6,7 +6,7 @@
       <text class="text-bold">{{item.orderNo}}</text>
       <text class="refund-tag">待退款</text>
     </view>
-    <text class="text-sm text-secondary mt-10">👤 {{item.contactName}} {{item.contactPhone}}</text>
+    <view class="icon-row mt-10"><icon name="user" size="28rpx" /><text class="text-sm text-secondary">{{item.contactName}} {{item.contactPhone}}</text></view>
     <view wx:for="{{item.items}}" wx:key="serviceItemId" wx:for-item="si" class="mt-10">
       <text>{{si.name}} | {{si.appointmentDate}} {{si.appointmentTime}} | ¥{{si.price/100}}</text>
     </view>

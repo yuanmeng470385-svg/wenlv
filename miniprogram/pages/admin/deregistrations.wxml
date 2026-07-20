@@ -7,7 +7,7 @@
         {{item.categoryType === 'photographer' ? '摄影师' : (item.categoryType === 'makeup' ? '妆造师' : '汉服店')}}
       </text>
     </view>
-    <view class="mt-10"><text class="text-sm text-secondary">📞 {{item.phone}}</text></view>
+    <view class="mt-10"><view class="icon-row"><icon name="phone" size="28rpx" /><text class="text-sm text-secondary">{{item.phone}}</text></view></view>
     <view class="flex-between mt-10">
       <text class="text-sm text-secondary">总订单: {{item.totalOrders}}</text>
       <text class="text-sm" style="color: {{item.unfinishedOrders > 0 ? '#E74C3C' : '#52C41A'}}">

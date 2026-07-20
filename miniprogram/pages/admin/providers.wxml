@@ -10,7 +10,7 @@
       <text class="type-tag ml-10">{{getTypeLabel(item.categoryType)}}</text>
     </view>
     <view class="flex-between mt-10">
-      <text class="text-sm text-secondary">📞 {{item.phone}}</text>
+      <view class="icon-row"><icon name="phone" size="28rpx" /><text class="text-sm text-secondary">{{item.phone}}</text></view>
       <text class="text-sm text-hint">{{item.createTime}}</text>
     </view>
     <text class="text-sm text-secondary mt-10">{{item.description}}</text>
