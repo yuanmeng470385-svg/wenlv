@@ -43,7 +43,12 @@ exports.main = async (event, context) => {
       if (!item.data || item.data.providerId !== provider._id) {
         return { code: 1002, message: '无权修改此套餐' };
       }
-      data.status = item.data.status; // 保持原状态
+      // 仅上下架操作可改状态，其他更新保持原审核状态
+      if (status && (status === 'active' || status === 'inactive')) {
+        data.status = status;
+      } else {
+        data.status = item.data.status;
+      }
       await db.collection('serviceItems').doc(serviceItemId).update({ data });
       return { code: 0, data: { serviceItemId }, message: '套餐已更新' };
     } else {

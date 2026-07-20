@@ -6,6 +6,7 @@
 .status-tag.on { background: #F2F9ED; color: var(--color-success); }
 .status-tag.off { background: #FDF0F0; color: var(--color-danger); }
 .toggle-btn { padding: 8rpx 24rpx; font-size: 24rpx; background: var(--bg-page); color: var(--text-secondary); border-radius: 24rpx; }
+.delete-btn { padding: 8rpx 24rpx; font-size: 24rpx; background: #FDF0F0; color: var(--color-danger); border-radius: 24rpx; }
 .empty-hint { padding: 120rpx 0; text-align: center; }
 .p-20 { padding: 20rpx 30rpx; }
 .mb-10 { margin-bottom: 10rpx; }

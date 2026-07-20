@@ -16,7 +16,10 @@
         <text class="text-sm text-hint ml-10">{{item.priceType === 'fixed' ? '固定' : (item.priceType === 'hourly' ? '按时' : '按项目')}}</text>
         <view class="icon-row"><icon name="clock" size="24rpx" /><text class="text-sm text-hint">{{item.duration}}分钟</text></view>
       </view>
-      <button class="toggle-btn" data-item="{{item}}" catchtap="onToggleStatus">{{item.status === 'active' ? '下架' : '上架'}}</button>
+      <view class="flex-row">
+        <button class="toggle-btn" data-item="{{item}}" catchtap="onToggleStatus">{{item.status === 'active' ? '下架' : '上架'}}</button>
+        <button class="delete-btn ml-10" data-id="{{item._id}}" catchtap="onDelete">删除</button>
+      </view>
     </view>
   </view>
 

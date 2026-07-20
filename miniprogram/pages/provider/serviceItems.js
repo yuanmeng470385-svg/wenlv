@@ -46,6 +46,24 @@ Page({
     }
   },
 
+  onDelete(e) {
+    const id = e.currentTarget.dataset.id;
+    wx.showModal({
+      title: '确认删除', content: '删除后不可恢复',
+      success: async (res) => {
+        if (!res.confirm) return;
+        try {
+          const { callFunction } = require('../../services/cloud');
+          await callFunction('deleteServiceItem', { serviceItemId: id, role: app.getActiveRole() });
+          wx.showToast({ title: '已删除', icon: 'success' });
+          this.loadItems();
+        } catch (err) {
+          wx.showToast({ title: (err && err.message) || '删除失败', icon: 'none' });
+        }
+      }
+    });
+  },
+
   getPriceTypeLabel(t) {
     const m = { fixed: '固定套餐', hourly: '按时计费', project: '按项目' };
     return m[t] || t;
