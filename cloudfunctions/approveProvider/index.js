@@ -2,7 +2,7 @@ const cloud = require('wx-server-sdk');
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 const db = cloud.database();
 exports.main = async (event, context) => {
-  const { providerId, action, reason } = event;
+  const { providerId, action, reason, level } = event;
 
   try {
     const openid = cloud.getWXContext().OPENID;
@@ -26,6 +26,10 @@ exports.main = async (event, context) => {
       await db.collection('portfolios').where({ providerId, status: 'pending_review' }).update({
         data: { status: 'rejected', reviewRemark: reason || '' }
       });
+      // 同时驳回关联的待审套餐
+      await db.collection('serviceItems').where({ providerId, status: 'pending_review' }).update({
+        data: { status: 'inactive' }
+      });
       // 审计日志
       await db.collection('auditLogs').add({ data: { adminOpenid: openid, action: 'rejectProvider', targetId: providerId, detail: { reason }, createTime: db.serverDate() } });
       // 通知申请人
@@ -36,11 +40,16 @@ exports.main = async (event, context) => {
     }
 
     // 通过
-    await db.collection('providers').doc(providerId).update({
-      data: { status: 'active', updateTime: db.serverDate() }
-    });
+    const updateData = { status: 'active', updateTime: db.serverDate() };
+    if (level !== undefined && level > 0) updateData.level = level;
+    await db.collection('providers').doc(providerId).update({ data: updateData });
+    // 自动通过待审作品
     await db.collection('portfolios').where({ providerId, status: 'pending_review' }).update({
       data: { status: 'approved' }
+    });
+    // 自动通过待审服务套餐
+    await db.collection('serviceItems').where({ providerId, status: 'pending_review' }).update({
+      data: { status: 'active' }
     });
     // 审计日志
     await db.collection('auditLogs').add({ data: { adminOpenid: openid, action: 'approveProvider', targetId: providerId, detail: {}, createTime: db.serverDate() } });

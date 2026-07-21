@@ -77,7 +77,7 @@ Page({
       duration: item.duration, quantity: 1, hours: 1,
       appointmentDate: '', appointmentTime: '',
     };
-    const cart = [...this.data.cart, cartItem];
+    const cart = this.data.cart.concat(cartItem);
     this.setData({ cart });
     this.calcTotal();
   },
@@ -100,14 +100,14 @@ Page({
 
   onSelectDate(e) {
     const { date, idx } = e.currentTarget.dataset;
-    const cart = [...this.data.cart];
+    const cart = this.data.cart.concat();
     cart[idx].appointmentDate = date;
     this.setData({ cart });
   },
 
   onSelectTime(e) {
     const { time, idx } = e.currentTarget.dataset;
-    const cart = [...this.data.cart];
+    const cart = this.data.cart.concat();
     cart[idx].appointmentTime = time;
     this.setData({ cart });
   },
@@ -115,7 +115,7 @@ Page({
   onHoursChange(e) {
     const idx = e.currentTarget.dataset.idx;
     const hours = parseInt(e.detail.value) || 1;
-    const cart = [...this.data.cart];
+    const cart = this.data.cart.concat();
     cart[idx].hours = hours;
     this.setData({ cart });
     this.calcTotal();

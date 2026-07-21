@@ -19,7 +19,7 @@ Page({
       const fileID = await uploadFile(cloudPath, path);
       ids.push(fileID);
     }
-    this.setData({ images: [...this.data.images, ...ids] });
+    this.setData({ images: this.data.images.concat(ids) });
     wx.hideLoading();
   },
 

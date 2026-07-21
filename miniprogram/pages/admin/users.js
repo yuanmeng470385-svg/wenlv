@@ -19,7 +19,7 @@ Page({
       if (this.data.keyword) params.keyword = this.data.keyword;
       if (this.data.statusFilter) params.status = this.data.statusFilter;
       const res = await callFunction('adminGetUsers', params);
-      const list = this.data.page === 1 ? res.list : [...this.data.users, ...res.list];
+      const list = this.data.page === 1 ? res.list : this.data.users.concat(res.list);
       this.setData({
         users: list,
         total: res.total,

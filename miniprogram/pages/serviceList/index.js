@@ -60,7 +60,7 @@ Page({
       if (this.data.keyword) params.keyword = this.data.keyword;
 
       const res = await getProviderList(params);
-      const list = this.data.page === 1 ? res.list : [...this.data.providers, ...res.list];
+      const list = this.data.page === 1 ? res.list : this.data.providers.concat(res.list);
       this.setData({
         providers: list,
         total: res.total,

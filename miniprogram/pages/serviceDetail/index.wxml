@@ -33,7 +33,7 @@
 
   <view wx:if="{{activeTab === 'service'}}" class="tab-content">
     <view wx:for="{{serviceItems}}" wx:key="_id" class="service-card card" data-item="{{item}}" bindtap="onServiceSelect">
-      <image class="s-cover" src="{{item.coverImage}}" mode="aspectFill" />
+      <image class="s-cover" src="{{item.icon}}" mode="aspectFill" />
       <view class="s-info">
         <text class="text-lg text-bold">{{item.name}}</text>
         <text class="text-sm text-secondary mt-10">{{item.description}}</text>

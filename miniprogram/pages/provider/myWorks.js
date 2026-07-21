@@ -11,7 +11,7 @@ Page({
     wx.showLoading({ title: '加载中...' });
     try {
       const data = await callFunction('getMyPortfolios', { page: this.data.page, pageSize: 20, role: app.getActiveRole() });
-      const list = this.data.page === 1 ? data.list : [...this.data.works, ...data.list];
+      const list = this.data.page === 1 ? data.list : this.data.works.concat(data.list);
       this.setData({ works: list, hasMore: list.length < data.total });
     } catch (err) { console.error(err); }
     finally { wx.hideLoading(); }

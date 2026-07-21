@@ -56,7 +56,7 @@ Page({
       const fileID = await uploadFile(cloudPath, path);
       ids.push(fileID);
     }
-    this.setData({ portfolioImages: [...this.data.portfolioImages, ...ids] });
+    this.setData({ portfolioImages: this.data.portfolioImages.concat(ids) });
     wx.hideLoading();
   },
 

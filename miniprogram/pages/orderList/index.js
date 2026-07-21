@@ -43,12 +43,13 @@ Page({
     this._lastHasLogin = hasLogin;
     this.setData({ activeRole: role, isAdminMode: adminMode });
     if (adminMode) return;
-    // 首次/切换身份/刚登录 → 重新加载，普通切Tab用缓存
-    if (!this._loaded || roleChanged || loginChanged) {
+    // 商家模式每次 onShow 都静默刷新，用户模式首次/切换/登录时刷新
+    const isProvider = role !== 'user';
+    if (!this._loaded || roleChanged || loginChanged || isProvider) {
       this._loaded = true;
       this.setData({ page: 1, orders: [], hasMore: true });
       this.loadOrders();
-      if (this.data.activeRole !== 'user') {
+      if (isProvider) {
         this.loadDashboard();
       }
     }
@@ -81,7 +82,7 @@ Page({
       }
 
       const res = await callFunction(fnName, params);
-      const rawList = this.data.page === 1 ? res.list : [...this.data.orders, ...res.list];
+      const rawList = this.data.page === 1 ? res.list : this.data.orders.concat(res.list);
       const list = rawList.map(o => ({ ...o, statusText: STATUS_MAP[o.orderStatus] || o.orderStatus }));
       this.setData({ orders: list, total: res.total, hasMore: list.length < res.total });
     } catch (err) { console.error(err); }

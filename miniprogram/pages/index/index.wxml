@@ -55,10 +55,10 @@
     <view class="category-grid">
       <view class="category-item" wx:for="{{categories}}" wx:key="_id" data-type="{{item.type}}" bindtap="onCategoryTap">
         <view class="category-icon-box">
-          <icon wx:if="{{!item.icon}}" name="camera" size="52rpx" />
-          <text wx:else class="category-icon">{{item.icon}}</text>
+          <image class="category-icon-img" mode="aspectFit" src="/images/icons/category-{{item.type}}.png" />
         </view>
         <text class="category-name">{{item.name}}</text>
+        <text class="category-desc" wx:if="{{item.description}}">{{item.description}}</text>
       </view>
     </view>
   </view>

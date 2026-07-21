@@ -37,10 +37,14 @@ Page({
 
     if (adminMode && hasLogin) {
       this.loadAdminData();
-    } else if (hasLogin && (this._firstLoad || roleChanged || loginChanged)) {
-      // 切换身份时清空旧缓存，否则 loadData 里 provider 还在直接 return 了
+    } else if (hasLogin) {
+      // 切换身份时清空旧缓存
       if (roleChanged) this.setData({ provider: null, serviceItems: [], portfolios: [], reviews: [] });
-      this.loadData();
+      // 商家模式每次 onShow 都刷新（静默），用户模式首次/切换时刷新
+      const isProvider = role !== 'user';
+      if (isProvider || this._firstLoad || roleChanged || loginChanged) {
+        this.loadData(isProvider && !this._firstLoad && !roleChanged);
+      }
     }
     this._firstLoad = false;
   },
@@ -63,7 +67,7 @@ Page({
     }
   },
 
-  async loadData() {
+  async loadData(silent) {
     if (this._firstLoad) wx.showLoading({ title: '加载中...' });
     try {
       if (this.data.activeRole === 'user') {
@@ -111,8 +115,8 @@ Page({
         if (banners.length) this.setData({ banners });
         if (categories.length) this.setData({ categories });
       } else {
-        // 商家模式 - 首次加载或切换身份才拉数据
-        if (this.data.provider && !this._firstLoad) return;
+        // 商家模式 - 静默刷新时跳过缓存，否则首次加载后不再拉取
+        if (this.data.provider && !this._firstLoad && !silent) return;
         const { callFunction } = require('../../services/cloud');
         const { getProviderDetail } = require('../../services/serviceService');
         const myRes = await callFunction('getMyProvider', { role: this.data.activeRole });
