@@ -97,6 +97,20 @@ exports.main = async (event, context) => {
       updateData.orderStatus = statusMap[action];
     }
 
+    // 同步更新该商家的 items 状态
+    const itemStatusMap = {
+      confirm: 'confirmed', start: 'in_progress', complete: 'pending_complete', reject: 'cancelled',
+    };
+    const newItemStatus = itemStatusMap[action];
+    if (newItemStatus) {
+      updateData.items = (order.items || []).map(item => {
+        if (item.providerId === provider._id) {
+          return { ...item, status: newItemStatus };
+        }
+        return item;
+      });
+    }
+
     await db.collection('orders').doc(orderId).update({ data: updateData });
 
     // 通知下单用户

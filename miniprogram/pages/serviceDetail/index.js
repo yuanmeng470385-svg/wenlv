@@ -56,22 +56,34 @@ Page({
 
   async onToggleFavorite() {
     if (!this.data.provider) return;
-    await toggleFavorite('provider', this.data.providerId);
-    this.setData({ isFavorited: !this.data.isFavorited });
-    wx.showToast({ title: this.data.isFavorited ? '已收藏' : '已取消收藏', icon: 'none' });
+    const wasFavorited = this.data.isFavorited;
+    this.setData({ isFavorited: !wasFavorited });
+    try {
+      await toggleFavorite('provider', this.data.providerId);
+      wx.showToast({ title: this.data.isFavorited ? '已收藏' : '已取消收藏', icon: 'none' });
+    } catch (err) {
+      this.setData({ isFavorited: wasFavorited });
+      wx.showToast({ title: '操作失败', icon: 'none' });
+    }
   },
 
   async onLikePortfolio(e) {
     const id = e.currentTarget.dataset.id;
     const liked = e.currentTarget.dataset.liked;
-    await toggleLike('portfolio', id);
-    const portfolios = this.data.portfolios.map(p => {
+    const oldPortfolios = this.data.portfolios;
+    const portfolios = oldPortfolios.map(p => {
       if (p._id === id) {
         return { ...p, likeCount: (p.likeCount || 0) + (liked ? -1 : 1) };
       }
       return p;
     });
     this.setData({ portfolios });
+    try {
+      await toggleLike('portfolio', id);
+    } catch (err) {
+      this.setData({ portfolios: oldPortfolios });
+      wx.showToast({ title: '操作失败', icon: 'none' });
+    }
   },
 
   async onCallPhone() {

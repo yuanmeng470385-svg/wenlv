@@ -1,6 +1,7 @@
 Page({
   data: { list: [], loading: true },
   onShow() { this.loadData(); },
+  onPullDownRefresh() { this.loadData().finally(() => wx.stopPullDownRefresh()); },
   async loadData() {
     this.setData({ loading: true });
     try {

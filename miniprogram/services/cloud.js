@@ -17,7 +17,9 @@ const callFunction = async (name, data = {}) => {
     if (res.result && res.result.code === 0) {
       return res.result.data;
     }
-    throw new Error((res.result && res.result.message) || '请求失败');
+    const err = new Error((res.result && res.result.message) || '请求失败');
+    err.code = (res.result && res.result.code) || -1;
+    throw err;
   } catch (err) {
     console.error(`[cloud] ${name}:`, err);
     throw err;

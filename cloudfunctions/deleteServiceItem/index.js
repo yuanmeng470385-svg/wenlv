@@ -20,6 +20,15 @@ exports.main = async (event, context) => {
       return { code: 1002, message: '无权删除此套餐' };
     }
 
+    // 检查是否有进行中的订单引用此套餐
+    const activeOrders = await db.collection('orders').where({
+      'items.serviceItemId': serviceItemId,
+      orderStatus: db.command.nin(['completed', 'reviewed', 'cancelled']),
+    }).count();
+    if (activeOrders.total > 0) {
+      return { code: 2001, message: `有 ${activeOrders.total} 个进行中订单使用此套餐，无法删除` };
+    }
+
     await db.collection('serviceItems').doc(serviceItemId).remove();
     return { code: 0, message: '已删除' };
   } catch (err) {

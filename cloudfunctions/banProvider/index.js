@@ -45,6 +45,10 @@ exports.main = async (event, context) => {
       await db.collection('providers').doc(providerId).update({
         data: { status: 'active', banReason: '', updateTime: db.serverDate() }
       });
+      // 恢复封禁期间被下架的套餐
+      await db.collection('serviceItems').where({ providerId, status: 'inactive' }).update({
+        data: { status: 'active', updateTime: db.serverDate() }
+      });
       // 审计日志
       await db.collection('auditLogs').add({ data: { adminOpenid: openid, action: 'unbanProvider', targetId: providerId, createTime: db.serverDate() } });
       return { code: 0, data: {}, message: '已解封该服务商' };

@@ -26,6 +26,7 @@ Page({
   },
 
   onReachBottom() { if (this.data.hasMore) { this.setData({ page: this.data.page + 1 }); this.loadWorks(); } },
+  onPullDownRefresh() { this.setData({ page: 1, works: [] }); this.loadWorks().finally(() => wx.stopPullDownRefresh()); },
   goUpload() { wx.navigateTo({ url: '/pages/provider/uploadWork' }); },
   onDelete(e) {
     wx.showModal({ title: '确认删除', content: '删除后不可恢复', success: (res) => {

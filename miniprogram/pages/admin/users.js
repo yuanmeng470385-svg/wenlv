@@ -79,4 +79,5 @@ Page({
       this.loadUsers();
     }
   },
+  onPullDownRefresh() { this.setData({ page: 1, users: [], hasMore: true }); this.loadUsers().finally(() => wx.stopPullDownRefresh()); },
 });

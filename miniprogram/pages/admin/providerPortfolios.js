@@ -9,6 +9,7 @@ Page({
   },
 
   onShow() { this.loadList(); },
+  onPullDownRefresh() { this.loadList().finally(() => wx.stopPullDownRefresh()); },
 
   async loadList() {
     wx.showLoading({ title: '加载中...' });

@@ -1,4 +1,5 @@
 {
+  "enablePullDownRefresh": true,
   "navigationBarTitleText": "用户管理",
   "usingComponents": {
     "icon": "/components/icon/index",

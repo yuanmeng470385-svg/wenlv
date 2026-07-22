@@ -1,4 +1,5 @@
 {
+  "enablePullDownRefresh": true,
   "navigationBarTitleText": "套餐审核",
   "usingComponents": {
     "icon": "/components/icon/index",

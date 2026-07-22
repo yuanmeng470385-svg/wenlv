@@ -32,9 +32,9 @@ Page({
     this.loadProviderData();
   },
 
-  // 离开时保存已选
+  // 离开时保存已选（下单成功后清空，见 onSubmit）
   onHide() { this.saveCart(); },
-  onUnload() { try { wx.removeStorageSync('booking_cart'); } catch(e) {} },
+  onUnload() { this.saveCart(); },
 
   saveCart() {
     try { wx.setStorageSync('booking_cart', JSON.stringify(this.data.cart)); } catch(e) {}
@@ -151,6 +151,8 @@ Page({
       });
       wx.hideLoading();
       const orderId = orderRes.orderId;
+      // 下单成功，清空购物车
+      try { wx.removeStorageSync('booking_cart'); } catch(e) {}
       wx.hideLoading();
       const app = getApp();
       const isAdmin = app.globalData.userInfo && (app.globalData.userInfo.roles || []).includes('admin');

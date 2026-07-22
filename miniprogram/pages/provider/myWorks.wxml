@@ -9,7 +9,7 @@
     <view wx:for="{{works}}" wx:key="_id" class="mw-item">
       <image src="{{item.images[0]}}" mode="aspectFill" class="mw-img" />
       <text class="st {{item._statusClass}} mw-st">{{item._statusLabel}}</text>
-      <view wx:if="{{item.status === 'approved'}}" class="mw-del" catchtap="onDelete" data-id="{{item._id}}">
+      <view wx:if="{{item.status === 'approved' || item.status === 'rejected'}}" class="mw-del" catchtap="onDelete" data-id="{{item._id}}">
         <icon name="trash" size="24rpx" color="#F6F1E7" />
       </view>
       <view class="mw-likes">

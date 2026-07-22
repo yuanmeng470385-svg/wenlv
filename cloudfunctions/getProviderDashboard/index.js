@@ -29,7 +29,7 @@ exports.main = async (event, context) => {
     const recentOrders = await db.collection('orders')
       .where({ 'items.providerId': provider._id }).orderBy('createTime', 'desc').limit(5).get();
 
-    // 收入统计：已完成/已评价的订单总额（单位：分）
+    // 收入统计：仅计算属于当前商家的服务项金额（单位：分）
     const completedOrders = await db.collection('orders')
       .where({ 'items.providerId': provider._id, orderStatus: db.command.in(['completed', 'reviewed']) })
       .field({ totalFee: true, items: true })
@@ -38,7 +38,17 @@ exports.main = async (event, context) => {
     let completedCount = 0;
     for (const order of completedOrders.data) {
       completedCount++;
-      totalRevenue += order.totalFee || 0;
+      // 按当前商家的 items 拆分计算营收（非整单金额）
+      const myItems = (order.items || []).filter(item => item.providerId === provider._id);
+      for (const item of myItems) {
+        const qty = item.quantity || 1;
+        if (item.priceType === 'hourly') {
+          const hours = item.hours || Math.ceil((item.duration || 60) / 60);
+          totalRevenue += (item.price || 0) * hours * qty;
+        } else {
+          totalRevenue += (item.price || 0) * qty;
+        }
+      }
     }
 
     return {

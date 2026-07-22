@@ -21,15 +21,21 @@ exports.main = async (event, context) => {
 
     let cancelled = 0;
     for (const order of expiredOrders.data) {
-      await db.collection('orders').doc(order._id).update({
-        data: {
-          orderStatus: 'cancelled',
-          cancelReason: `超过 ${hours} 小时无服务商接单，系统自动取消`,
-          cancelTime: db.serverDate(),
-          refundAmount: order.totalFee,
-          updateTime: db.serverDate(),
-        }
-      });
+      // 条件更新防并发：只有状态仍为 paid 的才更新
+      const updateResult = await db.collection('orders')
+        .where({ _id: order._id, orderStatus: 'paid' })
+        .update({
+          data: {
+            orderStatus: 'cancelled',
+            cancelReason: `超过 ${hours} 小时无服务商接单，系统自动取消`,
+            cancelTime: db.serverDate(),
+            refundAmount: order.totalFee,
+            preRefundStatus: 'paid',
+            updateTime: db.serverDate(),
+          }
+        });
+      if (!updateResult.stats || updateResult.stats.updated === 0) continue;
+
       // 更新支付记录为退款状态
       try {
         await db.collection('payments').where({ orderId: order._id }).update({
@@ -43,6 +49,6 @@ exports.main = async (event, context) => {
     return { code: 0, data: { checked: expiredOrders.data.length, cancelled }, message: `已取消 ${cancelled} 个超时订单` };
   } catch (err) {
     console.error('[cancelExpiredOrders]', err);
-    return { code: 9999, message: err.message };
+    return { code: 9999, message: '自动取消超时订单失败，请重试' };
   }
 };

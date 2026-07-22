@@ -1,4 +1,5 @@
 {
+  "enablePullDownRefresh": true,
   "usingComponents": {
     "icon": "/components/icon/index",
     "empty-state": "/components/empty-state/index"

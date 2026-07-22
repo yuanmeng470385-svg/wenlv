@@ -12,7 +12,10 @@ exports.main = async (event, context) => {
   if (!openid) return { code: 1002, message: '未登录' };
 
   try {
-    const providerRes = await db.collection('providers').where({ userId: openid, status: 'active' }).get();
+    const { role } = event;
+    const query = { userId: openid, status: 'active' };
+    if (role) query.categoryType = role;
+    const providerRes = await db.collection('providers').where(query).get();
     if (providerRes.data.length === 0) return { code: 1003, message: '您还不是审核通过的服务商' };
     const provider = providerRes.data[0];
 

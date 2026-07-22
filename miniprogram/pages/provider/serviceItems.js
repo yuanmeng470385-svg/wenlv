@@ -4,6 +4,7 @@ Page({
   data: { items: [], loading: true },
 
   onShow() { this.loadItems(); },
+  onPullDownRefresh() { this.loadItems().finally(() => wx.stopPullDownRefresh()); },
 
   async loadItems() {
     this.setData({ loading: true });
@@ -36,7 +37,7 @@ Page({
 
   goEdit(e) {
     const item = e.currentTarget.dataset.item;
-    wx.navigateTo({ url: '/pages/provider/editServiceItem?item=' + JSON.stringify(item) });
+    wx.navigateTo({ url: '/pages/provider/editServiceItem?item=' + encodeURIComponent(JSON.stringify(item)) });
   },
 
   async onToggleStatus(e) {

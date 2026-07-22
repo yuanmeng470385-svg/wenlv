@@ -1,4 +1,5 @@
 {
+  "enablePullDownRefresh": true,
   "navigationBarTitleText": "退款审核",
   "usingComponents": {
     "icon": "/components/icon/index",
