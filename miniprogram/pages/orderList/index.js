@@ -12,6 +12,21 @@ const STATUS_MAP = {
   pending_refund: '退款中',
 };
 
+/* 状态徽标配色（新中式色规：朱砂=待办/异常，黛青=正常进行，泥金=待确认，灰=终态） */
+const STATUS_CLASS = {
+  pending_pay: 'st-red',
+  paid: 'st-gold',
+  confirmed: 'st-cel',
+  in_progress: 'st-cel',
+  pending_complete: 'st-gold',
+  completed: 'st-gray',
+  reviewed: 'st-gray',
+  cancelled: 'st-gray',
+  pending_refund: 'st-red',
+};
+
+const WEEKDAYS = ['日', '一', '二', '三', '四', '五', '六'];
+
 Page({
   data: {
     activeRole: 'user',
@@ -23,13 +38,14 @@ Page({
       { key: 'completed', label: '已完成' },
     ],
     providerTabs: [
-      { key: 'all', label: '全部' },{ key: 'paid', label: '待确认' },
+      { key: 'all', label: '全部' },{ key: 'paid', label: '待接单' },
       { key: 'confirmed', label: '已确认' },{ key: 'in_progress', label: '进行中' },
       { key: 'pending_complete', label: '待确认完成' },
       { key: 'completed', label: '已完成' },{ key: 'cancelled', label: '已取消' },
     ],
     orders: [], page: 1, total: 0, hasMore: true,
     dashboard: { todayOrders: 0, pendingOrders: 0, totalOrders: 0 },
+    greetName: '', todayStr: '',
     isAdminMode: false,
   },
 
@@ -41,7 +57,12 @@ Page({
     const loginChanged = hasLogin && !this._lastHasLogin;
     this._lastRole = role;
     this._lastHasLogin = hasLogin;
-    this.setData({ activeRole: role, isAdminMode: adminMode });
+    const now = new Date();
+    this.setData({
+      activeRole: role,
+      isAdminMode: adminMode,
+      todayStr: `${now.getMonth() + 1}月${now.getDate()}日 周${WEEKDAYS[now.getDay()]}`,
+    });
     if (adminMode) return;
     // 商家模式每次 onShow 都静默刷新，用户模式首次/切换/登录时刷新
     const isProvider = role !== 'user';
@@ -59,7 +80,11 @@ Page({
     try {
       const { callFunction } = require('../../services/cloud');
       const res = await callFunction('getProviderDashboard', { role: this.data.activeRole });
-      this.setData({ dashboard: res.stats || this.data.dashboard });
+      const providerName = (res.provider && res.provider.name) || '';
+      this.setData({
+        dashboard: res.stats || this.data.dashboard,
+        greetName: providerName ? `早安，${providerName}` : '早安，掌柜',
+      });
     } catch (e) { /* ignore */ }
   },
 
@@ -83,7 +108,15 @@ Page({
 
       const res = await callFunction(fnName, params);
       const rawList = this.data.page === 1 ? res.list : this.data.orders.concat(res.list);
-      const list = rawList.map(o => ({ ...o, statusText: STATUS_MAP[o.orderStatus] || o.orderStatus }));
+      const list = rawList.map(o => {
+        const first = (o.items && o.items[0]) || {};
+        return {
+          ...o,
+          statusText: STATUS_MAP[o.orderStatus] || o.orderStatus,
+          _statusClass: STATUS_CLASS[o.orderStatus] || 'st-gray',
+          _shopName: first.providerName || String(o.orderNo || '').split('-')[0] || '商家',
+        };
+      });
       this.setData({ orders: list, total: res.total, hasMore: list.length < res.total });
     } catch (err) { console.error(err); }
     finally { wx.hideLoading(); }

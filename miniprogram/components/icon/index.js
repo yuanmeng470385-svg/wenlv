@@ -1,235 +1,110 @@
 /**
- * 构建 SVG Data URI
- * @param {string} body   - SVG 内部元素（path/circle/rect 等）
- * @param {object} opts   - { stroke, fill }
+ * 图标组件 v3「细线白描」- 37 枚统一风格图标
+ * 24 网格 / 1.5px 线宽 / 圆角收尾 / 无填充，SVG data-URI 实现
+ * 旧图标名（camera/photo/kimono/shop...）自动映射到新图形，勿删
  */
+
 function makeDataUri(body, opts) {
   opts = opts || {};
   var attrs;
   if (opts.fill) {
     attrs = 'fill="' + opts.fill + '" stroke="none"';
+    body = body.replace(/currentColor/g, opts.fill);
   } else {
-    var stroke = opts.stroke || '#666666';
-    attrs = 'fill="none" stroke="' + stroke + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"';
+    var stroke = opts.stroke || '#29241D';
+    attrs = 'fill="none" stroke="' + stroke + '" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"';
+    body = body.replace(/currentColor/g, stroke);
   }
   var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" ' + attrs + '>' + body + '</svg>';
   return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
 }
 
-var ICONS = {
-  // 1. 相机
-  'camera': makeDataUri(
-    '<rect x="2" y="5" width="20" height="14" rx="2"/>' +
-    '<circle cx="12" cy="12" r="3"/>' +
-    '<path d="M8 5V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v1"/>'
-  ),
-
-  // 2. 图片/风景框
-  'photo': makeDataUri(
-    '<rect x="3" y="3" width="18" height="18" rx="2"/>' +
-    '<circle cx="8.5" cy="8.5" r="1.5"/>' +
-    '<path d="M21 15l-5-5L5 21"/>'
-  ),
-
-  // 3. 空心星
-  'star': makeDataUri(
-    '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>'
-  ),
-
-  // 4. 实心星
-  'star-filled': makeDataUri(
-    '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
-    { fill: '#666666' }
-  ),
-
-  // 5. 空心心
-  'heart': makeDataUri(
-    '<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>'
-  ),
-
-  // 6. 实心心（红色）
-  'heart-filled': makeDataUri(
-    '<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>',
-    { fill: '#E8563A' }
-  ),
-
-  // 7. 电话
-  'phone': makeDataUri(
-    '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92Z"/>'
-  ),
-
-  // 8. 日历
-  'calendar': makeDataUri(
-    '<rect x="3" y="4" width="18" height="18" rx="2"/>' +
-    '<path d="M16 2v4"/>' +
-    '<path d="M8 2v4"/>' +
-    '<path d="M3 10h18"/>'
-  ),
-
-  // 9. 时钟
-  'clock': makeDataUri(
-    '<circle cx="12" cy="12" r="10"/>' +
-    '<path d="M12 6v6l4 2"/>'
-  ),
-
-  // 10. 定位图钉
-  'location': makeDataUri(
-    '<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>' +
-    '<circle cx="12" cy="10" r="3"/>'
-  ),
-
-  // 11. 用户
-  'user': makeDataUri(
-    '<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>' +
-    '<circle cx="12" cy="7" r="4"/>'
-  ),
-
-  // 12. 店铺
-  'shop': makeDataUri(
-    '<path d="M3 9h18v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"/>' +
-    '<path d="M7 9V7a5 5 0 0 1 10 0v2"/>'
-  ),
-
-  // 13. 包裹
-  'package': makeDataUri(
-    '<path d="M16.5 9.4 7.55 4.24"/>' +
-    '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>' +
-    '<path d="M3.29 7 12 12l8.71-5"/>' +
-    '<path d="M12 22V12"/>'
-  ),
-
-  // 14. 上传
-  'upload': makeDataUri(
-    '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>' +
-    '<path d="M17 8l-5-5-5 5"/>' +
-    '<path d="M12 3v12"/>'
-  ),
-
-  // 15. 编辑/铅笔
-  'edit': makeDataUri(
-    '<path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>' +
-    '<path d="M15 5l4 4"/>'
-  ),
-
-  // 16. 通知铃铛
-  'bell': makeDataUri(
-    '<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>' +
-    '<path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>'
-  ),
-
-  // 17. 锁
-  'lock': makeDataUri(
-    '<rect x="3" y="11" width="18" height="11" rx="2"/>' +
-    '<path d="M7 11V7a5 5 0 0 1 10 0v4"/>'
-  ),
-
-  // 18. 退出
-  'logout': makeDataUri(
-    '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>' +
-    '<path d="M16 17l5-5-5-5"/>' +
-    '<path d="M21 12H9"/>'
-  ),
-
-  // 19. 警告三角
-  'warning': makeDataUri(
-    '<path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/>' +
-    '<line x1="12" y1="9" x2="12" y2="13"/>' +
-    '<line x1="12" y1="17" x2="12.01" y2="17"/>'
-  ),
-
-  // 20. 扳手/工具
-  'wrench': makeDataUri(
-    '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76Z"/>'
-  ),
-
-  // 21. 金钱
-  'money': makeDataUri(
-    '<circle cx="12" cy="12" r="10"/>' +
-    '<path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/>' +
-    '<path d="M12 18v2"/>' +
-    '<path d="M12 4v2"/>'
-  ),
-
-  // 22. 刷新
-  'refresh': makeDataUri(
-    '<path d="M21 2v6h-6"/>' +
-    '<path d="M3 12a9 9 0 0 1 15-6.7L21 8"/>' +
-    '<path d="M3 22v-6h6"/>' +
-    '<path d="M21 12a9 9 0 0 1-15 6.7L3 16"/>'
-  ),
-
-  // 23. 主页
-  'home': makeDataUri(
-    '<path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/>' +
-    '<path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/>'
-  ),
-
-  // 24. 和服/衣物
-  'kimono': makeDataUri(
-    '<path d="M12 2h0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h0a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z"/>' +
-    '<path d="M8 4 3 8"/>' +
-    '<path d="M16 4l5 4"/>' +
-    '<path d="M12 10v12"/>' +
-    '<path d="M6 22h12"/>' +
-    '<path d="M6 14h12"/>'
-  ),
-
-  // 25. 搜索
-  'search': makeDataUri(
-    '<circle cx="11" cy="11" r="8"/>' +
-    '<path d="M21 21l-4.3-4.3"/>'
-  ),
-
-  // 26. 关闭
-  'close': makeDataUri(
-    '<path d="M18 6 6 18"/>' +
-    '<path d="M6 6l12 12"/>'
-  ),
-
-  // 27. 向下箭头
-  'chevron-down': makeDataUri(
-    '<path d="M6 9l6 6 6-6"/>'
-  ),
-
-  // 28. 向右箭头
-  'chevron-right': makeDataUri(
-    '<path d="M9 18l6-6-6-6"/>'
-  )
+/* ---- 图形库（body 片段） ---- */
+var GLYPHS = {
+  home: '<path d="M4.6 10.4 12 4.2l7.4 6.2"/><path d="M6.6 9v10a1 1 0 0 0 1 1h8.8a1 1 0 0 0 1-1V9"/><path d="M10 20v-5h4v5"/>',
+  grid: '<rect x="5" y="5" width="6" height="6" rx="1.8"/><rect x="13" y="5" width="6" height="6" rx="1.8"/><rect x="5" y="13" width="6" height="6" rx="1.8"/><rect x="13" y="13" width="6" height="6" rx="3"/>',
+  user: '<circle cx="12" cy="8.2" r="3.4"/><path d="M5.6 19.4c1.2-3.1 3.7-4.7 6.4-4.7s5.2 1.6 6.4 4.7"/>',
+  camera: '<path d="M4 8.6A1.6 1.6 0 0 1 5.6 7h1.8L9 4.8h6L16.6 7h1.8A1.6 1.6 0 0 1 20 8.6v8.8a1.6 1.6 0 0 1-1.6 1.6H5.6A1.6 1.6 0 0 1 4 17.4z"/><circle cx="12" cy="12.6" r="3.2"/><circle cx="17.1" cy="10.2" r=".7" fill="currentColor" stroke="none"/>',
+  lipstick: '<path d="M10 10V5.4c0-.7.6-1.1 1.2-.9l1.9.9c.3.1.4.4.4.7V10"/><rect x="8.6" y="10" width="6.8" height="3.6" rx="1"/><rect x="7.4" y="13.6" width="9.2" height="6.2" rx="1.4"/>',
+  robe: '<path d="M9.6 4.4 6.1 6.4 4.3 13l2.6.8L8.3 10v9.6h7.4V10l1.4 3.8 2.6-.8-1.8-6.6-3.5-2"/><path d="M9.6 4.4c.9 1.7 3.9 1.7 4.8 0"/><path d="M9.9 4.8 13.2 9.4M14.1 4.8l-3.4 5"/>',
+  pin: '<path d="M12 20.8s-6.4-5.2-6.4-10A6.4 6.4 0 0 1 12 4.4a6.4 6.4 0 0 1 6.4 6.4c0 4.8-6.4 10-6.4 10z"/><circle cx="12" cy="10.6" r="2.2"/>',
+  compass: '<circle cx="12" cy="12" r="7.8"/><path d="m15.3 8.7-1.8 4.8-4.8 1.8 1.8-4.8z"/>',
+  cal: '<rect x="4.5" y="5.8" width="15" height="14" rx="2"/><path d="M4.5 10.3h15M8.6 3.8v3.2M15.4 3.8v3.2"/><circle cx="9" cy="14.6" r=".9" fill="currentColor" stroke="none"/><circle cx="14.8" cy="14.6" r=".9" fill="currentColor" stroke="none"/>',
+  clock: '<circle cx="12" cy="12" r="7.8"/><path d="M12 7.6V12l3 1.8"/>',
+  star: '<path d="m12 4.7 2.2 4.4 4.9.7-3.5 3.4.8 4.8-4.4-2.3-4.4 2.3.8-4.8-3.5-3.4 4.9-.7z"/>',
+  heart: '<path d="M12 19.8S4.7 15.3 4.7 10.3A4.2 4.2 0 0 1 12 7.1a4.2 4.2 0 0 1 7.3 3.2c0 5-7.3 9.5-7.3 9.5z"/>',
+  bmk: '<path d="M7 4.6h10a1 1 0 0 1 1 1v14l-6-3.8-6 3.8v-14a1 1 0 0 1 1-1z"/>',
+  phone: '<path d="M7.2 4.6h2.8l1.5 3.9-1.9 1.5a12.5 12.5 0 0 0 4.4 4.4l1.5-1.9 3.9 1.5v2.8a1.9 1.9 0 0 1-2.1 1.9A16.3 16.3 0 0 1 5.3 6.7a1.9 1.9 0 0 1 1.9-2.1z"/>',
+  search: '<circle cx="11" cy="11" r="5.8"/><path d="m15.7 15.7 4 4"/>',
+  filter: '<path d="M4.5 7.5h15M4.5 12h15M4.5 16.5h15"/><circle cx="9.5" cy="7.5" r="1.7" fill="currentColor" stroke="none"/><circle cx="14.8" cy="12" r="1.7" fill="currentColor" stroke="none"/><circle cx="7.5" cy="16.5" r="1.7" fill="currentColor" stroke="none"/>',
+  chevr: '<path d="m9.5 6 6 6-6 6"/>',
+  chevd: '<path d="m6 9.5 6 6 6-6"/>',
+  back: '<path d="M14.5 6l-6 6 6 6"/>',
+  plus: '<path d="M12 5.5v13M5.5 12h13"/>',
+  pen: '<path d="m14.3 5.6 4.1 4.1L8 20.1l-4.6.9.9-4.6z"/><path d="m12.9 7 4.1 4.1"/>',
+  trash: '<path d="M5 7h14M9.6 7V5h4.8v2M7.1 7l.7 12.1a1 1 0 0 0 1 .9h6.4a1 1 0 0 0 1-.9L16.9 7"/><path d="M10.2 10.4v5.8M13.8 10.4v5.8"/>',
+  img: '<rect x="4.5" y="5.5" width="15" height="13" rx="2"/><circle cx="9.2" cy="10" r="1.3"/><path d="m5.5 16.3 4-4 3 3 3.4-3.4 3.6 3.6"/>',
+  check: '<path d="m5 12.6 4.5 4.5L19 7.4"/>',
+  x: '<path d="M6.6 6.6l10.8 10.8M17.4 6.6 6.6 17.4"/>',
+  bell: '<path d="M12 4.6a5.4 5.4 0 0 1 5.4 5.4c0 3.8 1.4 5.3 1.4 5.3H5.2s1.4-1.5 1.4-5.3A5.4 5.4 0 0 1 12 4.6z"/><path d="M10.1 18.3a1.9 1.9 0 0 0 3.8 0"/>',
+  order: '<path d="M7 4.6h10a1 1 0 0 1 1 1v14l-2.4-1.6-2.4 1.6-1.2-.8-1.2.8-2.4-1.6L6 19.6v-14a1 1 0 0 1 1-1z"/><path d="M9.2 9.4h5.6M9.2 13h5.6"/>',
+  coin: '<circle cx="12" cy="12" r="7.8"/><path d="m8.9 8 3.1 3.9L15.1 8M12 11.9v4.4M9.4 13.7h5.2"/>',
+  chart: '<path d="M3.8 19.8h16.4"/><path d="M6.5 19.5v-5.5M11 19.5V9.5M15.5 19.5v-7.5M20 19.5V6"/>',
+  gear: '<circle cx="12" cy="12" r="2.5"/><path d="M12 4.6v2M12 17.4v2M4.6 12h2M17.4 12h2M6.8 6.8l1.4 1.4M15.8 15.8l1.4 1.4M17.2 6.8l-1.4 1.4M8.2 15.8l-1.4 1.4"/>',
+  out: '<path d="M13.5 4.6H7.2A1.6 1.6 0 0 0 5.6 6.2v11.6a1.6 1.6 0 0 0 1.6 1.6h6.3"/><path d="m16 8.4 3.6 3.6-3.6 3.6M9.8 12h9.6"/>',
+  shield: '<path d="m12 3.9-6.4 2.3v5.2c0 4.1 2.7 7.1 6.4 8.6 3.7-1.5 6.4-4.5 6.4-8.6V6.2z"/><path d="m9.1 11.7 2.1 2.1 3.7-3.9"/>',
+  store: '<path d="M5 9.4 6.6 5h10.8L19 9.4"/><path d="M5 9.4a2.3 2.3 0 0 0 4.6 0 2.35 2.35 0 0 0 4.7 0 2.3 2.3 0 0 0 4.7 0"/><path d="M6.3 12.4v6.4a1 1 0 0 0 1 1h9.4a1 1 0 0 0 1-1v-6.4"/><path d="M10.2 19.8v-4.6h3.6v4.6"/>',
+  upload: '<path d="M12 15.4V5.6M7.6 9.6 12 5.2l4.4 4.4"/><path d="M5 15.4v2.8a1.6 1.6 0 0 0 1.6 1.6h10.8a1.6 1.6 0 0 0 1.6-1.6v-2.8"/>',
+  users: '<circle cx="9.2" cy="8.4" r="3"/><path d="M3.9 18.9c.9-2.7 2.9-4.1 5.3-4.1s4.4 1.4 5.3 4.1"/><path d="M15.4 5.6a3 3 0 0 1 0 5.6M17.6 14.8c1.5.7 2.5 2 3 4.1"/>',
+  swap: '<path d="M7 8.6h10.2l-3-3M17 15.4H6.8l3 3"/>',
+  more: '<circle cx="6" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="18" cy="12" r="1.1" fill="currentColor" stroke="none"/>',
+  msg: '<path d="M5 6.4a1.6 1.6 0 0 1 1.6-1.6h10.8A1.6 1.6 0 0 1 19 6.4v8.4a1.6 1.6 0 0 1-1.6 1.6H9.5L5.4 19.6a.4.4 0 0 1-.4-.4z"/><path d="M8.6 9.4h6.8M8.6 12.6h4.2"/>',
+  warning: '<path d="M10.3 4.1 2.6 17.6a1.8 1.8 0 0 0 1.6 2.7h15.6a1.8 1.8 0 0 0 1.6-2.7L13.7 4.1a1.9 1.9 0 0 0-3.4 0z"/><path d="M12 9.4v3.8"/><circle cx="12" cy="16.6" r=".9" fill="currentColor" stroke="none"/>'
 };
+
+/* ---- 旧名 → 新图形 映射（filled 标记实心填充） ---- */
+var ALIAS = {
+  'photo': 'img', 'calendar': 'cal', 'location': 'pin', 'shop': 'store',
+  'package': 'order', 'edit': 'pen', 'lock': 'shield', 'logout': 'out',
+  'wrench': 'gear', 'money': 'coin', 'refresh': 'swap', 'kimono': 'robe',
+  'close': 'x', 'chevron-right': 'chevr', 'chevron-down': 'chevd',
+  'star-filled': 'star', 'heart-filled': 'heart'
+};
+var FILLED = { 'star-filled': true, 'heart-filled': true };
+
+var cache = {};
+
+function resolve(name, color) {
+  var key = name + '|' + color;
+  if (cache[key]) return cache[key];
+  var glyph = ALIAS[name] || name;
+  var body = GLYPHS[glyph];
+  if (!body) return '';
+  var uri = FILLED[name]
+    ? makeDataUri(body, { fill: color })
+    : makeDataUri(body, { stroke: color });
+  cache[key] = uri;
+  return uri;
+}
 
 Component({
   properties: {
-    name: {
-      type: String,
-      value: ''
-    },
-    size: {
-      type: String,
-      value: '44rpx'
-    },
-    color: {
-      type: String,
-      value: ''
-    }
+    name: { type: String, value: '' },
+    size: { type: String, value: '44rpx' },
+    color: { type: String, value: '#29241D' }
   },
 
-  data: {
-    iconSrc: ''
-  },
+  data: { iconSrc: '' },
 
   observers: {
-    'name': function (name) {
-      this.setData({
-        iconSrc: ICONS[name] || ''
-      });
+    'name, color': function (name, color) {
+      this.setData({ iconSrc: resolve(name, color || '#29241D') });
     }
   },
 
   lifetimes: {
     attached: function () {
-      this.setData({
-        iconSrc: ICONS[this.properties.name] || ''
-      });
+      this.setData({ iconSrc: resolve(this.properties.name, this.properties.color || '#29241D') });
     }
   }
 });

@@ -6,7 +6,7 @@ exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext();
   const openid = wxContext.OPENID;
   if (!openid) return { code: 1002, message: '未登录' };
-  const { serviceItemId, name, description, coverImage, priceType, price, originalPrice, duration, includes, maxDailyBooking, status, icon } = event;
+  const { serviceItemId, name, description, coverImage, priceType, price, duration, includes, maxDailyBooking, status, icon } = event;
 
   try {
     const { role } = event;
@@ -19,7 +19,7 @@ exports.main = async (event, context) => {
     if (!name || !price || !duration) {
       return { code: 1001, message: '请填写套餐名称、价格和时长' };
     }
-    if (!['fixed', 'hourly', 'project'].includes(priceType)) {
+    if (!['fixed', 'hourly'].includes(priceType)) {
       return { code: 1001, message: '价格类型无效' };
     }
 
@@ -29,7 +29,6 @@ exports.main = async (event, context) => {
       coverImage: coverImage || '',
       priceType: priceType || 'fixed',
       price: Math.round(price * 100),
-      originalPrice: Math.round((originalPrice || price) * 100),
       duration: parseInt(duration) || 60,
       includes: includes || [],
       maxDailyBooking: parseInt(maxDailyBooking) || 5,
@@ -43,9 +42,13 @@ exports.main = async (event, context) => {
       if (!item.data || item.data.providerId !== provider._id) {
         return { code: 1002, message: '无权修改此套餐' };
       }
-      // 仅上下架操作可改状态，其他更新保持原审核状态
+      // 状态变更：只允许 active ↔ inactive（被拒/待审的不能自行上架）
       if (status && (status === 'active' || status === 'inactive')) {
-        data.status = status;
+        if (item.data.status === 'active' || item.data.status === 'inactive') {
+          data.status = status;
+        } else {
+          data.status = item.data.status; // rejected/pending_review 不允许切换
+        }
       } else {
         data.status = item.data.status;
       }

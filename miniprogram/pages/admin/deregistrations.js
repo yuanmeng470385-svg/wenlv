@@ -42,6 +42,17 @@ Page({
   },
 
   onCardTap(e) {
-    wx.navigateTo({ url: '/pages/serviceDetail/index?id=' + e.currentTarget.dataset.id });
+    const id = e.currentTarget.dataset.id;
+    const item = this.data.list.find(i => i._id === id);
+    if (!item) return;
+    const catName = item.categoryType === 'photographer' ? '摄影师' : (item.categoryType === 'makeup' ? '妆造师' : '汉服店');
+    const lines = [
+      '【' + catName + '】' + (item.name || ''),
+      '电话：' + (item.phone || '未填写'),
+      '总订单：' + (item.totalOrders || 0),
+      '未完成订单：' + (item.unfinishedOrders || 0),
+      '申请时间：' + (item.updateTime || ''),
+    ].join('\n');
+    wx.showModal({ title: '注销详情', content: lines, showCancel: false, confirmText: '关闭' });
   },
 });

@@ -6,24 +6,26 @@ Page({
     this.setData({ loading: true });
     try {
       const { callFunction } = require('../../services/cloud');
-      this.setData({ list: (await callFunction('getPendingProviders')) || [] });
+      const TYPE_META = {
+        photographer: ['摄影师', '影', 'g-rouge'],
+        makeup: ['妆造师', '妆', 'g-gold'],
+        hanfu_shop: ['汉服店', '服', 'g-cel'],
+      };
+      const list = ((await callFunction('getPendingProviders')) || []).map(p => {
+        const m = TYPE_META[p.categoryType] || ['服务商', '店', 'g-ink'];
+        return Object.assign({}, p, { _typeLabel: m[0], _glyph: (p.name || m[1]).charAt(0), _grad: m[2] });
+      });
+      this.setData({ list });
     } catch (e) { wx.showToast({ title: '加载失败', icon: 'none' }); }
     finally { this.setData({ loading: false }); }
   },
 
   getTypeLabel(t) { const m = { photographer: '摄影师', makeup: '妆造师', hanfu_shop: '汉服店' }; return m[t] || t; },
-  getCategoryIcon(t) { const m = { photographer: '📷', makeup: '💄', hanfu_shop: '👘' }; return m[t] || '📷'; },
 
   onPass(e) {
-    const { id, type } = e.currentTarget.dataset;
-    if (type === 'hanfu_shop') {
-      this.doAction(id, 'approved', 0);
-    } else {
-      wx.showActionSheet({
-        itemList: ['初级 ⭐', '中级 ⭐⭐', '高级 ⭐⭐⭐', '资深 ⭐⭐⭐⭐', '首席 ⭐⭐⭐⭐⭐'],
-        success: (res) => this.doAction(id, 'approved', res.tapIndex + 1),
-      });
-    }
+    // 等级系统已删除，通过无需再选星级
+    const { id } = e.currentTarget.dataset;
+    this.doAction(id, 'approved', 0);
   },
 
   onReject(e) {
@@ -55,6 +57,23 @@ Page({
   },
 
   onCardTap(e) {
-    wx.navigateTo({ url: '/pages/serviceDetail/index?id=' + e.currentTarget.dataset.id });
+    const item = this.data.list.find(i => i._id === e.currentTarget.dataset.id);
+    if (!item) return;
+    const tags = (item.featureTags || []).join('、') || '无';
+    const city = item.city || '未填写';
+    const desc = item.description || '无';
+    const covers = item.coverImages ? item.coverImages.length : 0;
+    const works = item.images ? item.images.length : 0;
+    const lines = [
+      '【' + this.getTypeLabel(item.categoryType) + '】' + item.name,
+      '电话：' + (item.phone || '未填写'),
+      '城市：' + city,
+      '特色标签：' + tags,
+      '描述：' + desc,
+      '封面图数量：' + covers,
+      '作品图数量：' + works,
+      '申请时间：' + (item.createTime || ''),
+    ].join('\n');
+    wx.showModal({ title: '申请详情', content: lines, showCancel: false, confirmText: '关闭' });
   },
 });

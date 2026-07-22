@@ -1,30 +1,33 @@
-.page-profile { min-height: 100vh; background: var(--bg-page); padding-bottom: 40rpx; }
-.user-header { background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark)); padding: 50rpx 30rpx 40rpx; display: flex; flex-direction: column; align-items: center; }
-.user-avatar { width: 120rpx; height: 120rpx; border-radius: 50%; overflow: hidden; border: 4rpx solid rgba(255,255,255,0.5); margin-bottom: 16rpx; background: rgba(255,255,255,0.2); position: relative; }
-.user-avatar image { width: 100%; height: 100%; }
-.avt-ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 60rpx; }
+/* ========== 我的 v3「纸墨朱砂」 ========== */
+.page { padding: 16rpx 32rpx 40rpx; min-height: 100vh; }
 
-/* 头像编辑 */
-.avatar-editable { position: relative; }
-.avatar-edit-mask { position: absolute; bottom: 0; left: 0; right: 0; height: 40rpx; background: rgba(0, 0, 0, 0.45); display: flex; align-items: center; justify-content: center; border-radius: 0 0 50% 50%; }
-.avatar-edit-icon { font-size: 22rpx; color: #fff; line-height: 1; }
-.user-name { color: #fff; }
-.user-role { color: rgba(255,255,255,0.8); font-size: 24rpx; margin-top: 6rpx; }
-.login-btn-sm { margin-top: 16rpx; padding: 8rpx 32rpx; font-size: 26rpx; background: var(--bg-white); color: var(--color-primary); border-radius: 30rpx; }
+/* ---- 用户头部 ---- */
+.u-head { display: flex; align-items: center; padding: 32rpx 28rpx; }
+.u-avt-wrap { position: relative; flex: none; margin-right: 28rpx; }
+.u-avt { width: 112rpx; height: 112rpx; border-radius: 50%; }
+.u-avt-edit {
+  position: absolute; right: -4rpx; bottom: -4rpx;
+  width: 40rpx; height: 40rpx; border-radius: 50%;
+  background: var(--ink); border: 4rpx solid var(--card);
+  display: flex; align-items: center; justify-content: center;
+}
+.u-name { font-size: 38rpx; font-weight: 700; letter-spacing: 2rpx; }
+.u-sub { display: flex; align-items: center; margin-top: 10rpx; }
 
-.admin-entry { margin: 30rpx 20rpx 10rpx; background: var(--text-primary); color: #fff; }
-.admin-entry text { color: #fff; }
+/* ---- 身份切换 ---- */
+.u-roles { margin-top: 24rpx; padding: 24rpx 28rpx; }
+.u-roles-head { display: flex; align-items: center; gap: 16rpx; }
+.u-roles-lb { font-size: 22rpx; color: var(--ink-3); letter-spacing: 2rpx; flex: none; }
+.u-roles-tip { font-size: 20rpx; color: var(--ink-3); flex: none; }
+.u-roles-row { display: flex; gap: 16rpx; margin-top: 20rpx; flex-wrap: wrap; }
 
-.role-section { margin: 20rpx; }
-.section-title { display: block; margin-bottom: 16rpx; }
-.role-list { display: flex; flex-wrap: wrap; gap: 10rpx; }
-.role-chip { padding: 12rpx 24rpx; border-radius: 30rpx; font-size: 26rpx; background: var(--bg-page); color: var(--text-secondary); }
-.role-chip.active { background: var(--color-primary-bg); color: var(--color-primary); font-weight: 600; }
-
-.menu-card { margin: 10rpx 20rpx; }
-
-.menu-section { margin-top: 20rpx; background: var(--bg-white); }
-.menu-item { padding: 30rpx; border-bottom: 1rpx solid var(--border-color); }
-.menu-item:last-child { border-bottom: none; }
-
-.icon-row { display: flex; align-items: center; gap: 4rpx; }
+/* ---- 菜单组 ---- */
+.menu { margin-top: 24rpx; padding: 4rpx 28rpx; }
+.menu .lrow { padding: 26rpx 0; }
+.mi {
+  width: 72rpx; height: 72rpx; border-radius: 20rpx; flex: none;
+  background: var(--paper-2); border: 1rpx solid var(--line-2);
+  display: flex; align-items: center; justify-content: center; margin-right: 24rpx;
+}
+.mi-gold { background: rgba(176, 141, 87, 0.1); border-color: rgba(176, 141, 87, 0.25); }
+.mi-red { background: rgba(190, 63, 44, 0.07); border-color: rgba(190, 63, 44, 0.18); }

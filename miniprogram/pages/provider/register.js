@@ -5,9 +5,9 @@ Page({
   data: {
     categoryType: 'photographer',
     categories: [
-      { type: 'photographer', label: '摄影师', icon: '📷' },
-      { type: 'makeup', label: '妆造师', icon: '💄' },
-      { type: 'hanfu_shop', label: '汉服店', icon: '👘' },
+      { type: 'photographer', label: '摄影师', glyph: '影', icon: 'camera', grad: 'g-rouge', desc: '旅拍 / 写真 / 跟拍' },
+      { type: 'makeup', label: '妆造师', glyph: '妆', icon: 'lipstick', grad: 'g-gold', desc: '唐风 / 明制 / 特效' },
+      { type: 'hanfu_shop', label: '汉服店', glyph: '服', icon: 'robe', grad: 'g-cel', desc: '租赁 / 定制 / 体验' },
     ],
     name: '',
     city: '',

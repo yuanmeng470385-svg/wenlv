@@ -4,10 +4,16 @@ Page({
   data: { dateList: [], timeSlots: [], selectedDate: '', selectedLabel: '' },
   onLoad() {
     const now = new Date();
+    const WEEK = ['日', '一', '二', '三', '四', '五', '六'];
     const list = [];
     for (let i = 0; i < 30; i++) {
       const d = new Date(now); d.setDate(d.getDate() + i);
-      list.push({ date: `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`, label: i===0?'今天':i===1?'明天':`${d.getMonth()+1}月${d.getDate()}日` });
+      list.push({
+        date: `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`,
+        label: i===0?'今天':i===1?'明天':`${d.getMonth()+1}月${d.getDate()}日`,
+        week: i===0 ? '今天' : '周' + WEEK[d.getDay()],
+        day: d.getDate(),
+      });
     }
     this.setData({ dateList: list });
   },

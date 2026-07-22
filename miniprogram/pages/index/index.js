@@ -2,10 +2,18 @@ const { getCategoryList } = require('../../services/serviceService');
 const { login } = require('../../services/userService');
 const app = getApp();
 
+/* 品类元信息：宋体单字 / 中文名 / 图标 / 渐变（新中式视觉系统） */
+const CATEGORY_META = {
+  photographer: { glyph: '影', label: '摄影跟拍', icon: 'camera', grad: 'g-rouge' },
+  makeup: { glyph: '妆', label: '妆造造型', icon: 'lipstick', grad: 'g-gold' },
+  hanfu_shop: { glyph: '服', label: '汉服租赁', icon: 'robe', grad: 'g-cel' },
+};
+const metaOf = (type) => CATEGORY_META[type] || CATEGORY_META.photographer;
+
 Page({
   data: {
     banners: [],
-    categories: [], featuredWorks: [],
+    categories: [], featuredWorks: [], topProviders: [],
     activeRole: 'user', hasLogin: false, isAdminMode: false,
     dashboard: { todayOrders: 0, pendingOrders: 0, totalOrders: 0 },
     recentOrders: [],
@@ -72,17 +80,30 @@ Page({
     try {
       if (this.data.activeRole === 'user') {
         const { callFunction } = require('../../services/cloud');
-        const { getCategoryList } = require('../../services/serviceService');
 
-        // 缓存：banners 和 categories 只拉一次
+        // 缓存：banners / categories / topProviders 只拉一次
         let banners = this.data.banners.length ? this.data.banners : [];
         let categories = this.data.categories.length ? this.data.categories : [];
+        let topProviders = this.data.topProviders.length ? this.data.topProviders : [];
 
         const promises = [];
         if (!banners.length) promises.push(callFunction('getBanners').then(r => { banners = r.list || []; }).catch(()=>{}));
-        if (!categories.length) promises.push(getCategoryList().then(r => { categories = r || []; }).catch(()=>{}));
+        if (!categories.length) promises.push(getCategoryList().then(r => {
+          categories = (r || []).map(c => Object.assign({}, c, {
+            _glyph: metaOf(c.type).glyph,
+            _label: metaOf(c.type).label,
+            _grad: metaOf(c.type).grad,
+          }));
+        }).catch(()=>{}));
+        if (!topProviders.length) promises.push(callFunction('getProviderList', { page: 1, pageSize: 6 }).then(r => {
+          topProviders = (r.list || []).map(p => Object.assign({}, p, {
+            _glyph: (p.name || '影').charAt(0),
+            _label: metaOf(p.categoryType).label,
+            _grad: metaOf(p.categoryType).grad,
+            _tags: (p.featureTags || []).slice(0, 2),
+          }));
+        }).catch(()=>{}));
         const featuredPromise = callFunction('getFeaturedPortfolios').then(r => {
-          const CATEGORY_EMOJI = { photographer: '📷', makeup: '💄', hanfu_shop: '👘' };
           const works = (r.list || []).map(p => ({
             _id: p._id,
             image: p.image || '',
@@ -90,13 +111,14 @@ Page({
             providerAvatar: p.providerAvatar || '',
             providerCategory: p.providerCategory,
             providerId: p.providerId,
-            categoryEmoji: CATEGORY_EMOJI[p.providerCategory] || '📷',
+            _glyph: (p.providerName || '影').charAt(0),
+            _grad: metaOf(p.providerCategory).grad,
+            _label: metaOf(p.providerCategory).label,
           }));
           this.setData({ featuredWorks: works });
         }).catch(() => {
           // 回退：getFeaturedPortfolios 未部署时用 getFeaturedProviders
           return callFunction('getFeaturedProviders').then(r => {
-            const CATEGORY_EMOJI = { photographer: '📷', makeup: '💄', hanfu_shop: '👘' };
             const works = (r.list || []).map(p => ({
               _id: p._id,
               image: p.backgroundImage || p.avatar || '',
@@ -104,7 +126,9 @@ Page({
               providerAvatar: p.avatar || '',
               providerCategory: p.categoryType,
               providerId: p._id,
-              categoryEmoji: CATEGORY_EMOJI[p.categoryType] || '📷',
+              _glyph: (p.name || '影').charAt(0),
+              _grad: metaOf(p.categoryType).grad,
+              _label: metaOf(p.categoryType).label,
             }));
             this.setData({ featuredWorks: works });
           }).catch(()=>{});
@@ -114,6 +138,7 @@ Page({
         await Promise.all(promises);
         if (banners.length) this.setData({ banners });
         if (categories.length) this.setData({ categories });
+        if (topProviders.length) this.setData({ topProviders });
       } else {
         // 商家模式 - 静默刷新时跳过缓存，否则首次加载后不再拉取
         if (this.data.provider && !this._firstLoad && !silent) return;
@@ -122,12 +147,22 @@ Page({
         const myRes = await callFunction('getMyProvider', { role: this.data.activeRole });
         if (myRes && myRes._id) {
           const detail = await getProviderDetail(myRes._id);
-          const CATEGORY_EMOJI = { photographer: '📷', makeup: '💄', hanfu_shop: '👘' };
           const p = detail.provider;
-          if (p) p._categoryEmoji = CATEGORY_EMOJI[p.categoryType] || '📷';
+          if (p) {
+            p._glyph = (p.name || '店').charAt(0);
+            p._grad = metaOf(p.categoryType).grad;
+          }
+          const STATUS_CHIP = {
+            active: ['st-cel', '上架中'], inactive: ['st-gray', '已下架'],
+            pending_review: ['st-gold', '审核中'], rejected: ['st-red', '已驳回'],
+          };
+          const items = (detail.serviceItems || []).map(s => {
+            const chip = STATUS_CHIP[s.status] || ['st-gray', s.status || ''];
+            return Object.assign({}, s, { _statusClass: chip[0], _statusLabel: chip[1] });
+          });
           this.setData({
             provider: p,
-            serviceItems: detail.serviceItems || [],
+            serviceItems: items,
             portfolios: detail.portfolios || [],
             reviews: detail.reviews || [],
             providerName: myRes.name || '',
@@ -149,6 +184,7 @@ Page({
   },
   onProviderTap(e) { wx.navigateTo({ url: `/pages/serviceDetail/index?id=${e.currentTarget.dataset.id}` }); },
   goMore() { wx.navigateTo({ url: '/pages/serviceList/index?type=photographer' }); },
+  onBellTap() { wx.navigateTo({ url: '/pages/messages/index' }); },
 
   goUploadWork() { wx.navigateTo({ url: '/pages/provider/uploadWork' }); },
   goMyWorks() { wx.navigateTo({ url: '/pages/provider/myWorks' }); },

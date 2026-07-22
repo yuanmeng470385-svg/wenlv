@@ -1,13 +1,14 @@
-.page-portfolio { background: #000; min-height: 100vh; padding-bottom: 100rpx; }
-.image-swiper { width: 100%; height: 600rpx; }
-.detail-img { width: 100%; height: 100%; }
-.detail-info { margin: 20rpx; background: var(--bg-white); }
-.tag-row { display: flex; flex-wrap: wrap; gap: 10rpx; }
-.feature-tag { padding: 6rpx 16rpx; font-size: 22rpx; border-radius: 8rpx; background: var(--color-primary-bg); color: var(--color-primary); }
-.meta-row { display: flex; flex-wrap: wrap; gap: 16rpx; }
-.action-bar { position: fixed; bottom: 0; left: 0; right: 0; padding: 20rpx 40rpx; background: rgba(0,0,0,0.8); }
-.action-btn { display: flex; flex-direction: column; align-items: center; gap: 4rpx; color: #fff; }
-.action-icon { font-size: 48rpx; }
-.mt-10 { margin-top: 10rpx; }
-.mt-20 { margin-top: 20rpx; }
-.icon-row { display: flex; align-items: center; gap: 4rpx; }
+/* ========== 作品详情 v3「纸墨朱砂」 ========== */
+.page-pf { min-height: 100vh; padding-bottom: 140rpx; }
+.pf-sw { width: 100%; height: 720rpx; }
+.pf-img { width: 100%; height: 100%; }
+.pf-info { margin: -40rpx 32rpx 0; padding: 32rpx 28rpx; position: relative; z-index: 2; }
+.pf-title { font-size: 40rpx; font-weight: 900; letter-spacing: 2rpx; }
+.pf-desc { font-size: 26rpx; color: var(--ink-2); line-height: 1.8; margin-top: 14rpx; }
+.pf-tags { display: flex; flex-wrap: wrap; gap: 10rpx; margin-top: 20rpx; }
+.pf-meta { display: flex; flex-wrap: wrap; gap: 16rpx 28rpx; }
+.pf-meta-item { display: flex; align-items: center; gap: 8rpx; font-size: 24rpx; color: var(--ink-2); }
+.pf-action { position: fixed; bottom: 0; left: 0; right: 0; justify-content: space-around; z-index: 10; }
+.pf-act { display: flex; flex-direction: column; align-items: center; gap: 6rpx; padding: 4rpx 40rpx; }
+.pf-act-n { font-size: 22rpx; color: var(--ink-2); }
+.pf-act-on .pf-act-n { color: var(--red); }

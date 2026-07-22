@@ -1,15 +1,19 @@
-<view class="page-messages">
-  <view wx:if="{{unreadCount > 0}}" class="mark-all-bar">
-    <text class="text-sm text-secondary">{{unreadCount}} 条未读</text>
-    <text class="text-sm text-primary" bindtap="onMarkAllRead">全部已读</text>
+<view class="page">
+  <view wx:if="{{unreadCount > 0}}" class="unread-bar">
+    <text class="text-sm text-hint">{{unreadCount}} 条未读</text>
+    <text class="btn btn-txt btn-sm" bindtap="onMarkAllRead">全部已读</text>
   </view>
-  <view wx:for="{{messages}}" wx:key="_id" class="msg-card card" data-item="{{item}}" bindtap="onNotificationTap">
-    <view class="flex-between">
-      <text class="text-bold {{item.read ? '' : 'unread'}}">{{item.title}}</text>
-      <text class="text-sm text-hint">{{item.time}}</text>
+
+  <view wx:for="{{messages}}" wx:key="_id" class="cd msg" data-item="{{item}}" bindtap="onNotificationTap">
+    <view class="msg-dot {{item.read ? 'msg-dot-read' : ''}}"></view>
+    <view class="flex-1">
+      <view class="flex-between">
+        <text class="msg-title {{item.read ? 'msg-title-read' : ''}}">{{item.title}}</text>
+        <text class="text-hint" style="font-size:20rpx;flex:none;margin-left:16rpx">{{item.time}}</text>
+      </view>
+      <view class="msg-body">{{item.content}}</view>
     </view>
-    <text class="text-sm text-secondary mt-10">{{item.content}}</text>
-    <view wx:if="{{!item.read}}" class="unread-dot"></view>
   </view>
-  <empty-state wx:if="{{!messages.length}}" text="暂无消息" />
+
+  <empty-state wx:if="{{!messages.length}}" text="暂无消息" icon="bell" />
 </view>

@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "订单",
+  "navigationBarTitleText": "功能",
   "usingComponents": {
     "icon": "/components/icon/index",
     "empty-state": "/components/empty-state/index",

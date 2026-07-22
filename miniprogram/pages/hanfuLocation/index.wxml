@@ -1,70 +1,79 @@
-<!-- 顶部位置栏 -->
-<view class="location-bar">
-  <view class="loc-left" bindtap="onSelectCity">
-    <icon name="location" size="36rpx" />
-    <text class="loc-city">{{locating ? '定位中...' : (city || '点击选择城市')}}</text>
-    <icon name="chevron-down" size="24rpx" />
-  </view>
-  <view class="loc-btn" bindtap="onRelocate">
-    <view class="icon-row"><icon name="refresh" size="28rpx" /><text>自动定位</text></view>
-  </view>
-</view>
-
-<!-- 定位中 -->
-<view wx:if="{{locating}}" class="state-loading">
-  <text>正在获取位置...</text>
-</view>
-
-<!-- 结果区 -->
-<block wx:if="{{loaded}}">
-  <!-- 平台已入住 -->
-  <view class="section">
-    <view class="section-header">
-      <icon name="home" size="36rpx" />
-      <text class="section-title">平台已入住</text>
-      <text wx:if="{{!inEmpty}}" class="section-count">({{inProviders.length}}家)</text>
+<view class="page">
+  <!-- 位置卡 -->
+  <view class="cd loc-card">
+    <view class="loc-pin"><icon name="pin" size="40rpx" color="#BE3F2C" /></view>
+    <view class="flex-1">
+      <view class="loc-city">{{locating ? '定位中…' : (city ? city + ' · 汉服体验' : '点击选择城市')}}</view>
+      <view class="loc-sub" wx:if="{{!locating && city}}">已为你定位附近的汉服店</view>
+      <view class="loc-sub" wx:elif="{{!locating}}">定位失败，请手动选择城市</view>
     </view>
-    <view wx:if="{{inLoading}}" class="state-loading"><text>加载中...</text></view>
-    <view wx:elif="{{inEmpty}}" class="state-empty"><text>该城市暂无入驻汉服店</text></view>
-    <block wx:else>
-      <view wx:for="{{inProviders}}" wx:key="_id" class="shop-card" bindtap="onInProviderTap" data-id="{{item._id}}">
-        <image class="shop-avatar" src="{{item.avatar || '/images/default-avatar.png'}}" mode="aspectFill" />
+    <view class="btn btn-line btn-sm" bindtap="onSelectCity"><icon name="swap" size="26rpx" color="#29241D" />换城市</view>
+    <view class="loc-re" bindtap="onRelocate"><icon name="compass" size="38rpx" color="#6E675C" /></view>
+  </view>
+
+  <!-- 定位中 -->
+  <view wx:if="{{locating}}" class="locating">
+    <icon name="compass" size="64rpx" color="#A79E8F" />
+    <text class="locating-t">正在获取位置…</text>
+  </view>
+
+  <!-- 结果区 -->
+  <block wx:if="{{loaded}}">
+    <view class="seg-row">
+      <view class="chip {{activeSec === 'in' ? 'on' : ''}}" data-sec="in" bindtap="onSecSwitch">平台入驻 ({{inProviders.length}})</view>
+      <view class="chip {{activeSec === 'near' ? 'on' : ''}}" data-sec="near" bindtap="onSecSwitch">附近门店 ({{nearbyShops.length}})</view>
+    </view>
+
+    <!-- 平台已入驻 -->
+    <block wx:if="{{activeSec === 'in'}}">
+      <view wx:if="{{inLoading}}" class="state">加载中…</view>
+      <empty-state wx:elif="{{inEmpty}}" text="该城市暂无入驻汉服店" icon="robe" />
+      <block wx:else>
+      <view wx:for="{{inProviders}}" wx:key="_id" class="cd shop" bindtap="onInProviderTap" data-id="{{item._id}}">
+        <image wx:if="{{item.avatar}}" class="shop-cover" src="{{item.avatar}}" mode="aspectFill" />
+        <view wx:else class="shop-cover imph g-cel"><text class="imph-t" style="font-size:52rpx">{{item._glyph}}</text></view>
         <view class="shop-info">
-          <view class="shop-name">{{item.name}}</view>
-          <view wx:if="{{item.city}}" class="icon-row shop-city"><icon name="location" size="24rpx" /><text>{{item.city}}</text></view>
-          <view class="shop-desc">{{item.description || ''}}</view>
-          <view class="shop-meta">
-            <view wx:if="{{item.rating}}" class="icon-row shop-rating"><icon name="star-filled" size="24rpx" /><text>{{item.rating}}</text></view>
-            <text wx:if="{{item.orderCount}}" class="shop-orders">{{item.orderCount}}单</text>
+          <view class="shop-name-row">
+            <text class="shop-name serif text-ellipsis">{{item.name}}</text>
+            <text class="st st-cel">入驻</text>
+          </view>
+          <view class="stars">
+            <icon name="star-filled" size="26rpx" color="#C99345" />
+            <text class="stars-n serif">{{item.rating || '5.0'}}</text>
+            <text class="stars-c" wx:if="{{item.city}}"> · {{item.city}}</text>
+          </view>
+          <view class="shop-foot">
+            <text class="text-hint text-sm text-ellipsis" style="max-width:280rpx">{{item.description || '汉服体验'}}</text>
+            <view class="btn btn-ink btn-sm">预约</view>
           </view>
         </view>
-        <text class="shop-arrow">></text>
       </view>
+      </block>
     </block>
-  </view>
 
-  <!-- 附近汉服店（地图API） -->
-  <view class="section">
-    <view class="section-header">
-      <icon name="location" size="36rpx" />
-      <text class="section-title">附近汉服店</text>
-      <text wx:if="{{!nearEmpty}}" class="section-count">({{nearbyShops.length}}家)</text>
-      <text class="section-tag">外部商家</text>
-    </view>
-    <view wx:if="{{nearLoading}}" class="state-loading"><text>加载中...</text></view>
-    <view wx:elif="{{nearEmpty}}" class="state-empty"><text>该城市暂无搜索结果</text></view>
-    <block wx:else>
-      <view wx:for="{{nearbyShops}}" wx:key="_id" class="shop-card">
-        <view class="shop-avatar shop-avatar-placeholder"><icon name="shop" size="44rpx" /></view>
+    <!-- 附近门店（腾讯地图） -->
+    <block wx:if="{{activeSec === 'near'}}">
+      <view wx:if="{{nearLoading}}" class="state">加载中…</view>
+      <empty-state wx:elif="{{nearEmpty}}" text="该城市暂无搜索结果" icon="compass" />
+      <block wx:else>
+      <view wx:for="{{nearbyShops}}" wx:key="_id" class="shop shop-ext">
+        <view class="shop-ext-ic"><icon name="store" size="48rpx" color="#A79E8F" /></view>
         <view class="shop-info">
-          <view class="shop-name">{{item.name}}</view>
-          <view class="shop-desc">{{item.address}}</view>
-          <view wx:if="{{item.category}}" class="shop-cat">{{item.category}}</view>
-        </view>
-        <view wx:if="{{item.phone}}" class="call-btn" catchtap="onCallPhone" data-phone="{{item.phone}}">
-          <view class="icon-row"><icon name="phone" size="28rpx" /><text>拨号</text></view>
+          <view class="shop-name-row">
+            <text class="shop-name shop-name-ext serif text-ellipsis">{{item.name}}</text>
+            <text class="st st-gold">周边</text>
+          </view>
+          <view class="text-hint text-sm shop-addr text-ellipsis">{{item.address}}</view>
+          <view class="shop-foot">
+            <text class="text-hint" style="font-size:20rpx">未入驻 · 不可在线预约</text>
+            <view wx:if="{{item.phone}}" class="btn btn-line btn-sm" catchtap="onCallPhone" data-phone="{{item.phone}}">
+              <icon name="phone" size="26rpx" color="#29241D" />拨号
+            </view>
+          </view>
         </view>
       </view>
+      </block>
+      <view class="ext-note" wx:if="{{!nearEmpty}}">— 周边门店来自腾讯地图 · 入驻商家支持在线预约 —</view>
     </block>
-  </view>
-</block>
+  </block>
+</view>

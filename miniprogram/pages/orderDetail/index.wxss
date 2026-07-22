@@ -1,12 +1,26 @@
-.page-order-detail { background: var(--bg-page); min-height: 100vh; padding: 20rpx; padding-bottom: 160rpx; }
-.status-header { text-align: center; padding: 40rpx; }
-.detail-item { padding: 20rpx 0; border-bottom: 1rpx solid var(--border-color); }
-.detail-item:last-child { border-bottom: none; }
-.info-section { margin-top: 20rpx; }
-.action-bar { position: fixed; bottom: 0; left: 0; right: 0; padding: 20rpx 30rpx; background: var(--bg-white); box-shadow: var(--shadow-card); }
-.pay-btn { width: 100%; height: 88rpx; background: var(--color-price); color: #fff; border-radius: 44rpx; font-size: 32rpx; display: flex; align-items: center; justify-content: center; }
-.mock-pay-btn { width: 100%; height: 88rpx; background: var(--color-success); color: #fff; border-radius: 44rpx; font-size: 32rpx; display: flex; align-items: center; justify-content: center; }
-.cancel-btn { width: 100%; height: 72rpx; background: var(--bg-page); color: var(--text-secondary); border-radius: 36rpx; font-size: 26rpx; display: flex; align-items: center; justify-content: center; }
-.review-btn { width: 100%; height: 88rpx; background: var(--color-primary); color: #fff; border-radius: 44rpx; font-size: 32rpx; display: flex; align-items: center; justify-content: center; }
-.text-success { color: var(--color-success); }
-.mt-10 { margin-top: 10rpx; }
+/* ========== 订单详情 v3「纸墨朱砂」 ========== */
+.page { padding: 16rpx 32rpx 180rpx; min-height: 100vh; }
+
+/* ---- 状态头 ---- */
+.od-head { display: flex; flex-direction: column; align-items: center; padding: 40rpx 0 24rpx; }
+.od-status { font-size: 24rpx; padding: 8rpx 24rpx; }
+.od-no { margin-top: 20rpx; font-size: 38rpx; font-weight: 700; letter-spacing: 2rpx; text-align: center; }
+
+/* ---- 卡片节 ---- */
+.sec { margin-top: 24rpx; padding: 28rpx 28rpx 8rpx; }
+.sec .sech { margin-bottom: 8rpx; }
+.od-item { padding: 20rpx 0; }
+.od-item + .od-item { border-top: 1rpx solid var(--line-2); }
+.od-item-sub { margin-top: 8rpx; }
+.od-k { width: 140rpx; flex: none; font-size: 26rpx; color: var(--ink-3); }
+.od-prov { padding: 22rpx 0; }
+.od-prov-ic {
+  width: 68rpx; height: 68rpx; border-radius: 18rpx; flex: none;
+  background: var(--paper-2); border: 1rpx solid var(--line-2);
+  display: flex; align-items: center; justify-content: center; margin-right: 20rpx;
+}
+.od-call { display: flex; align-items: center; gap: 8rpx; padding: 10rpx 0; }
+.od-call-t { font-size: 24rpx; color: var(--celadon); }
+
+.od-action { position: fixed; bottom: 0; left: 0; right: 0; gap: 20rpx; z-index: 10; }
+.od-wait { text-align: center; color: var(--ink-3); font-size: 26rpx; letter-spacing: 2rpx; }

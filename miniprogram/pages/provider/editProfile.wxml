@@ -1,9 +1,28 @@
-<view class="page-edit">
-  <view class="form-section card">
-    <view class="form-item"><text class="form-label">名称</text><input class="form-input" value="{{name}}" data-field="name" bindinput="onInputChange" /></view>
-    <view class="form-item"><text class="form-label">电话</text><input class="form-input" type="number" value="{{phone}}" data-field="phone" bindinput="onInputChange" /></view>
-    <view class="form-item"><text class="form-label">简介</text><textarea class="form-textarea" value="{{description}}" data-field="description" bindinput="onInputChange" /></view>
-    <view class="form-item"><text class="form-label">特色标签</text><input class="form-input" value="{{featureTags}}" data-field="featureTags" bindinput="onInputChange" placeholder="逗号分隔" /></view>
+<view class="page">
+  <view class="sech" style="margin:8rpx 0 20rpx">
+    <view class="sech-sq"></view><view class="sech-t" style="font-size:30rpx">店铺资料</view>
+    <view class="sech-line"></view>
   </view>
-  <view class="p-20"><button class="save-btn" bindtap="onSubmit">保存</button></view>
+  <view class="cd form-card">
+    <view class="form-row">
+      <text class="form-lb">名称</text>
+      <input class="form-in" value="{{name}}" data-field="name" bindinput="onInputChange" />
+    </view>
+    <view class="form-row">
+      <text class="form-lb">电话</text>
+      <input class="form-in" type="number" value="{{phone}}" data-field="phone" bindinput="onInputChange" />
+    </view>
+    <view class="form-row form-row-top">
+      <text class="form-lb">简介</text>
+      <textarea class="form-ta" value="{{description}}" data-field="description" bindinput="onInputChange" />
+    </view>
+    <view class="form-row">
+      <text class="form-lb">特色标签</text>
+      <input class="form-in" value="{{featureTags}}" data-field="featureTags" bindinput="onInputChange" placeholder="逗号分隔" placeholder-class="form-ph" />
+    </view>
+  </view>
+  <view class="ep-save">
+    <button class="btn btn-ink btn-lg btn-block" bindtap="onSubmit">保存</button>
+    <view class="ep-note">头像与背景图请在首页店铺封面处修改（需审核）</view>
+  </view>
 </view>

@@ -1,8 +1,14 @@
-.page-review { min-height: 100vh; background: var(--bg-page); padding: 20rpx; }
-.review-card { margin: 0 0 16rpx; }
-.action-btns { display: flex; justify-content: flex-end; gap: 12rpx; }
-.btn-pass { padding: 14rpx 40rpx; font-size: 26rpx; background: var(--color-success); color: #fff; border-radius: 30rpx; }
-.btn-reject { padding: 14rpx 40rpx; font-size: 26rpx; background: var(--bg-page); color: var(--text-hint); border-radius: 30rpx; }
-.empty-hint { padding: 120rpx 0; text-align: center; }
-.mt-10 { margin-top: 10rpx; } .mt-20 { margin-top: 20rpx; }
-.icon-row { display: flex; align-items: center; gap: 8rpx; }
+/* ========== 套餐审核 v3「纸墨朱砂」 ========== */
+.page { padding: 16rpx 32rpx 40rpx; min-height: 100vh; }
+.adm-state { text-align: center; padding: 100rpx 0; color: var(--ink-3); font-size: 26rpx; }
+.rv-card { padding: 28rpx; margin-top: 20rpx; }
+.rv-head { display: flex; align-items: center; }
+.rv-thumb { width: 96rpx; height: 96rpx; border-radius: var(--radius-md); flex: none; margin-right: 24rpx; }
+.rv-thumb-ph { background: var(--paper-2); border: 1rpx solid var(--line-2); display: flex; align-items: center; justify-content: center; }
+.rv-name-row { display: flex; align-items: center; gap: 12rpx; }
+.rv-name { font-size: 32rpx; font-weight: 700; letter-spacing: 1rpx; max-width: 300rpx; }
+.rv-price-row { display: flex; align-items: baseline; margin-top: 10rpx; }
+.rv-desc { margin-top: 16rpx; font-size: 24rpx; color: var(--ink-2); line-height: 1.7; }
+.rv-ops { display: flex; gap: 20rpx; margin-top: 24rpx; }
+.rv-rej { flex: 1; }
+.rv-pass { flex: 2; }

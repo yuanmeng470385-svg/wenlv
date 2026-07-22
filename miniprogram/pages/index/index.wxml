@@ -1,161 +1,231 @@
-<!-- 管理员模式 -->
+<!-- ==================== 管理员模式 ==================== -->
 <block wx:if="{{isAdminMode}}">
-<view class="page-admin">
-  <view class="admin-header">管理中心</view>
+<view class="page">
+  <view class="adm-head">
+    <view class="adm-title serif">管理中心</view>
+    <icon name="shield" size="44rpx" color="#BE3F2C" />
+  </view>
 
   <!-- Banner管理 -->
-  <view class="section card">
-    <view class="section-header flex-between">
-      <text class="text-bold text-lg">顶部Banner</text>
-      <text class="text-sm text-primary" bindtap="onAddBanner">+ 新增</text>
+  <view class="cd sec">
+    <view class="sech">
+      <view class="sech-sq"></view><view class="sech-t">顶部 Banner</view>
+      <view class="sech-line"></view>
+      <view class="sech-more" bindtap="onAddBanner"><icon name="plus" size="28rpx" color="#A79E8F" />新增</view>
     </view>
-    <view wx:for="{{adminBanners}}" wx:key="_id" class="banner-row">
-      <view class="flex-row">
-        <image wx:if="{{item.image}}" src="{{item.image}}" mode="aspectFill" class="banner-thumb" data-url="{{item.image}}" bindtap="previewBannerImage" />
-        <view wx:else class="banner-thumb banner-thumb-ph" data-id="{{item._id}}" bindtap="onBannerImage">+图片</view>
-        <view class="flex-1 ml-20">
-          <text class="text-bold">{{item.title}}</text>
-          <text wx:if="{{item.image}}" class="text-sm text-primary" data-id="{{item._id}}" bindtap="onBannerImage">更换图片</text>
-        </view>
+    <view wx:for="{{adminBanners}}" wx:key="_id" class="lrow banner-row">
+      <image wx:if="{{item.image}}" src="{{item.image}}" mode="aspectFill" class="banner-thumb" data-url="{{item.image}}" bindtap="previewBannerImage" />
+      <view wx:else class="banner-thumb-ph" data-id="{{item._id}}" bindtap="onBannerImage"><icon name="img" size="36rpx" color="#A79E8F" /></view>
+      <view class="lrow-t ml-20">
+        <view class="text-bold">{{item.title}}</view>
+        <view wx:if="{{item.image}}" class="text-sm text-hint mt-10" data-id="{{item._id}}" catchtap="onBannerImage">更换图片</view>
       </view>
-      <view class="flex-row mt-10">
-        <text class="text-sm text-primary mr-20" data-id="{{item._id}}" data-title="{{item.title}}" bindtap="onEditBanner">改标题</text>
-        <text class="text-sm text-price" data-id="{{item._id}}" bindtap="onDeleteBanner">删除</text>
+      <view class="banner-ops">
+        <text class="btn btn-txt-ink btn-sm" data-id="{{item._id}}" data-title="{{item.title}}" catchtap="onEditBanner">改标题</text>
+        <text class="btn btn-txt btn-sm" data-id="{{item._id}}" catchtap="onDeleteBanner">删除</text>
       </view>
     </view>
+    <empty-state wx:if="{{!adminBanners.length}}" text="暂无 Banner，点击右上角新增" icon="img" />
   </view>
 
   <!-- 精选商家管理 -->
-  <view class="section card mt-20">
-    <view class="section-header">
-      <text class="text-bold text-lg">优秀展示管理</text>
-      <text class="text-sm text-secondary">点击进入管理该商家的作品</text>
+  <view class="cd sec">
+    <view class="sech">
+      <view class="sech-sq"></view><view class="sech-t">优秀展示管理</view>
+      <view class="sech-line"></view>
     </view>
-    <view wx:for="{{allProviders}}" wx:key="_id" class="featured-row flex-between" data-id="{{item._id}}" data-name="{{item.name}}" bindtap="goManagePortfolios">
-      <text>{{item.name}}</text>
-      <text class="text-sm text-primary">管理作品 ></text>
+    <view class="text-sm text-hint" style="padding:0 28rpx 8rpx">点击进入管理该商家的精选作品</view>
+    <view wx:for="{{allProviders}}" wx:key="_id" class="lrow" data-id="{{item._id}}" data-name="{{item.name}}" bindtap="goManagePortfolios">
+      <view class="lrow-t">{{item.name}}</view>
+      <text class="text-sm text-hint">管理作品</text>
+      <icon name="chevr" size="32rpx" color="#A79E8F" />
     </view>
   </view>
 </view>
 </block>
 
-<!-- 用户模式 -->
+<!-- ==================== 用户模式 ==================== -->
 <block wx:elif="{{activeRole === 'user'}}">
-<view class="page-index">
-  <swiper wx:if="{{banners.length}}" class="banner-swiper" indicator-dots autoplay circular>
+<view class="page">
+  <!-- 搜索 + 消息 -->
+  <view class="topbar">
+    <view class="srch" bindtap="goMore">
+      <icon name="search" size="34rpx" color="#A79E8F" />
+      <text class="srch-ph">搜索摄影师 / 妆造 / 汉服店</text>
+    </view>
+    <view class="bell" bindtap="onBellTap">
+      <icon name="bell" size="44rpx" color="#29241D" />
+      <view class="bell-dot"></view>
+    </view>
+  </view>
+
+  <!-- 主视觉 -->
+  <swiper wx:if="{{banners.length}}" class="hero-sw" indicator-dots indicator-color="rgba(246,241,231,0.35)" indicator-active-color="#F6F1E7" autoplay circular>
     <swiper-item wx:for="{{banners}}" wx:key="_id">
-      <view class="banner-item">
-        <image wx:if="{{item.image}}" src="{{item.image}}" mode="aspectFill" class="banner-img" />
-        <text class="banner-title">{{item.title}}</text>
+      <view class="hero">
+        <image wx:if="{{item.image}}" src="{{item.image}}" mode="aspectFill" class="hero-img" />
+        <view wx:else class="hero-fallback g-ink"></view>
+        <view class="hero-mask"></view>
+        <view class="hero-seal serif">约</view>
+        <view class="hero-vt serif">文旅甄选</view>
+        <view class="hero-title serif">{{item.title}}</view>
       </view>
     </swiper-item>
   </swiper>
+  <view wx:else class="hero hero-single">
+    <view class="hero-fallback g-ink"></view>
+    <view class="hero-mask"></view>
+    <view class="hero-seal serif">约</view>
+    <view class="hero-vt serif">文旅甄选</view>
+    <view class="hero-title serif">衣冠上国<view>礼乐中华</view></view>
+  </view>
 
-  <view class="category-section">
-    <view class="category-grid">
-      <view class="category-item" wx:for="{{categories}}" wx:key="_id" data-type="{{item.type}}" bindtap="onCategoryTap">
-        <view class="category-icon-box">
-          <image class="category-icon-img" mode="aspectFit" src="/images/icons/category-{{item.type}}.png" />
-        </view>
-        <text class="category-name">{{item.name}}</text>
-        <text class="category-desc" wx:if="{{item.description}}">{{item.description}}</text>
-      </view>
+  <!-- 品类 -->
+  <view class="cat-row">
+    <view class="cat cd" data-type="photographer" bindtap="onCategoryTap">
+      <view class="cat-gl serif" style="color:#BE3F2C">影</view>
+      <view class="cat-lb">摄影跟拍</view>
+      <view class="cat-sub">旅拍 · 写真</view>
+    </view>
+    <view class="cat cd" data-type="makeup" bindtap="onCategoryTap">
+      <view class="cat-gl serif" style="color:#43615C">妆</view>
+      <view class="cat-lb">妆造造型</view>
+      <view class="cat-sub">唐风 · 明制</view>
+    </view>
+    <view class="cat cd" data-type="hanfu_shop" bindtap="onCategoryTap">
+      <view class="cat-gl serif" style="color:#8F6B33">服</view>
+      <view class="cat-lb">汉服租赁</view>
+      <view class="cat-sub">免押体验</view>
     </view>
   </view>
 
-  <view class="section">
-    <view class="section-header flex-between">
-      <text class="text-lg text-bold">优秀展示</text>
-    </view>
-    <empty-state wx:if="{{!featuredWorks.length}}" text="暂无精选作品" icon="photo" />
-    <view class="featured-grid" wx:else>
-      <view class="featured-item" wx:for="{{featuredWorks}}" wx:key="_id" data-id="{{item.providerId}}" bindtap="onProviderTap">
-        <view class="featured-item-inner">
-          <image wx:if="{{item.image}}" src="{{item.image}}" mode="aspectFill" class="featured-img" />
-          <view wx:else class="featured-img img-ph">{{item.categoryEmoji}}</view>
-          <view class="featured-info">
-            <image wx:if="{{item.providerAvatar}}" src="{{item.providerAvatar}}" mode="aspectFill" class="featured-avatar" />
-            <view wx:else class="featured-avatar img-ph-sm">{{item.categoryEmoji}}</view>
-            <text class="featured-name text-ellipsis">{{item.providerName}}</text>
-          </view>
-        </view>
+  <!-- 甄选作品 -->
+  <view class="sech sec-gap">
+    <view class="sech-sq"></view><view class="sech-t">甄选作品</view>
+    <view class="sech-line"></view>
+    <view class="sech-more" bindtap="goMore">查看全部<icon name="chevr" size="28rpx" color="#A79E8F" /></view>
+  </view>
+  <empty-state wx:if="{{!featuredWorks.length}}" text="暂无精选作品" icon="img" />
+  <scroll-view wx:else scroll-x enhanced show-scrollbar="{{false}}" class="works-scroll">
+    <view class="works-row">
+      <view class="wcard" wx:for="{{featuredWorks}}" wx:key="_id" data-id="{{item.providerId}}" bindtap="onProviderTap">
+        <image wx:if="{{item.image}}" src="{{item.image}}" mode="aspectFill" class="wcard-img" />
+        <view wx:else class="wcard-img imph {{item._grad}}"><text class="imph-t wcard-gl">{{item._glyph}}</text></view>
+        <view class="wcard-name text-ellipsis">{{item.providerName}}</view>
+        <view class="wcard-sub">{{item._label}}</view>
       </view>
     </view>
+  </scroll-view>
+
+  <!-- 推荐商家 -->
+  <view class="sech sec-gap" wx:if="{{topProviders.length}}">
+    <view class="sech-sq"></view><view class="sech-t">推荐商家</view>
+    <view class="sech-line"></view>
+    <view class="sech-more" bindtap="goMore">附近<icon name="chevr" size="28rpx" color="#A79E8F" /></view>
+  </view>
+  <view class="prow cd" wx:for="{{topProviders}}" wx:key="_id" data-id="{{item._id}}" bindtap="onProviderTap">
+    <image wx:if="{{item.avatar}}" src="{{item.avatar}}" mode="aspectFill" class="prow-cover" />
+    <view wx:else class="prow-cover imph {{item._grad}}"><text class="imph-t" style="font-size:56rpx">{{item._glyph}}</text></view>
+    <view class="prow-info">
+      <view class="prow-name serif text-ellipsis">{{item.name}}</view>
+      <view class="stars">
+        <icon name="star-filled" size="28rpx" color="#C99345" />
+        <text class="stars-n serif">{{item.rating || '5.0'}}</text>
+        <text class="stars-c" wx:if="{{item.reviewCount}}">({{item.reviewCount}})</text>
+      </view>
+      <view class="prow-tags">
+        <text class="tag" wx:for="{{item._tags}}" wx:key="*this" wx:for-item="tag">{{tag}}</text>
+      </view>
+      <view class="prow-foot">
+        <text class="text-hint text-sm">{{item._label}}</text>
+      </view>
+    </view>
+    <icon name="chevr" size="36rpx" color="#A79E8F" />
   </view>
 </view>
 </block>
 
-<!-- 商家模式 - 自己的店铺详情页 -->
+<!-- ==================== 商家模式（自己的店铺详情页） ==================== -->
 <block wx:else>
-<view class="page-detail" wx:if="{{provider}}">
-  <view class="cover-section">
-    <image class="cover-img" src="{{provider.backgroundImage}}" mode="aspectFill" />
-    <view class="cover-edit-btn" bindtap="onEditBackground">
-      <text class="edit-icon">更换背景</text>
+<view class="page-p" wx:if="{{provider}}">
+  <view class="cover">
+    <image wx:if="{{provider.backgroundImage}}" class="cover-img" src="{{provider.backgroundImage}}" mode="aspectFill" />
+    <view wx:else class="cover-img imph {{provider._grad}}"><text class="imph-t" style="font-size:120rpx">{{provider._glyph}}</text></view>
+    <view class="cover-edit" bindtap="onEditBackground">
+      <icon name="pen" size="26rpx" color="#F6F1E7" /><text class="cover-edit-t">编辑封面</text>
     </view>
   </view>
 
-  <view class="p-info p-30">
-    <view class="flex-row">
-      <view class="avatar-wrap">
-        <image class="p-avatar" src="{{provider.avatar}}" mode="aspectFill" />
-        <view class="avatar-edit-btn" bindtap="onEditAvatar">
-          <text class="edit-icon-sm">+</text>
-        </view>
-      </view>
-      <view class="flex-1 ml-20">
-        <text class="text-xl text-bold">{{provider.name}}</text>
-        <view wx:if="{{provider.rating}}" class="flex-row mt-10">
-          <view class="icon-row mr-10"><icon name="star-filled" size="28rpx" /><text class="text-price text-bold">{{provider.rating}}</text></view>
-          <text class="text-sm text-hint">({{provider.reviewCount}}条评价)</text>
-        </view>
-      </view>
+  <view class="p-head">
+    <view class="p-avt-wrap">
+      <image wx:if="{{provider.avatar}}" class="p-avt" src="{{provider.avatar}}" mode="aspectFill" />
+      <view wx:else class="p-avt imph {{provider._grad}}"><text class="imph-t" style="font-size:48rpx">{{provider._glyph}}</text></view>
+      <view class="p-avt-edit" bindtap="onEditAvatar"><icon name="pen" size="22rpx" color="#FBF8F0" /></view>
     </view>
-    <view wx:if="{{provider.featureTags}}" class="tag-row mt-20">
-      <text wx:for="{{provider.featureTags}}" wx:key="*this" class="feature-tag">{{item}}</text>
-    </view>
-  </view>
-
-  <view class="tab-bar">
-    <view class="tab-item {{activeTab==='service'?'active':''}}" data-tab="service" bindtap="onTabChange"><text>服务项目</text></view>
-    <view class="tab-item {{activeTab==='works'?'active':''}}" data-tab="works" bindtap="onTabChange"><text>作品展示</text></view>
-    <view class="tab-item {{activeTab==='reviews'?'active':''}}" data-tab="reviews" bindtap="onTabChange"><text>用户评价</text></view>
-  </view>
-
-  <view wx:if="{{activeTab==='service'}}" class="tab-content">
-    <view wx:for="{{serviceItems}}" wx:key="_id" class="service-card card">
-      <image wx:if="{{item.icon}}" class="s-cover" src="{{item.icon}}" mode="aspectFill" />
-      <view wx:else class="s-cover s-cover-ph">{{provider._categoryEmoji}}</view>
-      <view class="s-info">
-        <text class="text-lg text-bold">{{item.name}}</text>
-        <text class="text-sm text-secondary mt-10">{{item.description}}</text>
-        <view class="flex-between mt-10">
-          <text class="text-price text-lg">¥{{item.price/100}}</text>
-          <text class="text-sm text-secondary">时长 {{item.duration}}分钟</text>
+    <view class="p-head-info">
+      <view class="p-name serif">{{provider.name}}</view>
+      <view class="p-sub">
+        <text class="st st-cel">营业中</text>
+        <view class="stars" wx:if="{{provider.rating}}">
+          <icon name="star-filled" size="28rpx" color="#C99345" />
+          <text class="stars-n serif">{{provider.rating}}</text>
+          <text class="stars-c">({{provider.reviewCount || 0}})</text>
         </view>
       </view>
     </view>
   </view>
 
-  <view wx:if="{{activeTab==='works'}}" class="tab-content">
-    <view class="work-grid">
+  <view wx:if="{{provider.featureTags.length}}" class="p-tags">
+    <text class="tag" wx:for="{{provider.featureTags}}" wx:key="*this">{{item}}</text>
+  </view>
+
+  <view class="ptabs">
+    <view class="ptab {{activeTab==='service'?'on':''}}" data-tab="service" bindtap="onTabChange"><text class="serif">服务项目</text></view>
+    <view class="ptab {{activeTab==='works'?'on':''}}" data-tab="works" bindtap="onTabChange"><text>作品展示</text></view>
+    <view class="ptab {{activeTab==='reviews'?'on':''}}" data-tab="reviews" bindtap="onTabChange"><text>用户评价</text></view>
+  </view>
+
+  <!-- 服务项目 -->
+  <view wx:if="{{activeTab==='service'}}" class="p-content">
+    <empty-state wx:if="{{!serviceItems.length}}" text="暂无服务项目" icon="order" />
+    <view wx:for="{{serviceItems}}" wx:key="_id" class="svc cd">
+      <image wx:if="{{item.icon}}" class="svc-icon" src="{{item.icon}}" mode="aspectFill" />
+      <view wx:else class="svc-icon svc-icon-ph"><icon name="camera" size="40rpx" color="#43615C" /></view>
+      <view class="flex-1">
+        <view class="text-bold">{{item.name}}</view>
+        <view class="text-sm text-hint mt-10">{{item.duration}}分钟</view>
+      </view>
+      <view class="svc-right">
+        <view class="price" style="font-size:32rpx"><text class="price-sym">¥</text>{{item.price/100}}</view>
+        <view class="st {{item._statusClass}} svc-st">{{item._statusLabel}}</view>
+      </view>
+    </view>
+    <view class="p-note">这是你的店铺在用户眼中的样子</view>
+  </view>
+
+  <!-- 作品展示 -->
+  <view wx:if="{{activeTab==='works'}}" class="p-content">
+    <empty-state wx:if="{{!portfolios.length}}" text="暂无作品" icon="img" />
+    <view class="work-grid" wx:else>
       <view wx:for="{{portfolios}}" wx:key="_id" class="work-item">
         <image src="{{item.images[0]}}" mode="aspectFill" class="work-img" />
         <view class="work-overlay">
           <text class="work-title text-ellipsis">{{item.title}}</text>
-          <view class="icon-row"><icon name="heart-filled" size="28rpx" /><text class="text-sm">{{item.likeCount || 0}}</text></view>
+          <view class="work-likes"><icon name="heart-filled" size="24rpx" color="#F6F1E7" /><text class="work-likes-n">{{item.likeCount || 0}}</text></view>
         </view>
       </view>
     </view>
   </view>
 
-  <view wx:if="{{activeTab==='reviews'}}" class="tab-content">
-    <view wx:for="{{reviews}}" wx:key="_id" class="review-card card">
+  <!-- 用户评价 -->
+  <view wx:if="{{activeTab==='reviews'}}" class="p-content">
+    <empty-state wx:if="{{!reviews.length}}" text="暂无评价" icon="msg" />
+    <view wx:for="{{reviews}}" wx:key="_id" class="cd review">
       <view class="flex-between">
-        <view class="icon-row"><icon name="star-filled" size="28rpx" /><text class="text-sm text-price">{{item.rating}}</text></view>
+        <view class="stars"><icon name="star-filled" size="28rpx" color="#C99345" /><text class="stars-n serif">{{item.rating}}</text></view>
         <text class="text-sm text-hint">{{item.createTime}}</text>
       </view>
-      <text class="mt-10">{{item.content}}</text>
+      <view class="mt-10">{{item.content}}</view>
     </view>
   </view>
 </view>

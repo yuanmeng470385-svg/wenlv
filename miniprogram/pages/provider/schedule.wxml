@@ -1,28 +1,47 @@
-<view class="page-schedule">
-  <scroll-view scroll-x class="date-bar">
-    <text wx:for="{{dateList}}" wx:key="date"
-      class="date-item {{selectedDate===item.date?'active':''}}"
-      data-date="{{item.date}}" data-label="{{item.label}}" bindtap="onSelectDate">{{item.label}}</text>
+<view class="page">
+  <!-- 日期条 -->
+  <scroll-view scroll-x enhanced show-scrollbar="{{false}}" class="sch-scroll">
+    <view class="sch-row">
+      <view wx:for="{{dateList}}" wx:key="date"
+        class="sch-pill {{selectedDate===item.date?'on':''}}"
+        data-date="{{item.date}}" data-label="{{item.label}}" bindtap="onSelectDate">
+        <text class="sch-week">{{item.week}}</text>
+        <text class="sch-day serif">{{item.day}}</text>
+      </view>
+    </view>
   </scroll-view>
 
-  <view wx:if="{{selectedDate}}" class="slot-section">
-    <view class="flex-between p-20">
-      <text class="text-bold text-lg">{{selectedLabel}}</text>
-      <view class="batch-btns">
-        <button class="batch-btn on" data-action="all_on" bindtap="onBatchAction">全天开启</button>
-        <button class="batch-btn off" data-action="all_off" bindtap="onBatchAction">全天关闭</button>
+  <block wx:if="{{selectedDate}}">
+    <view class="sch-head">
+      <view class="sech">
+        <view class="sech-sq"></view><view class="sech-t" style="font-size:30rpx">{{selectedLabel}}</view>
+        <view class="sech-line"></view>
+        <view class="sch-batch">
+          <text class="btn btn-txt-ink btn-sm" data-action="all_on" bindtap="onBatchAction">全开</text>
+          <text class="btn btn-txt btn-sm" data-action="all_off" bindtap="onBatchAction">全关</text>
+        </view>
       </view>
     </view>
 
     <view class="slot-grid">
       <view wx:for="{{timeSlots}}" wx:key="time"
-        class="slot-card {{item.available ? 'open' : 'closed'}}"
+        class="slot {{item.booked ? 'slot-booked' : (item.available ? '' : 'slot-closed')}}"
         data-time="{{item.time}}" bindtap="onToggleSlot">
-        <text class="slot-time">{{item.time}}</text>
-        <text class="slot-status">{{item.available ? '可预约' : '已关闭'}}</text>
+        <text class="slot-t">{{item.time}}</text>
+        <text class="slot-s">{{item.booked ? '已约' : (item.available ? '开放' : '关闭')}}</text>
       </view>
     </view>
-  </view>
 
-  <view wx:else class="empty-hint"><text class="text-secondary">请先选择日期</text></view>
+    <view class="sch-legend">
+      <view class="sch-lg-item"><view class="sch-lg-dot sch-lg-open"></view><text>开放</text></view>
+      <view class="sch-lg-item"><view class="sch-lg-dot sch-lg-booked"></view><text>已被预约</text></view>
+      <view class="sch-lg-item"><view class="sch-lg-dot sch-lg-closed"></view><text>已关闭</text></view>
+    </view>
+    <view class="sch-tip">点击时段即可切换 开放 / 关闭</view>
+  </block>
+
+  <view wx:else class="sch-empty">
+    <icon name="cal" size="72rpx" color="#A79E8F" />
+    <text class="sch-empty-t">请先选择日期</text>
+  </view>
 </view>

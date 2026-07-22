@@ -1,62 +1,75 @@
-<view class="page-form">
-  <view class="upload-section card">
-    <text class="text-bold">套餐图标（1张）</text>
-    <view class="upload-grid mt-20">
-      <view wx:if="{{icon}}" class="upload-item">
-        <image src="{{icon}}" mode="aspectFill" />
-      </view>
-      <view wx:else class="upload-btn" bindtap="onUploadIcon">
-        <text class="text-xl text-hint">+</text>
-      </view>
+<view class="page">
+  <!-- 图标 -->
+  <view class="sech" style="margin:8rpx 0 20rpx">
+    <view class="sech-sq"></view><view class="sech-t" style="font-size:30rpx">套餐图标</view>
+    <view class="sech-line"></view>
+    <text class="up-hint">1 张</text>
+  </view>
+  <view class="up-row">
+    <view wx:if="{{icon}}" class="up-item" bindtap="onUploadIcon">
+      <image src="{{icon}}" mode="aspectFill" class="up-img" />
+      <view class="up-re">更换</view>
+    </view>
+    <view wx:else class="up-btn" bindtap="onUploadIcon">
+      <icon name="plus" size="44rpx" color="#A79E8F" />
     </view>
   </view>
 
-  <view class="form-section card">
-    <view class="form-item">
-      <text class="form-label">套餐名称 *</text>
-      <input class="form-input" placeholder="如：古风人像精拍" value="{{form.name}}" data-field="name" bindinput="onInputChange" />
+  <!-- 基本信息 -->
+  <view class="sech" style="margin:32rpx 0 20rpx">
+    <view class="sech-sq"></view><view class="sech-t" style="font-size:30rpx">基本信息</view>
+    <view class="sech-line"></view>
+  </view>
+  <view class="cd form-card">
+    <view class="form-row">
+      <text class="form-lb">套餐名称 *</text>
+      <input class="form-in" placeholder="如：古风人像精拍" placeholder-class="form-ph" value="{{form.name}}" data-field="name" bindinput="onInputChange" />
     </view>
-    <view class="form-item">
-      <text class="form-label">描述</text>
-      <textarea class="form-textarea" placeholder="套餐内容描述" value="{{form.description}}" data-field="description" bindinput="onInputChange" />
+    <view class="form-row form-row-top">
+      <text class="form-lb">描述</text>
+      <textarea class="form-ta" placeholder="套餐内容描述" placeholder-class="form-ph" value="{{form.description}}" data-field="description" bindinput="onInputChange" />
     </view>
   </view>
 
-  <view class="form-section card">
-    <text class="form-label mb-20">价格类型</text>
-    <view class="type-row">
-      <view wx:for="{{priceTypes}}" wx:key="key"
-        class="type-opt {{form.priceType === item.key ? 'active' : ''}}"
-        data-type="{{item.key}}" bindtap="onPriceTypeChange">
-        <text>{{item.label}}</text>
-      </view>
+  <!-- 价格类型 -->
+  <view class="sech" style="margin:32rpx 0 20rpx">
+    <view class="sech-sq"></view><view class="sech-t" style="font-size:30rpx">价格类型</view>
+    <view class="sech-line"></view>
+  </view>
+  <view class="type-row">
+    <view wx:for="{{priceTypes}}" wx:key="key"
+      class="chip type-opt {{form.priceType === item.key ? 'on' : ''}}"
+      data-type="{{item.key}}" bindtap="onPriceTypeChange">
+      <text>{{item.label}}</text>
     </view>
   </view>
 
-  <view class="form-section card">
-    <view class="form-item">
-      <text class="form-label">售价(元) *</text>
-      <input class="form-input" type="digit" placeholder="如：699" value="{{form.price}}" data-field="price" bindinput="onInputChange" />
+  <!-- 价格与规则 -->
+  <view class="sech" style="margin:32rpx 0 20rpx">
+    <view class="sech-sq"></view><view class="sech-t" style="font-size:30rpx">价格与规则</view>
+    <view class="sech-line"></view>
+  </view>
+  <view class="cd form-card">
+    <view class="form-row">
+      <text class="form-lb">售价(元) *</text>
+      <input class="form-in" type="digit" placeholder="如：699" placeholder-class="form-ph" value="{{form.price}}" data-field="price" bindinput="onInputChange" />
     </view>
-    <view class="form-item">
-      <text class="form-label">原价(元)</text>
-      <input class="form-input" type="digit" placeholder="如：899" value="{{form.originalPrice}}" data-field="originalPrice" bindinput="onInputChange" />
+    <view class="form-row">
+      <text class="form-lb">时长(分钟)</text>
+      <input class="form-in" type="number" placeholder="服务时长" placeholder-class="form-ph" value="{{form.duration}}" data-field="duration" bindinput="onInputChange" />
     </view>
-    <view class="form-item">
-      <text class="form-label">时长(分钟)</text>
-      <input class="form-input" type="number" placeholder="服务时长" value="{{form.duration}}" data-field="duration" bindinput="onInputChange" />
+    <view class="form-row">
+      <text class="form-lb">每日限单</text>
+      <input class="form-in" type="number" placeholder="5" placeholder-class="form-ph" value="{{form.maxDailyBooking}}" data-field="maxDailyBooking" bindinput="onInputChange" />
     </view>
-    <view class="form-item">
-      <text class="form-label">每日最大接单数</text>
-      <input class="form-input" type="number" placeholder="5" value="{{form.maxDailyBooking}}" data-field="maxDailyBooking" bindinput="onInputChange" />
-    </view>
-    <view class="form-item">
-      <text class="form-label">包含内容（逗号分隔）</text>
-      <input class="form-input" placeholder="如：2小时拍摄,30张精修,所有底片" value="{{form.includes}}" data-field="includes" bindinput="onInputChange" />
+    <view class="form-row">
+      <text class="form-lb">包含内容</text>
+      <input class="form-in" placeholder="逗号分隔，如：2小时拍摄,30张精修" placeholder-class="form-ph" value="{{form.includes}}" data-field="includes" bindinput="onInputChange" />
     </view>
   </view>
 
-  <view class="p-20">
-    <button class="save-btn" bindtap="onSubmit" loading="{{saving}}">{{isEdit ? '保存修改' : '创建套餐'}}</button>
+  <view class="esi-save">
+    <button class="btn btn-ink btn-lg btn-block" bindtap="onSubmit" loading="{{saving}}">{{isEdit ? '保存修改' : '创建套餐'}}</button>
+    <view class="esi-note">{{isEdit ? '修改后需重新审核' : '创建后需管理员审核方可上架'}}</view>
   </view>
 </view>

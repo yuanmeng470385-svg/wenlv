@@ -19,21 +19,29 @@ Page({
     wx.showLoading({ title: '加载中...' });
     try {
       const data = await getOrderDetail(this.data.orderId);
-      this.setData({ order: data.order, providers: data.providers || [] });
+      const STATUS_MAP = {
+        pending_pay: '待付款', paid: '已付款', confirmed: '已确认',
+        in_progress: '进行中', pending_complete: '待确认完成',
+        completed: '已完成', reviewed: '已评价', cancelled: '已取消',
+        pending_refund: '退款中',
+      };
+      const STATUS_CLASS = {
+        pending_pay: 'st-red', paid: 'st-gold', confirmed: 'st-cel',
+        in_progress: 'st-cel', pending_complete: 'st-gold',
+        completed: 'st-gray', reviewed: 'st-gray', cancelled: 'st-gray',
+        pending_refund: 'st-red',
+      };
+      const o = data.order;
+      if (o) {
+        o.statusText = STATUS_MAP[o.orderStatus] || o.orderStatus;
+        o._statusClass = STATUS_CLASS[o.orderStatus] || 'st-gray';
+      }
+      this.setData({ order: o, providers: data.providers || [] });
     } catch (err) {
       wx.showToast({ title: '加载失败', icon: 'none' });
     } finally {
       wx.hideLoading();
     }
-  },
-
-  getStatusText(status) {
-    const map = {
-      pending_pay: '待付款', paid: '已付款', confirmed: '已确认',
-      in_progress: '进行中', completed: '已完成', reviewed: '已评价',
-      cancelled: '已取消',
-    };
-    return map[status] || status;
   },
 
   onCancelOrder() {

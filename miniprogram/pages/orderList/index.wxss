@@ -1,29 +1,50 @@
-.page-orders { min-height: 100vh; background: var(--bg-page); }
-.admin-review-center { padding: 0; }
-.admin-header-sm { background: linear-gradient(135deg, #2D1B69, #1A0F3C); padding: 40rpx 30rpx; color: #fff; font-size: 32rpx; font-weight: 700; }
-.review-menu { background: var(--bg-white); margin: 20rpx; border-radius: 16rpx; overflow: hidden; }
-.review-menu-item { padding: 28rpx 30rpx; border-bottom: 1rpx solid var(--bg-page); }
-.review-menu-item:last-child { border-bottom: none; }
-.tab-scroll { background: var(--bg-white); white-space: nowrap; }
-.tab-list { display: inline-flex; padding: 10rpx 20rpx; }
-.tab-item { display: inline-block; padding: 14rpx 24rpx; font-size: 24rpx; color: var(--text-secondary); border-radius: 30rpx; margin: 0 6rpx; }
-.tab-item.active { color: var(--color-primary); background: var(--color-primary-bg); font-weight: 600; }
-.order-card { margin: 0 20rpx 16rpx; }
-.order-item { padding: 8rpx 0; }
-.status-text { font-weight: 600; color: var(--color-price); }
-.pt-20 { border-top: 1rpx solid var(--border-color); padding-top: 12rpx; }
-.action-btns { display: flex; justify-content: flex-end; gap: 12rpx; }
-.btn-confirm { padding: 12rpx 28rpx; font-size: 24rpx; background: var(--color-primary); color: #fff; border-radius: 30rpx; }
-.btn-refuse { padding: 12rpx 28rpx; font-size: 24rpx; background: var(--bg-page); color: var(--text-hint); border-radius: 30rpx; }
-.dash-top { background: var(--bg-page); padding-top: 10rpx; }
-.stats-row { display: flex; gap: 12rpx; padding: 0 20rpx 10rpx; }
-.stat-card { flex: 1; background: var(--bg-white); border-radius: 16rpx; padding: 24rpx 16rpx; text-align: center; box-shadow: var(--shadow-card); }
-.stat-num { display: block; font-size: 40rpx; font-weight: 700; color: var(--text-primary); }
-.stat-num.highlight { color: var(--color-price); }
-.stat-label { display: block; font-size: 22rpx; color: var(--text-hint); margin-top: 6rpx; }
-.quick-row { display: flex; flex-wrap: wrap; gap: 12rpx; padding: 0 20rpx; margin-bottom: 16rpx; }
-.quick-item { flex: 1 1 calc(33.33% - 12rpx); min-width: 160rpx; background: var(--bg-white); border-radius: 16rpx; padding: 24rpx 10rpx; text-align: center; box-shadow: var(--shadow-card); }
-.quick-icon { display: block; font-size: 44rpx; margin-bottom: 8rpx; }
-.quick-label { font-size: 24rpx; color: var(--text-secondary); }
-.empty-hint { padding: 120rpx 0; text-align: center; }
-.mb-10 { margin-bottom: 10rpx; } .mb-20 { margin-bottom: 20rpx; } .mt-10 { margin-top: 10rpx; } .mt-20 { margin-top: 20rpx; }
+/* ========== 功能页 v3「纸墨朱砂」 ========== */
+.page { padding: 0 32rpx 40rpx; min-height: 100vh; }
+
+/* ---- 商家问候 ---- */
+.greet { display: flex; align-items: baseline; justify-content: space-between; padding: 20rpx 4rpx 0; }
+.greet-l { display: flex; align-items: baseline; }
+.greet-t { font-size: 38rpx; font-weight: 700; letter-spacing: 2rpx; }
+.greet-d { font-size: 22rpx; color: var(--ink-3); margin-left: 16rpx; }
+
+/* ---- 数据看板 ---- */
+.stat-card { margin-top: 24rpx; padding: 28rpx 0; }
+
+/* ---- 快捷入口 ---- */
+.quick { display: flex; margin-top: 20rpx; padding: 28rpx 8rpx; }
+.quick-item { flex: 1; display: flex; flex-direction: column; align-items: center; }
+.quick-item:active { opacity: 0.75; }
+.quick-ic {
+  width: 84rpx; height: 84rpx; border-radius: 26rpx;
+  background: var(--paper-2); border: 1rpx solid var(--line-2);
+  display: flex; align-items: center; justify-content: center;
+}
+.quick-lb { font-size: 20rpx; color: var(--ink-2); margin-top: 12rpx; }
+
+/* ---- 状态筛选 ---- */
+.chips-scroll { width: 100%; margin-top: 24rpx; }
+.chips-row { display: flex; padding: 4rpx 32rpx 4rpx 0; }
+.chips-row .chip { flex: none; margin-right: 16rpx; }
+
+/* ---- 订单卡 ---- */
+.ocard { padding: 28rpx; margin-top: 24rpx; }
+.ocard:active { opacity: 0.92; }
+.ocard-head { display: flex; align-items: center; justify-content: space-between; }
+.ocard-shop { display: flex; align-items: center; gap: 10rpx; min-width: 0; }
+.ocard-shop-t { font-size: 28rpx; font-weight: 500; }
+.ocard-no { margin-top: 18rpx; font-size: 32rpx; font-weight: 700; letter-spacing: 1rpx; }
+.ocard-line { margin-top: 10rpx; }
+.ocard-hr { margin: 20rpx 0; }
+.ocard-foot { display: flex; align-items: center; justify-content: space-between; }
+.ocard-phone { display: flex; align-items: center; gap: 8rpx; padding: 8rpx 0; }
+.ocard-phone-t { font-size: 24rpx; color: var(--celadon); }
+.ocard-ops { display: flex; gap: 16rpx; }
+
+/* ---- 管理审核中心 ---- */
+.rev-menu { padding: 4rpx 28rpx; }
+.rev-menu .lrow { padding: 26rpx 0; }
+.rev-ic {
+  width: 72rpx; height: 72rpx; border-radius: 20rpx; flex: none;
+  background: var(--paper-2); border: 1rpx solid var(--line-2);
+  display: flex; align-items: center; justify-content: center; margin-right: 24rpx;
+}

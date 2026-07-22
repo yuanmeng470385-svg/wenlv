@@ -1,19 +1,41 @@
-<view class="page-upload">
-  <view class="upload-grid card">
-    <text class="text-bold">作品图片（最多9张）</text>
-    <view class="img-grid mt-20">
-      <view wx:for="{{images}}" wx:key="*this" class="img-item"><image src="{{item}}" mode="aspectFill" /></view>
-      <view wx:if="{{images.length < 9}}" class="add-btn" bindtap="onChooseImage"><text class="text-xl text-hint">+</text></view>
+<view class="page">
+  <!-- 图片 -->
+  <view class="sech" style="margin:8rpx 0 20rpx">
+    <view class="sech-sq"></view><view class="sech-t" style="font-size:30rpx">作品图片</view>
+    <view class="sech-line"></view>
+    <text class="up-hint">最多 9 张</text>
+  </view>
+  <view class="up-grid">
+    <view wx:for="{{images}}" wx:key="*this" class="up-item">
+      <image src="{{item}}" mode="aspectFill" class="up-img" />
+    </view>
+    <view wx:if="{{images.length < 9}}" class="up-btn" bindtap="onChooseImage">
+      <icon name="plus" size="44rpx" color="#A79E8F" />
     </view>
   </view>
 
-  <view class="form-section card">
-    <view class="form-item"><text class="form-label">作品标题</text><input class="form-input" placeholder="给作品起个名字" value="{{title}}" data-field="title" bindinput="onInputChange" /></view>
-    <view class="form-item"><text class="form-label">作品描述</text><textarea class="form-textarea" placeholder="详细描述作品" value="{{description}}" data-field="description" bindinput="onInputChange" /></view>
-    <view class="form-item"><text class="form-label">风格标签（逗号分隔）</text><input class="form-input" placeholder="如：古风,汉服,夜景" value="{{styleTags}}" data-field="styleTags" bindinput="onInputChange" /></view>
+  <!-- 信息 -->
+  <view class="sech" style="margin:32rpx 0 20rpx">
+    <view class="sech-sq"></view><view class="sech-t" style="font-size:30rpx">作品信息</view>
+    <view class="sech-line"></view>
+  </view>
+  <view class="cd form-card">
+    <view class="form-row">
+      <text class="form-lb">作品标题</text>
+      <input class="form-in" placeholder="给作品起个名字" placeholder-class="form-ph" value="{{title}}" data-field="title" bindinput="onInputChange" />
+    </view>
+    <view class="form-row form-row-top">
+      <text class="form-lb">作品描述</text>
+      <textarea class="form-ta" placeholder="拍摄背景、风格、亮点…" placeholder-class="form-ph" value="{{description}}" data-field="description" bindinput="onInputChange" />
+    </view>
+    <view class="form-row">
+      <text class="form-lb">风格标签</text>
+      <input class="form-in" placeholder="逗号分隔，如：古风,汉服,夜景" placeholder-class="form-ph" value="{{styleTags}}" data-field="styleTags" bindinput="onInputChange" />
+    </view>
   </view>
 
-  <view class="submit-section safe-bottom">
-    <button class="submit-btn" bindtap="onSubmit" loading="{{uploading}}">提交审核</button>
+  <view class="uw-submit safe-bottom">
+    <button class="btn btn-red btn-lg btn-block" bindtap="onSubmit" loading="{{uploading}}">提交审核</button>
+    <view class="uw-note">作品通过审核后将展示在你的店铺主页</view>
   </view>
 </view>

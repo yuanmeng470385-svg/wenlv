@@ -1,22 +1,27 @@
-<view class="page-review">
-  <view wx:if="{{loading}}" class="empty-hint"><text class="text-secondary">加载中...</text></view>
-  <view wx:elif="{{!list.length}}" class="empty-hint"><text class="text-secondary">暂无待审核退款</text></view>
-  <view wx:for="{{list}}" wx:key="_id" class="review-card card" data-id="{{item._id}}" bindtap="onCardTap">
+<view class="page">
+  <view wx:if="{{loading}}" class="adm-state">加载中…</view>
+  <empty-state wx:elif="{{!list.length}}" text="暂无待审核退款" icon="coin" />
+
+  <view wx:for="{{list}}" wx:key="_id" class="cd rv-card" data-id="{{item._id}}" bindtap="onCardTap">
+    <view class="rv-head-row">
+      <view class="rv-name serif text-ellipsis" style="flex:1">{{item.orderNo}}</view>
+      <text class="st st-red">待退款</text>
+    </view>
+    <view class="rv-grid" style="margin-top:16rpx">
+      <text class="rv-k">买家</text><text class="rv-v">{{item.contactName}}　{{item.contactPhone}}</text>
+      <text class="rv-k" wx:if="{{item.cancelReason}}">退款原因</text><text class="rv-v" wx:if="{{item.cancelReason}}">{{item.cancelReason}}</text>
+    </view>
+    <view wx:for="{{item.items}}" wx:key="serviceItemId" wx:for-item="si" class="rv-line">
+      <text class="text-sm text-hint">{{si.name}} · {{si.appointmentDate}} {{si.appointmentTime}} · ¥{{si.price/100}}</text>
+    </view>
+    <view class="hr" style="margin:16rpx 0"></view>
     <view class="flex-between">
-      <text class="text-bold">{{item.orderNo}}</text>
-      <text class="refund-tag">待退款</text>
+      <text class="text-hint text-sm">退款金额</text>
+      <view class="price" style="font-size:40rpx"><text class="price-sym">¥</text>{{item.refundAmount/100}}</view>
     </view>
-    <view class="icon-row mt-10"><icon name="user" size="28rpx" /><text class="text-sm text-secondary">{{item.contactName}} {{item.contactPhone}}</text></view>
-    <view wx:for="{{item.items}}" wx:key="serviceItemId" wx:for-item="si" class="mt-10">
-      <text>{{si.name}} | {{si.appointmentDate}} {{si.appointmentTime}} | ¥{{si.price/100}}</text>
-    </view>
-    <view class="flex-between mt-10 text-lg">
-      <text>退款金额</text><text class="text-price text-bold">¥{{item.refundAmount/100}}</text>
-    </view>
-    <text wx:if="{{item.cancelReason}}" class="text-sm text-secondary mt-10">原因: {{item.cancelReason}}</text>
-    <view class="action-btns mt-20">
-      <button class="btn-reject" data-id="{{item._id}}" data-action="rejected" catchtap="onAction">驳回</button>
-      <button class="btn-pass" data-id="{{item._id}}" data-action="approved" catchtap="onAction">通过退款</button>
+    <view class="rv-ops">
+      <button class="btn btn-line-red btn-md rv-rej" data-id="{{item._id}}" data-action="rejected" catchtap="onAction">驳回</button>
+      <button class="btn btn-ink btn-md rv-pass" data-id="{{item._id}}" data-action="approved" catchtap="onAction"><icon name="check" size="28rpx" color="#FBF8F0" />通过退款</button>
     </view>
   </view>
 </view>

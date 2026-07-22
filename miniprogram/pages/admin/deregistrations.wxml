@@ -1,23 +1,22 @@
-<view class="page-review">
-  <view wx:if="{{!list.length}}" class="empty-hint"><text class="text-secondary">暂无待审核注销申请</text></view>
-  <view wx:for="{{list}}" wx:key="_id" class="review-card card" data-id="{{item._id}}" bindtap="onCardTap">
-    <view class="flex-row">
-      <text class="text-bold text-lg">{{item.name}}</text>
-      <text class="text-sm text-secondary ml-10">
-        {{item.categoryType === 'photographer' ? '摄影师' : (item.categoryType === 'makeup' ? '妆造师' : '汉服店')}}
-      </text>
+<view class="page">
+  <empty-state wx:if="{{!list.length}}" text="暂无待审核注销申请" icon="trash" />
+
+  <view wx:for="{{list}}" wx:key="_id" class="cd rv-card" data-id="{{item._id}}" bindtap="onCardTap">
+    <view class="rv-head-row">
+      <text class="rv-name serif">{{item.name}}</text>
+      <text class="tag">{{item.categoryType === 'photographer' ? '摄影师' : (item.categoryType === 'makeup' ? '妆造师' : '汉服店')}}</text>
     </view>
-    <view class="mt-10"><view class="icon-row"><icon name="phone" size="28rpx" /><text class="text-sm text-secondary">{{item.phone}}</text></view></view>
-    <view class="flex-between mt-10">
-      <text class="text-sm text-secondary">总订单: {{item.totalOrders}}</text>
-      <text class="text-sm" style="color: {{item.unfinishedOrders > 0 ? '#E74C3C' : '#52C41A'}}">
-        未完成: {{item.unfinishedOrders}}
-      </text>
+    <view class="rv-grid" style="margin-top:16rpx">
+      <text class="rv-k">联系电话</text><text class="rv-v">{{item.phone}}</text>
+      <text class="rv-k">总订单</text><text class="rv-v">{{item.totalOrders}}</text>
+      <text class="rv-k">未完成订单</text>
+      <text class="rv-v {{item.unfinishedOrders > 0 ? 'dg-warn' : 'dg-ok'}}">{{item.unfinishedOrders}}{{item.unfinishedOrders > 0 ? '（建议先处理）' : ''}}</text>
+      <text class="rv-k">申请时间</text><text class="rv-v">{{item.updateTime}}</text>
     </view>
-    <text class="text-sm text-hint mt-10">申请时间: {{item.updateTime}}</text>
-    <view class="action-btns mt-20">
-      <button class="btn-reject" data-id="{{item._id}}" catchtap="onReject">拒绝</button>
-      <button class="btn-pass" data-id="{{item._id}}" catchtap="onApprove">同意注销</button>
+    <view class="dg-note">同意后将删除店铺、作品、套餐与评价，历史订单保留并标记「商家已注销」</view>
+    <view class="rv-ops">
+      <button class="btn btn-line-red btn-md rv-rej" data-id="{{item._id}}" catchtap="onReject">拒绝</button>
+      <button class="btn btn-red btn-md rv-pass" data-id="{{item._id}}" catchtap="onApprove">同意注销</button>
     </view>
   </view>
 </view>

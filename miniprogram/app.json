@@ -32,16 +32,16 @@
   ],
   "window": {
     "backgroundTextStyle": "dark",
-    "navigationBarBackgroundColor": "#FFFFFF",
+    "navigationBarBackgroundColor": "#FBF8F0",
     "navigationBarTitleText": "文旅摄影预约",
     "navigationBarTextStyle": "black",
-    "backgroundColor": "#F5F5F5"
+    "backgroundColor": "#F6F1E7"
   },
   "tabBar": {
-    "color": "#999999",
-    "selectedColor": "#C48B5C",
-    "backgroundColor": "#FFFFFF",
-    "borderStyle": "black",
+    "color": "#A79E8F",
+    "selectedColor": "#29241D",
+    "backgroundColor": "#FBF8F0",
+    "borderStyle": "white",
     "list": [
       {
         "pagePath": "pages/index/index",

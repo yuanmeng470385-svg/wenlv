@@ -5,11 +5,15 @@ Page({
     this.setData({ loading: true });
     try {
       const { callFunction } = require('../../services/cloud');
-      this.setData({ list: (await callFunction('getPendingServiceItems')) || [] });
+      const TYPE_LABEL = { fixed: '固定套餐', hourly: '按时计费' };
+      const list = ((await callFunction('getPendingServiceItems')) || []).map(it =>
+        Object.assign({}, it, { _typeLabel: TYPE_LABEL[it.priceType] || it.priceType })
+      );
+      this.setData({ list });
     } catch (e) { wx.showToast({ title: '加载失败', icon: 'none' }); }
     finally { this.setData({ loading: false }); }
   },
-  getTypeLabel(t) { const m = { fixed: '固定套餐', hourly: '按时计费', project: '按项目' }; return m[t] || t; },
+  getTypeLabel(t) { const m = { fixed: '固定套餐', hourly: '按时计费' }; return m[t] || t; },
   async onAction(e) {
     const { id, action } = e.currentTarget.dataset;
     wx.showLoading({ title: '处理中...' });
@@ -31,7 +35,6 @@ Page({
       '服务商：' + (item.providerName || ''),
       '价格类型：' + this.getTypeLabel(item.priceType),
       '售价：¥' + ((item.price || 0) / 100).toFixed(2),
-      '原价：¥' + ((item.originalPrice || 0) / 100).toFixed(2),
       '时长：' + (item.duration || 0) + '分钟',
       '每日限单：' + (item.maxDailyBooking || 0),
       '包含内容：' + (item.includes || []).join('、'),

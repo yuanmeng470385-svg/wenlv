@@ -34,6 +34,16 @@ Page({
   },
 
   onCardTap(e) {
-    wx.navigateTo({ url: '/pages/serviceDetail/index?id=' + e.currentTarget.dataset.id });
+    const id = e.currentTarget.dataset.id;
+    const item = this.data.list.find(i => i._id === id);
+    if (!item) return;
+    const fieldName = item.field === 'avatar' ? '头像' : (item.field === 'backgroundImage' ? '背景图' : item.field);
+    const lines = [
+      '商家：' + (item.providerName || '未知'),
+      '修改字段：' + fieldName,
+      '新图片：点击图片可放大预览',
+      '申请时间：' + (item.createTime || ''),
+    ].join('\n');
+    wx.showModal({ title: '头像/背景图变更详情', content: lines, showCancel: false, confirmText: '关闭' });
   },
 });

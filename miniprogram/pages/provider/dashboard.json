@@ -1,1 +1,7 @@
-{"navigationBarTitleText":"商家后台","usingComponents":{"icon":"/components/icon/index"}}
+{
+  "navigationBarTitleText": "商家后台",
+  "usingComponents": {
+    "icon": "/components/icon/index",
+    "empty-state": "/components/empty-state/index"
+  }
+}

@@ -1,34 +1,37 @@
-<view class="page-portfolio" wx:if="{{portfolio}}">
-  <swiper class="image-swiper" bindchange="onSwiperChange">
+<view class="page-pf" wx:if="{{portfolio}}">
+  <swiper class="pf-sw" bindchange="onSwiperChange" indicator-dots indicator-color="rgba(246,241,231,0.35)" indicator-active-color="#F6F1E7">
     <swiper-item wx:for="{{portfolio.images}}" wx:key="*this">
-      <image src="{{item}}" mode="aspectFill" class="detail-img" data-url="{{item}}" bindtap="onPreviewImage" />
+      <image src="{{item}}" mode="aspectFill" class="pf-img" data-url="{{item}}" bindtap="onPreviewImage" />
     </swiper-item>
   </swiper>
 
-  <view class="detail-info card">
-    <text class="text-xl text-bold">{{portfolio.title}}</text>
-    <text class="text-secondary mt-10">{{portfolio.description}}</text>
+  <view class="cd pf-info">
+    <view class="pf-title serif">{{portfolio.title}}</view>
+    <view class="pf-desc">{{portfolio.description}}</view>
 
-    <view wx:if="{{portfolio.styleTags && portfolio.styleTags.length}}" class="tag-row mt-20">
-      <text wx:for="{{portfolio.styleTags}}" wx:key="*this" class="feature-tag">{{item}}</text>
+    <view wx:if="{{portfolio.styleTags && portfolio.styleTags.length}}" class="pf-tags">
+      <text class="tag" wx:for="{{portfolio.styleTags}}" wx:key="*this">{{item}}</text>
     </view>
 
-    <view class="meta-row mt-20">
-      <view wx:if="{{portfolio.shootDate}}" class="icon-row"><icon name="calendar" size="28rpx" /><text class="text-sm text-secondary">{{portfolio.shootDate}}</text></view>
-      <view wx:if="{{portfolio.shootLocation}}" class="icon-row"><icon name="location" size="28rpx" /><text class="text-sm text-secondary">{{portfolio.shootLocation}}</text></view>
-      <view wx:if="{{portfolio.makeupDuration}}" class="icon-row"><icon name="clock" size="28rpx" /><text class="text-sm text-secondary">妆造 {{portfolio.makeupDuration}}分钟</text></view>
-      <view wx:if="{{portfolio.hanfuType}}" class="icon-row"><icon name="kimono" size="28rpx" /><text class="text-sm text-secondary">{{portfolio.hanfuType}}</text></view>
+    <view class="hr" style="margin:24rpx 0"></view>
+    <view class="pf-meta">
+      <view wx:if="{{portfolio.shootDate}}" class="pf-meta-item"><icon name="cal" size="30rpx" color="#6E675C" /><text>{{portfolio.shootDate}}</text></view>
+      <view wx:if="{{portfolio.shootLocation}}" class="pf-meta-item"><icon name="pin" size="30rpx" color="#6E675C" /><text>{{portfolio.shootLocation}}</text></view>
+      <view wx:if="{{portfolio.makeupDuration}}" class="pf-meta-item"><icon name="clock" size="30rpx" color="#6E675C" /><text>妆造 {{portfolio.makeupDuration}} 分钟</text></view>
+      <view wx:if="{{portfolio.hanfuType}}" class="pf-meta-item"><icon name="robe" size="30rpx" color="#6E675C" /><text>{{portfolio.hanfuType}}</text></view>
     </view>
   </view>
 
-  <view class="action-bar safe-bottom flex-between">
-    <view class="action-btn" bindtap="onLike">
-      <icon wx:if="{{isLiked}}" name="heart-filled" size="44rpx" /><icon wx:else name="heart" size="44rpx" />
-      <text class="text-sm">{{portfolio.likeCount || 0}}</text>
+  <view class="actionbar pf-action">
+    <view class="pf-act {{isLiked ? 'pf-act-on' : ''}}" bindtap="onLike">
+      <icon wx:if="{{isLiked}}" name="heart-filled" size="44rpx" color="#BE3F2C" />
+      <icon wx:else name="heart" size="44rpx" color="#29241D" />
+      <text class="pf-act-n">{{portfolio.likeCount || 0}}</text>
     </view>
-    <view class="action-btn" bindtap="onFavorite">
-      <icon wx:if="{{isFavorited}}" name="star-filled" size="44rpx" /><icon wx:else name="star" size="44rpx" />
-      <text class="text-sm">收藏</text>
+    <view class="pf-act {{isFavorited ? 'pf-act-on' : ''}}" bindtap="onFavorite">
+      <icon wx:if="{{isFavorited}}" name="bmk" size="44rpx" color="#BE3F2C" />
+      <icon wx:else name="bmk" size="44rpx" color="#29241D" />
+      <text class="pf-act-n">收藏</text>
     </view>
   </view>
 </view>

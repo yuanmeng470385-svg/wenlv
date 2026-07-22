@@ -1,4 +1,7 @@
 {
-  "usingComponents": {"icon":"/components/icon/index"},
+  "usingComponents": {
+    "icon": "/components/icon/index",
+    "empty-state": "/components/empty-state/index"
+  },
   "navigationBarTitleText": "商家注销审核"
 }

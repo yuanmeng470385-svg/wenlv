@@ -1,79 +1,150 @@
-<view class="page-orders">
-  <block wx:if="{{isAdminMode}}">
-    <view class="admin-review-center">
-      <view class="admin-header-sm">审核中心</view>
-      <view class="review-menu">
-        <view class="review-menu-item flex-between" bindtap="goAdminProviders"><text>服务商入驻</text><text class="text-secondary">></text></view>
-        <view class="review-menu-item flex-between" bindtap="goAdminPortfolios"><text>作品审核</text><text class="text-secondary">></text></view>
-        <view class="review-menu-item flex-between" bindtap="goAdminServiceItems"><text>套餐审核</text><text class="text-secondary">></text></view>
-        <view class="review-menu-item flex-between" bindtap="goAdminRefunds"><text>退款审核</text><text class="text-secondary">></text></view>
-        <view class="review-menu-item flex-between" bindtap="goAdminAvatarUpdates"><text>头像/背景审核</text><text class="text-secondary">></text></view>
-        <view class="review-menu-item flex-between" bindtap="goAdminDeregistrations"><text>注销审核</text><text class="text-secondary">></text></view>
+<!-- ==================== 管理员：审核中心 ==================== -->
+<view class="page" wx:if="{{isAdminMode}}">
+  <view class="sech" style="margin:16rpx 0 24rpx">
+    <view class="sech-sq"></view><view class="sech-t">审核中心</view>
+    <view class="sech-line"></view>
+  </view>
+  <view class="cd rev-menu">
+    <view class="lrow" bindtap="goAdminProviders">
+      <view class="rev-ic"><icon name="store" size="40rpx" color="#43615C" /></view>
+      <view class="lrow-t">服务商入驻</view><icon name="chevr" size="32rpx" color="#A79E8F" />
+    </view>
+    <view class="lrow" bindtap="goAdminPortfolios">
+      <view class="rev-ic"><icon name="img" size="40rpx" color="#43615C" /></view>
+      <view class="lrow-t">作品审核</view><icon name="chevr" size="32rpx" color="#A79E8F" />
+    </view>
+    <view class="lrow" bindtap="goAdminServiceItems">
+      <view class="rev-ic"><icon name="order" size="40rpx" color="#43615C" /></view>
+      <view class="lrow-t">套餐审核</view><icon name="chevr" size="32rpx" color="#A79E8F" />
+    </view>
+    <view class="lrow" bindtap="goAdminRefunds">
+      <view class="rev-ic"><icon name="coin" size="40rpx" color="#8F6B33" /></view>
+      <view class="lrow-t">退款审核</view><icon name="chevr" size="32rpx" color="#A79E8F" />
+    </view>
+    <view class="lrow" bindtap="goAdminAvatarUpdates">
+      <view class="rev-ic"><icon name="camera" size="40rpx" color="#8F6B33" /></view>
+      <view class="lrow-t">头像 / 背景审核</view><icon name="chevr" size="32rpx" color="#A79E8F" />
+    </view>
+    <view class="lrow" bindtap="goAdminDeregistrations">
+      <view class="rev-ic"><icon name="trash" size="40rpx" color="#BE3F2C" /></view>
+      <view class="lrow-t">注销审核</view><icon name="chevr" size="32rpx" color="#A79E8F" />
+    </view>
+  </view>
+</view>
+
+<!-- ==================== 用户 / 商家 ==================== -->
+<view class="page" wx:if="{{!isAdminMode}}">
+
+  <!-- 商家看板 -->
+  <block wx:if="{{activeRole !== 'user'}}">
+    <view class="greet">
+      <view class="greet-l">
+        <text class="greet-t serif">{{greetName || '早安，掌柜'}}</text>
+        <text class="greet-d">{{todayStr}}</text>
+      </view>
+      <text class="st st-cel">营业中</text>
+    </view>
+
+    <view class="cd stat stat-card">
+      <view class="stat-cell">
+        <view class="stat-n" style="color:#BE3F2C">{{dashboard.todayOrders}}</view>
+        <view class="stat-l">今日预约</view>
+      </view>
+      <view class="stat-cell">
+        <view class="stat-n" style="color:#8F6B33">{{dashboard.pendingOrders}}</view>
+        <view class="stat-l">待处理</view>
+      </view>
+      <view class="stat-cell">
+        <view class="stat-n">{{dashboard.totalOrders}}</view>
+        <view class="stat-l">总订单</view>
+      </view>
+    </view>
+
+    <view class="cd quick">
+      <view class="quick-item" bindtap="goUploadWork">
+        <view class="quick-ic quick-ic-red"><icon name="upload" size="40rpx" color="#BE3F2C" /></view>
+        <text class="quick-lb">上传作品</text>
+      </view>
+      <view class="quick-item" bindtap="goMyWorks">
+        <view class="quick-ic"><icon name="img" size="40rpx" color="#43615C" /></view>
+        <text class="quick-lb">作品管理</text>
+      </view>
+      <view class="quick-item" bindtap="goServiceItems">
+        <view class="quick-ic"><icon name="order" size="40rpx" color="#43615C" /></view>
+        <text class="quick-lb">套餐管理</text>
+      </view>
+      <view class="quick-item" bindtap="goSchedule">
+        <view class="quick-ic"><icon name="cal" size="40rpx" color="#43615C" /></view>
+        <text class="quick-lb">档期管理</text>
+      </view>
+      <view class="quick-item" bindtap="goEditProfile">
+        <view class="quick-ic"><icon name="pen" size="40rpx" color="#43615C" /></view>
+        <text class="quick-lb">编辑资料</text>
       </view>
     </view>
   </block>
 
-  <block wx:elif="{{!isAdminMode}}">
-  <scroll-view class="tab-scroll" scroll-x>
-    <view class="tab-list">
+  <!-- 状态筛选 Chips -->
+  <scroll-view class="chips-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="chips-row">
       <view wx:for="{{activeRole === 'user' ? userTabs : providerTabs}}" wx:key="key"
-        class="tab-item {{currentTab === item.key ? 'active' : ''}}"
+        class="chip {{currentTab === item.key ? 'on' : ''}}"
         data-tab="{{item.key}}" bindtap="onTabChange">
         <text>{{item.label}}</text>
       </view>
     </view>
   </scroll-view>
 
+  <!-- 用户订单卡 -->
   <block wx:if="{{activeRole === 'user'}}">
-    <view wx:for="{{orders}}" wx:key="_id" class="order-card card" data-id="{{item._id}}" bindtap="onOrderTap">
-      <view class="flex-between mb-20"><text class="text-sm text-bold">{{item.orderNo}}</text><text class="text-sm text-primary">{{item.statusText}}</text></view>
-      <view wx:for="{{item.items}}" wx:key="serviceItemId" wx:for-item="si" class="order-item">
-        <text>{{si.name}}<text wx:if="{{si.providerDeleted}}" class="text-sm text-hint">(商家已注销)</text></text>
-        <text class="text-sm text-secondary">{{si.appointmentDate}} {{si.appointmentTime}}</text>
+    <view wx:for="{{orders}}" wx:key="_id" class="cd ocard" data-id="{{item._id}}" bindtap="onOrderTap">
+      <view class="ocard-head">
+        <view class="ocard-shop"><icon name="store" size="32rpx" color="#43615C" /><text class="ocard-shop-t">{{item._shopName}}</text></view>
+        <text class="st {{item._statusClass}}">{{item.statusText}}</text>
       </view>
-      <view class="flex-between mt-20 pt-20"><text class="text-price text-lg">¥{{item.totalFee/100}}</text></view>
+      <view class="ocard-no serif">{{item.orderNo}}</view>
+      <view wx:for="{{item.items}}" wx:key="serviceItemId" wx:for-item="si" class="ocard-line">
+        <text class="text-hint text-sm">{{si.appointmentDate}} {{si.appointmentTime}}<text wx:if="{{si.providerDeleted}}"> · 商家已注销</text></text>
+      </view>
+      <view class="hr ocard-hr"></view>
+      <view class="ocard-foot">
+        <view class="price"><text class="price-sym">¥</text>{{item.totalFee/100}}</view>
+        <button wx:if="{{item.orderStatus === 'pending_complete'}}" class="btn btn-ink btn-sm" data-id="{{item._id}}" catchtap="onConfirmComplete">确认完成</button>
+        <view wx:elif="{{item.orderStatus === 'pending_pay'}}" class="btn btn-red btn-sm">去支付</view>
+      </view>
     </view>
   </block>
 
+  <!-- 商家订单卡 -->
   <block wx:else>
-    <view class="dash-top">
-      <view class="stats-row">
-        <view class="stat-card"><text class="stat-num">{{dashboard.todayOrders}}</text><text class="stat-label">今日预约</text></view>
-        <view class="stat-card"><text class="stat-num highlight">{{dashboard.pendingOrders}}</text><text class="stat-label">待处理</text></view>
-        <view class="stat-card"><text class="stat-num">{{dashboard.totalOrders}}</text><text class="stat-label">总订单</text></view>
+    <view wx:for="{{orders}}" wx:key="_id" class="cd ocard" data-id="{{item._id}}" bindtap="onOrderTap">
+      <view class="ocard-head">
+        <view class="ocard-shop">
+          <text class="ocard-shop-t">{{item.contactName || '顾客'}}</text>
+          <text class="text-hint text-sm" wx:if="{{item.contactPhone}}"> · {{item.contactPhone}}</text>
+        </view>
+        <text class="st {{item._statusClass}}">{{item.statusText}}</text>
       </view>
-      <view class="quick-row">
-        <view class="quick-item" bindtap="goUploadWork"><icon name="upload" size="44rpx" /><text class="quick-label">上传作品</text></view>
-        <view class="quick-item" bindtap="goMyWorks"><icon name="photo" size="44rpx" /><text class="quick-label">作品管理</text></view>
-        <view class="quick-item" bindtap="goServiceItems"><icon name="package" size="44rpx" /><text class="quick-label">套餐管理</text></view>
-        <view class="quick-item" bindtap="goSchedule"><icon name="calendar" size="44rpx" /><text class="quick-label">档期管理</text></view>
-        <view class="quick-item" bindtap="goEditProfile"><icon name="edit" size="44rpx" /><text class="quick-label">编辑资料</text></view>
+      <view class="ocard-no serif">{{item.orderNo}}</view>
+      <view wx:for="{{item.items}}" wx:key="serviceItemId" wx:for-item="si" class="ocard-line flex-between">
+        <text class="text-hint text-sm">{{si.appointmentDate}} {{si.appointmentTime}}</text>
+        <text class="price" style="font-size:28rpx"><text class="price-sym">¥</text>{{si.price/100}}</text>
       </view>
-    </view>
-
-    <view wx:for="{{orders}}" wx:key="_id" class="order-card card" data-id="{{item._id}}" bindtap="onOrderTap">
-      <view class="flex-between mb-20">
-        <text class="text-sm text-bold">{{item.orderNo}}</text>
-        <text class="status-text text-sm">{{item.statusText}}</text>
-      </view>
-      <view wx:for="{{item.items}}" wx:key="serviceItemId" wx:for-item="si">
-        <view class="flex-between mb-10"><text class="text-bold">{{si.name}}</text><text class="text-price">¥{{si.price/100}}</text></view>
-        <text class="text-sm text-secondary">{{si.appointmentDate}} {{si.appointmentTime}}</text>
-      </view>
-      <view class="flex-row mt-10">
-        <text class="text-sm text-secondary">{{item.contactName}} {{item.contactPhone}}</text>
-        <icon name="phone" size="36rpx" class="ml-10" catchtap="onCallCustomer" data-id="{{item._id}}" />
-      </view>
-      <view class="action-btns mt-20">
-        <button wx:if="{{item.orderStatus === 'paid'}}" class="btn-refuse" data-id="{{item._id}}" data-action="reject" catchtap="onProviderAction">拒绝</button>
-        <button wx:if="{{item.orderStatus === 'paid'}}" class="btn-confirm" data-id="{{item._id}}" data-action="confirm" catchtap="onProviderAction">确认接单</button>
-        <button wx:if="{{item.orderStatus === 'confirmed'}}" class="btn-confirm" data-id="{{item._id}}" data-action="start" catchtap="onProviderAction">开始服务</button>
-        <button wx:if="{{item.orderStatus === 'in_progress'}}" class="btn-confirm" data-id="{{item._id}}" data-action="complete" catchtap="onProviderAction">完成服务</button>
-        <button wx:if="{{item.orderStatus === 'pending_complete'}}" class="btn-confirm" data-id="{{item._id}}" catchtap="onConfirmComplete">确认完成</button>
+      <view class="hr ocard-hr"></view>
+      <view class="ocard-foot">
+        <view class="ocard-phone" catchtap="onCallCustomer" data-id="{{item._id}}">
+          <icon name="phone" size="32rpx" color="#43615C" /><text class="ocard-phone-t">联系顾客</text>
+        </view>
+        <view class="ocard-ops">
+          <button wx:if="{{item.orderStatus === 'paid'}}" class="btn btn-line btn-sm" data-id="{{item._id}}" data-action="reject" catchtap="onProviderAction">拒绝</button>
+          <button wx:if="{{item.orderStatus === 'paid'}}" class="btn btn-ink btn-sm" data-id="{{item._id}}" data-action="confirm" catchtap="onProviderAction">确认接单</button>
+          <button wx:if="{{item.orderStatus === 'confirmed'}}" class="btn btn-ink btn-sm" data-id="{{item._id}}" data-action="start" catchtap="onProviderAction">开始服务</button>
+          <button wx:if="{{item.orderStatus === 'in_progress'}}" class="btn btn-ink btn-sm" data-id="{{item._id}}" data-action="complete" catchtap="onProviderAction">完成服务</button>
+          <button wx:if="{{item.orderStatus === 'pending_complete'}}" class="btn btn-ink btn-sm" data-id="{{item._id}}" catchtap="onConfirmComplete">确认完成</button>
+        </view>
       </view>
     </view>
   </block>
 
-  <empty-state wx:if="{{!orders.length}}" text="暂无订单" />
-  </block>
+  <empty-state wx:if="{{!orders.length}}" text="暂无订单" icon="order" />
 </view>

@@ -1,34 +1,49 @@
-.page-detail { background: var(--bg-page); padding-bottom: 120rpx; }
-.cover-img { width: 100%; height: 400rpx; }
-.cover-placeholder { width: 100%; height: 100%; background: var(--bg-page); display: flex; align-items: center; justify-content: center; }
-.p-info { background: var(--bg-white); }
-.p-avatar { width: 100rpx; height: 100rpx; border-radius: 50%; flex-shrink: 0; }
-.fav-btn { padding: 10rpx; }
-.fav-icon { font-size: 44rpx; }
-.tag-row { display: flex; flex-wrap: wrap; gap: 10rpx; }
-.feature-tag { padding: 6rpx 16rpx; font-size: 22rpx; border-radius: 8rpx; background: var(--color-primary-bg); color: var(--color-primary); }
-.tab-bar { display: flex; background: var(--bg-white); margin-top: 20rpx; }
-.tab-item { flex: 1; text-align: center; padding: 24rpx 0; font-size: 28rpx; color: var(--text-secondary); border-bottom: 4rpx solid transparent; }
-.tab-item.active { color: var(--color-primary); border-bottom-color: var(--color-primary); font-weight: 600; }
-.tab-content { padding: 20rpx; }
-.service-card { display: flex; margin: 0 0 16rpx; }
-.s-cover { width: 160rpx; height: 160rpx; border-radius: 12rpx; margin-right: 20rpx; flex-shrink: 0; }
-.s-info { flex: 1; overflow: hidden; }
-.include-list { display: flex; flex-wrap: wrap; gap: 8rpx; }
-.include-item { color: var(--color-success); }
-.work-grid { display: flex; flex-wrap: wrap; gap: 12rpx; }
-.work-item { width: calc(50% - 6rpx); position: relative; border-radius: 12rpx; overflow: hidden; }
-.work-img { width: 100%; height: 260rpx; }
-.work-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 16rpx; background: linear-gradient(transparent, rgba(0,0,0,0.6)); color: #fff; }
-.work-title { display: block; margin-bottom: 4rpx; }
-.review-card { margin: 0 0 12rpx; }
-.review-images { display: flex; gap: 10rpx; }
-.review-img { width: 120rpx; height: 120rpx; border-radius: 12rpx; }
-.bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; padding: 16rpx 30rpx; background: var(--bg-white); box-shadow: var(--shadow-card); }
-.bottom-bar { display: flex; gap: 16rpx; }
-.call-btn { width: 180rpx; height: 88rpx; background: var(--bg-white); color: var(--color-primary); border: 2rpx solid var(--color-primary); font-size: 26rpx; border-radius: 44rpx; display: flex; align-items: center; justify-content: center; padding: 0; }
-.book-btn { height: 88rpx; background: var(--color-primary); color: #fff; font-size: 32rpx; border-radius: 44rpx; display: flex; align-items: center; justify-content: center; }
-.ml-10 { margin-left: 10rpx; } .ml-20 { margin-left: 20rpx; } .mr-10 { margin-right: 10rpx; } .p-30 { padding: 30rpx; }
-.empty-hint { padding: 80rpx 0; text-align: center; }
-.icon-row { display: flex; align-items: center; gap: 4rpx; }
-.mt-10 { margin-top: 10rpx; } .mt-20 { margin-top: 20rpx; }
+/* ========== 商家详情 v3「纸墨朱砂」 ========== */
+.page-p { padding-bottom: 140rpx; min-height: 100vh; }
+.cover { width: 100%; height: 430rpx; position: relative; }
+.cover-img { width: 100%; height: 100%; border-radius: 0; }
+.fav-btn {
+  position: absolute; top: 24rpx; right: 24rpx;
+  width: 68rpx; height: 68rpx; border-radius: 50%;
+  background: rgba(23, 20, 15, 0.4);
+  display: flex; align-items: center; justify-content: center;
+}
+
+.p-head { display: flex; padding: 0 32rpx; margin-top: -56rpx; position: relative; z-index: 2; }
+.p-avt { width: 128rpx; height: 128rpx; border-radius: 50%; border: 6rpx solid var(--paper); flex: none; }
+.p-head-info { padding-top: 64rpx; margin-left: 24rpx; }
+.p-name { font-size: 42rpx; font-weight: 900; letter-spacing: 2rpx; }
+.stars { display: flex; align-items: center; margin-top: 8rpx; gap: 6rpx; }
+.stars-n { font-size: 28rpx; font-weight: 700; }
+.stars-c { font-size: 22rpx; color: var(--ink-3); }
+.p-tags { display: flex; flex-wrap: wrap; gap: 10rpx; padding: 20rpx 32rpx 0; }
+
+.p-stat { margin: 24rpx 32rpx 0; padding: 24rpx 0; }
+
+.ptabs { display: flex; margin: 28rpx 32rpx 0; border-bottom: 1rpx solid var(--line-2); }
+.ptab { padding: 0 0 18rpx; margin-right: 48rpx; font-size: 30rpx; color: var(--ink-3); border-bottom: 4rpx solid transparent; }
+.ptab.on { color: var(--ink); border-bottom-color: var(--red); font-weight: 700; }
+.p-content { padding: 24rpx 32rpx 0; }
+
+.svc { display: flex; align-items: center; padding: 24rpx; margin-bottom: 20rpx; }
+.svc:active { opacity: 0.9; }
+.svc-icon { width: 84rpx; height: 84rpx; border-radius: var(--radius-md); flex: none; margin-right: 24rpx; }
+.svc-icon-ph { background: var(--paper-2); border: 1rpx solid var(--line-2); display: flex; align-items: center; justify-content: center; }
+.svc-desc { margin-top: 8rpx; max-width: 340rpx; }
+.svc-right { text-align: right; display: flex; flex-direction: column; align-items: flex-end; flex: none; }
+.svc-book { margin-top: 10rpx; }
+
+.work-grid { display: flex; flex-wrap: wrap; justify-content: space-between; }
+.work-item { width: 49%; position: relative; border-radius: var(--radius-md); overflow: hidden; margin-bottom: 16rpx; }
+.work-img { width: 100%; height: 300rpx; }
+.work-overlay {
+  position: absolute; bottom: 0; left: 0; right: 0; padding: 32rpx 20rpx 16rpx;
+  background: linear-gradient(transparent, rgba(23, 20, 15, 0.65)); color: #F6F1E7;
+}
+.work-title { display: block; font-size: 24rpx; margin-bottom: 6rpx; }
+.work-likes { display: flex; align-items: center; gap: 6rpx; }
+.work-likes-n { font-size: 22rpx; }
+
+.review { padding: 24rpx; margin-bottom: 20rpx; }
+
+.p-action { position: fixed; bottom: 0; left: 0; right: 0; gap: 20rpx; z-index: 10; }

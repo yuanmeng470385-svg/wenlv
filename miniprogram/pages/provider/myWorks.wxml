@@ -1,12 +1,24 @@
-<view class="page-works">
-  <view wx:for="{{works}}" wx:key="_id" class="work-card card">
-    <image src="{{item.images[0]}}" mode="aspectFill" class="work-thumb" />
-    <view class="work-info flex-1">
-      <text class="text-bold">{{item.title}}</text>
-      <text class="text-sm text-secondary">状态: {{item.status}}</text>
-      <view class="icon-row"><icon name="heart-filled" size="24rpx" /><text class="text-sm text-secondary">{{item.likeCount || 0}}</text></view>
+<view class="page">
+  <view class="mw-grid">
+    <!-- 上传入口 -->
+    <view class="mw-upload" bindtap="goUpload">
+      <icon name="upload" size="56rpx" color="#A79E8F" />
+      <text class="mw-upload-t">上传作品</text>
     </view>
-    <text class="del-btn text-price" data-id="{{item._id}}" bindtap="onDelete">删除</text>
+
+    <view wx:for="{{works}}" wx:key="_id" class="mw-item">
+      <image src="{{item.images[0]}}" mode="aspectFill" class="mw-img" />
+      <text class="st {{item._statusClass}} mw-st">{{item._statusLabel}}</text>
+      <view wx:if="{{item.status === 'approved'}}" class="mw-del" catchtap="onDelete" data-id="{{item._id}}">
+        <icon name="trash" size="24rpx" color="#F6F1E7" />
+      </view>
+      <view class="mw-likes">
+        <icon name="heart-filled" size="22rpx" color="#F6F1E7" />
+        <text class="mw-likes-n">{{item.likeCount || 0}}</text>
+      </view>
+    </view>
   </view>
-  <view wx:if="{{!works.length}}" class="empty-hint"><text class="text-secondary">暂无作品，去上传吧</text></view>
+
+  <empty-state wx:if="{{!works.length}}" text="暂无作品，去上传吧" icon="img" />
+  <view class="mw-note" wx:if="{{works.length}}">删除作品无需审核 · 新作品发布后需管理员审核</view>
 </view>

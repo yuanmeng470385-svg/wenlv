@@ -1,5 +1,12 @@
 const { getCategoryList, getProviderList } = require('../../services/serviceService');
 
+const CATEGORY_META = {
+  photographer: { glyph: '影', grad: 'g-rouge' },
+  makeup: { glyph: '妆', grad: 'g-gold' },
+  hanfu_shop: { glyph: '服', grad: 'g-cel' },
+};
+const metaOf = (t) => CATEGORY_META[t] || CATEGORY_META.photographer;
+
 Page({
   data: {
     categoryType: 'photographer',
@@ -8,18 +15,9 @@ Page({
     keyword: '',
     sortBy: 'sortOrder',
     sortOptions: [
-      { key: 'sortOrder', label: '默认排序' },
+      { key: 'sortOrder', label: '综合排序' },
       { key: 'rating', label: '评分最高' },
       { key: 'orderCount', label: '预约最多' },
-    ],
-    levelFilter: 0,
-    levels: [
-      { value: 0, label: '全部' },
-      { value: 1, label: '初级' },
-      { value: 2, label: '中级' },
-      { value: 3, label: '高级' },
-      { value: 4, label: '资深' },
-      { value: 5, label: '首席' },
     ],
     providers: [],
     page: 1,
@@ -29,13 +27,8 @@ Page({
 
   onLoad(options) {
     const type = options.type || 'photographer';
-    const nameMap = { photographer: '摄影师', makeup: '妆造师', hanfu_shop: '汉服店' };
+    const nameMap = { photographer: '摄影跟拍', makeup: '妆造造型', hanfu_shop: '汉服体验' };
     this.setData({ categoryType: type, categoryName: nameMap[type] || '服务商' });
-
-    if (type !== 'hanfu_shop') {
-      // 汉服店不显示等级筛选
-      this.setData({ levels: this.data.levels });
-    }
     this.loadCategories();
     this.loadData();
   },
@@ -56,11 +49,15 @@ Page({
         pageSize: 10,
         sortBy: this.data.sortBy,
       };
-      if (this.data.levelFilter > 0) params.level = this.data.levelFilter;
       if (this.data.keyword) params.keyword = this.data.keyword;
 
       const res = await getProviderList(params);
-      const list = this.data.page === 1 ? res.list : this.data.providers.concat(res.list);
+      const rawList = this.data.page === 1 ? res.list : this.data.providers.concat(res.list);
+      const list = rawList.map(p => Object.assign({}, p, {
+        _glyph: (p.name || '店').charAt(0),
+        _grad: metaOf(p.categoryType).grad,
+        _tags: (p.featureTags || []).slice(0, 3),
+      }));
       this.setData({
         providers: list,
         total: res.total,
@@ -74,12 +71,12 @@ Page({
   },
 
   onSortChange(e) { this.setData({ sortBy: e.currentTarget.dataset.key, page: 1, providers: [] }); this.loadData(); },
-  onLevelChange(e) { this.setData({ levelFilter: e.currentTarget.dataset.value, page: 1, providers: [] }); this.loadData(); },
   onProviderTap(e) { wx.navigateTo({ url: '/pages/serviceDetail/index?id=' + e.currentTarget.dataset.id }); },
   onCategorySwitch(e) {
     const type = e.currentTarget.dataset.type;
-    const nameMap = { photographer: '摄影师', makeup: '妆造师', hanfu_shop: '汉服店' };
-    this.setData({ categoryType: type, categoryName: nameMap[type], page: 1, providers: [], levelFilter: 0 });
+    if (type === this.data.categoryType) return;
+    const nameMap = { photographer: '摄影跟拍', makeup: '妆造造型', hanfu_shop: '汉服体验' };
+    this.setData({ categoryType: type, categoryName: nameMap[type], page: 1, providers: [] });
     this.loadData();
   },
   onSearchInput(e) { this.setData({ keyword: e.detail.value }); },
@@ -87,4 +84,3 @@ Page({
   onClearSearch() { this.setData({ keyword: '', page: 1, providers: [] }); this.loadData(); },
   onReachBottom() { if (this.data.hasMore) { this.setData({ page: this.data.page + 1 }); this.loadData(); } },
 });
-

@@ -1,11 +1,21 @@
-.page-review { padding: 20rpx; background: var(--bg-page); min-height: 100vh; }
-.review-card { margin-bottom: 20rpx; }
-.img-compare { display: flex; gap: 20rpx; }
-.img-col { flex: 1; }
-.review-img { width: 100%; height: 200rpx; border-radius: 12rpx; margin-top: 10rpx; }
-.action-btns { display: flex; gap: 16rpx; justify-content: flex-end; }
-.btn-reject { background: var(--bg-page); color: var(--text-hint); border: 1rpx solid var(--border-color); font-size: 26rpx; padding: 12rpx 32rpx; border-radius: 8rpx; }
-.btn-pass { background: var(--color-primary); color: #fff; font-size: 26rpx; padding: 12rpx 32rpx; border-radius: 8rpx; }
-.mt-10 { margin-top: 10rpx; }
-.mt-20 { margin-top: 20rpx; }
-.empty-hint { padding: 120rpx 0; text-align: center; }
+/* ========== 头像/背景审核 v3「纸墨朱砂」 ========== */
+.page { padding: 16rpx 32rpx 40rpx; min-height: 100vh; }
+.rv-card { padding: 28rpx; margin-top: 20rpx; }
+.rv-head-row { display: flex; align-items: center; justify-content: space-between; }
+.rv-name { font-size: 32rpx; font-weight: 700; letter-spacing: 1rpx; }
+
+.cmp { margin-top: 24rpx; padding-top: 24rpx; border-top: 1rpx solid var(--line-2); }
+.cmp-row { display: flex; align-items: center; justify-content: center; gap: 32rpx; }
+.cmp-col { display: flex; flex-direction: column; align-items: center; gap: 12rpx; }
+.cmp-avt { width: 150rpx; height: 150rpx; border-radius: 50%; }
+.cmp-old { opacity: 0.55; }
+.cmp-new { border: 4rpx solid var(--red); }
+.cmp-none { background: var(--paper-2); border: 1rpx dashed var(--line); display: flex; align-items: center; justify-content: center; color: var(--ink-3); font-size: 22rpx; }
+.cmp-lb { font-size: 22rpx; color: var(--ink-3); }
+.cmp-lb-new { color: var(--red); }
+.cmp-bg { width: 100%; height: 140rpx; border-radius: var(--radius-md); }
+.cmp-arrow { display: flex; justify-content: center; padding: 8rpx 0; transform: rotate(90deg); }
+
+.rv-ops { display: flex; gap: 20rpx; margin-top: 24rpx; }
+.rv-rej { flex: 1; }
+.rv-pass { flex: 2; }

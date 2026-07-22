@@ -1,40 +1,43 @@
-<view class="page-review">
-  <view wx:if="{{!list.length}}" class="empty-hint"><text class="text-secondary">暂无待审核申请</text></view>
-  <view wx:for="{{list}}" wx:key="_id" class="review-card card" data-id="{{item._id}}" bindtap="onCardTap">
-    <text class="text-bold text-lg">{{item.name}}</text>
-    <text class="text-sm text-secondary">{{item.categoryType === 'photographer' ? '摄影师' : (item.categoryType === 'makeup' ? '妆造师' : '汉服店')}}</text>
+<view class="page">
+  <empty-state wx:if="{{!list.length}}" text="暂无待审核申请" icon="camera" />
 
-    <view wx:if="{{item.pendingAvatar}}" class="mt-20">
-      <text class="text-sm text-bold">申请更换头像</text>
-      <view class="img-compare">
-        <view class="img-col"><text class="text-sm text-hint">当前</text>
-          <image wx:if="{{item.avatar}}" src="{{item.avatar}}" mode="aspectFill" class="review-img" data-url="{{item.avatar}}" bindtap="previewImage" />
-          <text wx:else class="text-sm text-hint">无</text>
+  <view wx:for="{{list}}" wx:key="_id" class="cd rv-card" data-id="{{item._id}}" bindtap="onCardTap">
+    <view class="rv-head-row">
+      <text class="rv-name serif">{{item.name}}</text>
+      <text class="tag">{{item.categoryType === 'photographer' ? '摄影师' : (item.categoryType === 'makeup' ? '妆造师' : '汉服店')}}</text>
+    </view>
+
+    <!-- 头像变更 -->
+    <view wx:if="{{item.pendingAvatar}}" class="cmp">
+      <view class="text-sm text-hint" style="margin-bottom:16rpx">申请更换头像 · {{item.createTime}}</view>
+      <view class="cmp-row">
+        <view class="cmp-col">
+          <image wx:if="{{item.avatar}}" src="{{item.avatar}}" mode="aspectFill" class="cmp-avt cmp-old" data-url="{{item.avatar}}" catchtap="previewImage" />
+          <view wx:else class="cmp-avt cmp-old cmp-none">无</view>
+          <text class="cmp-lb">当前头像</text>
         </view>
-        <view class="img-col"><text class="text-sm text-hint">新头像</text>
-          <image src="{{item.pendingAvatar}}" mode="aspectFill" class="review-img" data-url="{{item.pendingAvatar}}" bindtap="previewImage" />
+        <icon name="chevr" size="44rpx" color="#A79E8F" />
+        <view class="cmp-col">
+          <image src="{{item.pendingAvatar}}" mode="aspectFill" class="cmp-avt cmp-new" data-url="{{item.pendingAvatar}}" catchtap="previewImage" />
+          <text class="cmp-lb cmp-lb-new">申请新头像</text>
         </view>
       </view>
-      <view class="action-btns mt-20">
-        <button class="btn-reject" data-id="{{item._id}}" data-field="avatar" catchtap="onReject">拒绝</button>
-        <button class="btn-pass" data-id="{{item._id}}" data-field="avatar" catchtap="onApprove">通过</button>
+      <view class="rv-ops">
+        <button class="btn btn-line-red btn-md rv-rej" data-id="{{item._id}}" data-field="avatar" catchtap="onReject">拒绝</button>
+        <button class="btn btn-ink btn-md rv-pass" data-id="{{item._id}}" data-field="avatar" catchtap="onApprove">通过并替换</button>
       </view>
     </view>
 
-    <view wx:if="{{item.pendingBackgroundImage}}" class="mt-20">
-      <text class="text-sm text-bold">申请更换背景图</text>
-      <view class="img-compare">
-        <view class="img-col"><text class="text-sm text-hint">当前</text>
-          <image wx:if="{{item.backgroundImage}}" src="{{item.backgroundImage}}" mode="aspectFill" class="review-img" data-url="{{item.backgroundImage}}" bindtap="previewImage" />
-          <text wx:else class="text-sm text-hint">无</text>
-        </view>
-        <view class="img-col"><text class="text-sm text-hint">新背景图</text>
-          <image src="{{item.pendingBackgroundImage}}" mode="aspectFill" class="review-img" data-url="{{item.pendingBackgroundImage}}" bindtap="previewImage" />
-        </view>
-      </view>
-      <view class="action-btns mt-20">
-        <button class="btn-reject" data-id="{{item._id}}" data-field="backgroundImage" catchtap="onReject">拒绝</button>
-        <button class="btn-pass" data-id="{{item._id}}" data-field="backgroundImage" catchtap="onApprove">通过</button>
+    <!-- 背景图变更 -->
+    <view wx:if="{{item.pendingBackgroundImage}}" class="cmp">
+      <view class="text-sm text-hint" style="margin-bottom:16rpx">申请更换背景图 · {{item.createTime}}</view>
+      <image wx:if="{{item.backgroundImage}}" src="{{item.backgroundImage}}" mode="aspectFill" class="cmp-bg cmp-old" data-url="{{item.backgroundImage}}" catchtap="previewImage" />
+      <view wx:else class="cmp-bg cmp-old cmp-none">无</view>
+      <view class="cmp-arrow"><icon name="chevr" size="36rpx" color="#A79E8F" /></view>
+      <image src="{{item.pendingBackgroundImage}}" mode="aspectFill" class="cmp-bg cmp-new" data-url="{{item.pendingBackgroundImage}}" catchtap="previewImage" />
+      <view class="rv-ops">
+        <button class="btn btn-line-red btn-md rv-rej" data-id="{{item._id}}" data-field="backgroundImage" catchtap="onReject">拒绝</button>
+        <button class="btn btn-ink btn-md rv-pass" data-id="{{item._id}}" data-field="backgroundImage" catchtap="onApprove">通过并替换</button>
       </view>
     </view>
   </view>

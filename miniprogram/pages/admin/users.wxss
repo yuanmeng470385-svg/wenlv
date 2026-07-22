@@ -1,9 +1,20 @@
-.page-admin-users { padding: 15px; }
-.search-bar { margin-bottom: 15px; }
-.search-input { flex: 1; border: 1px solid var(--border-color); border-radius: 6px; padding: 8px 12px; font-size: 14px; }
-.btn-search { margin-left: 10px; padding: 8px 16px; background: var(--color-primary); color: #fff; border-radius: 6px; font-size: 13px; }
-.filter-item { padding: 4px 12px; margin-right: 10px; border-radius: 20px; background: var(--bg-page); font-size: 13px; }
-.filter-item.active { background: var(--color-primary); color: #fff; }
-.user-card { margin-bottom: 10px; }
-.badge-banned { background: var(--color-danger); color: #fff; padding: 1px 6px; border-radius: 4px; font-size: 11px; }
-.mt-5 { margin-top: 5px; }
+/* ========== 用户管理 v3「纸墨朱砂」 ========== */
+.page { padding: 16rpx 32rpx 40rpx; min-height: 100vh; }
+.srch {
+  height: 72rpx; border-radius: var(--radius-pill);
+  background: var(--card); border: 1rpx solid var(--line-2);
+  display: flex; align-items: center; padding: 0 24rpx; gap: 12rpx;
+}
+.srch-input { flex: 1; font-size: 26rpx; color: var(--ink); }
+.srch-phc { color: var(--ink-3); }
+.seg-row { display: flex; gap: 16rpx; margin-top: 20rpx; }
+
+.user { display: flex; align-items: center; padding: 24rpx; margin-top: 20rpx; }
+.user-banned { opacity: 0.72; }
+.user-avt { flex: none; margin-right: 24rpx; }
+.user-info { flex: 1; min-width: 0; }
+.user-name-row { display: flex; align-items: center; gap: 12rpx; }
+.user-name { font-size: 28rpx; font-weight: 500; max-width: 260rpx; }
+.user-roles { display: flex; flex-wrap: wrap; gap: 8rpx; margin-top: 10rpx; }
+.user-end { text-align: center; font-size: 20rpx; color: var(--ink-3); padding: 32rpx 0 8rpx; }
+.user-note { text-align: center; font-size: 20rpx; color: var(--ink-3); letter-spacing: 1rpx; margin-top: 16rpx; }

@@ -1,59 +1,127 @@
-<view class="page-profile">
+<view class="page">
   <!-- 用户头部 -->
-  <view class="user-header">
-    <view class="user-avatar {{hasLogin ? 'avatar-editable' : ''}}" bindtap="{{hasLogin ? 'onChangeAvatar' : ''}}">
-      <image wx:if="{{userInfo && userInfo.avatarUrl}}" src="{{userInfo.avatarUrl}}" mode="aspectFill" />
-      <text wx:else class="avt-ph">我</text>
-      <view wx:if="{{hasLogin}}" class="avatar-edit-mask">
-        <icon name="camera" size="26rpx" />
-      </view>
+  <view class="cd u-head">
+    <view class="u-avt-wrap" bindtap="{{hasLogin ? 'onChangeAvatar' : ''}}">
+      <image wx:if="{{userInfo && userInfo.avatarUrl}}" class="u-avt" src="{{userInfo.avatarUrl}}" mode="aspectFill" />
+      <view wx:else class="u-avt avt" style="width:112rpx;height:112rpx;font-size:44rpx;background:linear-gradient(140deg,#8A6B3D,#B08D57 60%,#D4B486)">{{avatarGlyph}}</view>
+      <view wx:if="{{hasLogin}}" class="u-avt-edit"><icon name="pen" size="20rpx" color="#FBF8F0" /></view>
     </view>
-    <text class="user-name text-xl text-bold">{{displayName}}</text>
-    <text class="user-role">{{roleLabel}}</text>
-    <button wx:if="{{!hasLogin}}" class="login-btn-sm" open-type="getUserInfo" bindgetuserinfo="onGetUserInfo">登录</button>
+    <view class="flex-1">
+      <view class="u-name serif">{{displayName}}</view>
+      <view class="u-sub" wx:if="{{hasLogin}}">
+        <text class="st st-cel">{{roleLabel}}</text>
+        <text class="text-hint text-sm" wx:if="{{userInfo && userInfo.phone}}"> · {{userInfo.phone}}</text>
+      </view>
+      <view class="u-sub" wx:else><text class="text-hint text-sm">登录后体验完整功能</text></view>
+    </view>
+    <button wx:if="{{!hasLogin}}" class="btn btn-ink btn-md" open-type="getUserInfo" bindgetuserinfo="onGetUserInfo">登录</button>
   </view>
 
   <!-- 身份切换 -->
-  <view wx:if="{{hasLogin && roles.length > 1}}" class="role-section card">
-    <text class="section-title text-sm text-secondary">切换身份</text>
-    <view class="role-list">
+  <view wx:if="{{hasLogin && roles.length > 1 && !isAdminMode}}" class="cd u-roles">
+    <view class="u-roles-head">
+      <text class="u-roles-lb">当前身份</text>
+      <view class="hr flex-1"></view>
+      <text class="u-roles-tip">点击切换</text>
+    </view>
+    <view class="u-roles-row">
       <view wx:for="{{roleList}}" wx:key="key"
-        class="role-chip {{activeRole === item.key ? 'active' : ''}}"
+        class="chip {{activeRole === item.key ? 'on' : ''}}"
         data-role="{{item.key}}" bindtap="onSwitchRole">
-        <text>{{item.icon}} {{item.label}}</text>
+        <text>{{item.label}}</text>
       </view>
     </view>
   </view>
 
   <!-- 管理模式 -->
   <block wx:if="{{isAdminMode}}">
-    <view class="menu-section">
-      <view class="menu-item flex-between" bindtap="onExitAdmin"><text>退出管理模式</text><text class="text-secondary">></text></view>
+    <view class="cd menu">
+      <view class="lrow" bindtap="goAdmin">
+        <view class="mi mi-red"><icon name="shield" size="38rpx" color="#BE3F2C" /></view>
+        <view class="lrow-t">管理中心</view>
+        <icon name="chevr" size="32rpx" color="#A79E8F" />
+      </view>
+      <view class="lrow" bindtap="onExitAdmin">
+        <view class="mi"><icon name="out" size="38rpx" color="#6E675C" /></view>
+        <view class="lrow-t">退出管理模式</view>
+        <icon name="chevr" size="32rpx" color="#A79E8F" />
+      </view>
     </view>
   </block>
 
   <!-- 用户模式菜单 -->
   <block wx:elif="{{activeRole === 'user'}}">
-    <view wx:if="{{hasLogin}}" class="menu-card card" bindtap="onApplyProvider">
-      <view class="flex-between"><text>申请成为服务商</text><text class="text-secondary">></text></view>
+    <view class="cd menu" wx:if="{{hasLogin}}">
+      <view class="lrow" bindtap="goOrders">
+        <view class="mi"><icon name="order" size="38rpx" color="#43615C" /></view>
+        <view class="lrow-t">我的订单</view>
+        <icon name="chevr" size="32rpx" color="#A79E8F" />
+      </view>
+      <view class="lrow" data-url="/pages/favorites/index" bindtap="onMenuTap">
+        <view class="mi"><icon name="bmk" size="38rpx" color="#43615C" /></view>
+        <view class="lrow-t">我的收藏</view>
+        <icon name="chevr" size="32rpx" color="#A79E8F" />
+      </view>
+      <view class="lrow" data-url="/pages/messages/index" bindtap="onMenuTap">
+        <view class="mi"><icon name="bell" size="38rpx" color="#43615C" /></view>
+        <view class="lrow-t">消息通知</view>
+        <text wx:if="{{unreadCount}}" class="st st-red">{{unreadCount}}</text>
+        <icon name="chevr" size="32rpx" color="#A79E8F" />
+      </view>
     </view>
-    <view class="menu-section">
-      <view wx:for="{{menuItems}}" wx:key="label" class="menu-item flex-between" data-url="{{item.url}}" bindtap="onMenuTap">
-        <text>{{item.icon}} {{item.label}}</text><text class="text-secondary">></text>
+    <view class="cd menu" wx:if="{{hasLogin}}">
+      <view class="lrow" bindtap="onApplyProvider">
+        <view class="mi mi-gold"><icon name="store" size="38rpx" color="#8F6B33" /></view>
+        <view class="lrow-t">申请商家入驻</view>
+        <icon name="chevr" size="32rpx" color="#A79E8F" />
       </view>
     </view>
   </block>
 
   <!-- 商家模式菜单 -->
   <block wx:else>
-    <view class="menu-section">
-      <view class="menu-item flex-between" data-url="/pages/messages/index" bindtap="onMenuTap"><view class="icon-row"><icon name="bell" size="36rpx" /><text>消息通知</text></view><text class="text-secondary">></text></view>
-      <view class="menu-item flex-between" bindtap="onDeregister"><view class="icon-row"><icon name="warning" size="36rpx" /><text>注销商家身份</text></view><text class="text-secondary">></text></view>
+    <view class="cd menu">
+      <view class="lrow" bindtap="goMyWorks">
+        <view class="mi"><icon name="img" size="38rpx" color="#43615C" /></view>
+        <view class="lrow-t">作品管理</view>
+        <icon name="chevr" size="32rpx" color="#A79E8F" />
+      </view>
+      <view class="lrow" bindtap="goServiceItems">
+        <view class="mi"><icon name="order" size="38rpx" color="#43615C" /></view>
+        <view class="lrow-t">套餐管理</view>
+        <icon name="chevr" size="32rpx" color="#A79E8F" />
+      </view>
+      <view class="lrow" bindtap="goSchedule">
+        <view class="mi"><icon name="cal" size="38rpx" color="#43615C" /></view>
+        <view class="lrow-t">档期管理</view>
+        <icon name="chevr" size="32rpx" color="#A79E8F" />
+      </view>
+      <view class="lrow" data-url="/pages/messages/index" bindtap="onMenuTap">
+        <view class="mi"><icon name="bell" size="38rpx" color="#43615C" /></view>
+        <view class="lrow-t">消息通知</view>
+        <text wx:if="{{unreadCount}}" class="st st-red">{{unreadCount}}</text>
+        <icon name="chevr" size="32rpx" color="#A79E8F" />
+      </view>
+    </view>
+    <view class="cd menu">
+      <view class="lrow" bindtap="onDeregister">
+        <view class="mi mi-red"><icon name="trash" size="38rpx" color="#BE3F2C" /></view>
+        <view class="lrow-t" style="color:#BE3F2C">注销商家身份</view>
+        <text class="text-hint" style="font-size:20rpx">需审核</text>
+      </view>
     </view>
   </block>
 
-  <view wx:if="{{hasLogin && !isAdminMode}}" class="menu-section safe-bottom">
-    <view class="menu-item flex-between" bindtap="onAdminLogin"><view class="icon-row"><icon name="lock" size="36rpx" /><text>管理员登录</text></view><text class="text-secondary">></text></view>
-    <view class="menu-item flex-between" bindtap="onLogout"><view class="icon-row"><icon name="logout" size="36rpx" /><text>退出登录</text></view><text class="text-secondary">></text></view>
+  <!-- 底部 -->
+  <view wx:if="{{hasLogin && !isAdminMode}}" class="cd menu safe-bottom">
+    <view class="lrow" bindtap="onAdminLogin">
+      <view class="mi"><icon name="shield" size="38rpx" color="#6E675C" /></view>
+      <view class="lrow-t">管理员入口</view>
+      <icon name="chevr" size="32rpx" color="#A79E8F" />
+    </view>
+    <view class="lrow" bindtap="onLogout">
+      <view class="mi mi-red"><icon name="out" size="38rpx" color="#BE3F2C" /></view>
+      <view class="lrow-t" style="color:#BE3F2C">退出登录</view>
+    </view>
   </view>
 </view>

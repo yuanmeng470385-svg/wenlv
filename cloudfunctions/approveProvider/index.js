@@ -26,10 +26,6 @@ exports.main = async (event, context) => {
       await db.collection('portfolios').where({ providerId, status: 'pending_review' }).update({
         data: { status: 'rejected', reviewRemark: reason || '' }
       });
-      // 同时驳回关联的待审套餐
-      await db.collection('serviceItems').where({ providerId, status: 'pending_review' }).update({
-        data: { status: 'inactive' }
-      });
       // 审计日志
       await db.collection('auditLogs').add({ data: { adminOpenid: openid, action: 'rejectProvider', targetId: providerId, detail: { reason }, createTime: db.serverDate() } });
       // 通知申请人
@@ -46,10 +42,6 @@ exports.main = async (event, context) => {
     // 自动通过待审作品
     await db.collection('portfolios').where({ providerId, status: 'pending_review' }).update({
       data: { status: 'approved' }
-    });
-    // 自动通过待审服务套餐
-    await db.collection('serviceItems').where({ providerId, status: 'pending_review' }).update({
-      data: { status: 'active' }
     });
     // 审计日志
     await db.collection('auditLogs').add({ data: { adminOpenid: openid, action: 'approveProvider', targetId: providerId, detail: {}, createTime: db.serverDate() } });

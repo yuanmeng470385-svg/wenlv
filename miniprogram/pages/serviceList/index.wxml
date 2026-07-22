@@ -1,54 +1,48 @@
-<view class="page-list">
-  <scroll-view class="category-scroll" scroll-x>
-    <view class="cat-list">
-      <view wx:for="{{categories}}" wx:key="_id" class="cat-item {{categoryType === item.type ? 'active' : ''}}" data-type="{{item.type}}" bindtap="onCategorySwitch">
+<view class="page">
+  <!-- 搜索 -->
+  <view class="srch">
+    <icon name="search" size="34rpx" color="#A79E8F" />
+    <input class="srch-input" placeholder="搜索商家名称、标签…" placeholder-class="srch-phc" value="{{keyword}}" confirm-type="search" bindinput="onSearchInput" bindconfirm="onSearch" />
+    <view wx:if="{{keyword}}" class="srch-clear" bindtap="onClearSearch"><icon name="x" size="28rpx" color="#A79E8F" /></view>
+  </view>
+
+  <!-- 品类 + 排序 -->
+  <scroll-view class="chips-scroll" scroll-x enhanced show-scrollbar="{{false}}" wx:if="{{categories.length}}">
+    <view class="chips-row">
+      <view wx:for="{{categories}}" wx:key="_id" class="chip {{categoryType === item.type ? 'on' : ''}}" data-type="{{item.type}}" bindtap="onCategorySwitch">
         <text>{{item.name}}</text>
       </view>
     </view>
   </scroll-view>
-
-  <!-- 搜索栏 -->
-  <view class="search-bar">
-    <input class="search-input" placeholder="搜索服务商名称、标签..." value="{{keyword}}" confirm-type="search" bindinput="onSearchInput" bindconfirm="onSearch" />
-    <view wx:if="{{keyword}}" class="search-clear" bindtap="onClearSearch"><icon name="close" size="28rpx" /></view>
-  </view>
-
-  <view class="filter-bar flex-row" wx:if="{{categoryType !== 'hanfu_shop'}}">
-    <scroll-view scroll-x class="level-scroll">
-      <view wx:for="{{levels}}" wx:key="value" class="level-item {{levelFilter === item.value ? 'active' : ''}}" data-value="{{item.value}}" bindtap="onLevelChange">
-        <text>{{item.label}}</text>
-      </view>
-    </scroll-view>
-  </view>
-
-  <view class="sort-bar flex-row flex-between px-20 py-20">
-    <text class="text-sm text-secondary">共 {{total}} 个{{categoryName}}</text>
-    <view class="sort-options flex-row">
-      <text wx:for="{{sortOptions}}" wx:key="key" class="sort-item {{sortBy === item.key ? 'active' : ''}}" data-key="{{item.key}}" bindtap="onSortChange">{{item.label}}</text>
+  <view class="sort-row">
+    <text class="text-sm text-hint">共 {{total}} 家</text>
+    <view class="sort-ops">
+      <text wx:for="{{sortOptions}}" wx:key="key" class="sort-item {{sortBy === item.key ? 'on' : ''}}" data-key="{{item.key}}" bindtap="onSortChange">{{item.label}}</text>
     </view>
   </view>
 
-  <view class="provider-list">
-    <view wx:for="{{providers}}" wx:key="_id" class="provider-card card" data-id="{{item._id}}" bindtap="onProviderTap">
-      <view class="flex-row">
-        <image class="p-avatar" src="{{item.avatar}}" mode="aspectFill" />
-        <view class="flex-1 ml-20">
-          <view class="flex-row">
-            <text class="text-lg text-bold text-ellipsis p-name">{{item.name}}</text>
-            <text wx:if="{{item.level > 0}}" class="level-tag level-{{item.level}}">{{item.levelName}}</text>
-          </view>
-          <text class="text-sm text-secondary text-ellipsis mt-10">{{item.description}}</text>
-          <view class="flex-row mt-10">
-            <view class="icon-row"><icon name="star-filled" size="28rpx" /><text class="text-sm text-price">{{item.rating || '-'}}</text></view>
-            <text class="text-sm text-hint ml-10">{{item.reviewCount}}评价 | {{item.orderCount}}单</text>
+  <!-- 商家大卡 -->
+  <view class="plist">
+    <view wx:for="{{providers}}" wx:key="_id" class="cd pcard" data-id="{{item._id}}" bindtap="onProviderTap">
+      <image wx:if="{{item.backgroundImage}}" src="{{item.backgroundImage}}" mode="aspectFill" class="pcard-cover" />
+      <view wx:else class="pcard-cover imph {{item._grad}}"><text class="imph-t" style="font-size:100rpx">{{item._glyph}}</text></view>
+      <view class="pcard-body">
+        <view class="flex-between">
+          <text class="pcard-name serif text-ellipsis">{{item.name}}</text>
+          <view class="stars">
+            <icon name="star-filled" size="28rpx" color="#C99345" />
+            <text class="stars-n serif">{{item.rating || '5.0'}}</text>
           </view>
         </view>
-      </view>
-      <view wx:if="{{item.featureTags && item.featureTags.length}}" class="tag-row mt-10">
-        <text wx:for="{{item.featureTags}}" wx:key="*this" class="feature-tag">{{item}}</text>
+        <view class="pcard-tags" wx:if="{{item._tags.length}}">
+          <text class="tag" wx:for="{{item._tags}}" wx:key="*this" wx:for-item="tag">{{tag}}</text>
+        </view>
+        <view class="pcard-foot">
+          <text class="text-sm text-hint">{{item.reviewCount || 0}} 评价 · {{item.orderCount || 0}} 单</text>
+          <view class="btn btn-ink btn-sm">预约</view>
+        </view>
       </view>
     </view>
-
-    <empty-state wx:if="{{!providers.length}}" text="暂无{{categoryName}}" icon="shop" />
+    <empty-state wx:if="{{!providers.length}}" text="暂无{{categoryName}}" icon="store" />
   </view>
 </view>

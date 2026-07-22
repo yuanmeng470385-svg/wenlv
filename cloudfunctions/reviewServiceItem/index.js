@@ -13,7 +13,7 @@ exports.main = async (event, context) => {
     }
     if (!['approved', 'rejected'].includes(action)) return { code: 1001, message: 'action 需为 approved 或 rejected' };
     await db.collection('serviceItems').doc(serviceItemId).update({
-      data: { status: action === 'approved' ? 'active' : 'inactive', updateTime: db.serverDate() }
+      data: { status: action === 'approved' ? 'active' : 'rejected', updateTime: db.serverDate() }
     });
     // 审计日志
     await db.collection('auditLogs').add({ data: { adminOpenid: openid, action: action === 'approved' ? 'approveServiceItem' : 'rejectServiceItem', targetId: serviceItemId, createTime: db.serverDate() } });

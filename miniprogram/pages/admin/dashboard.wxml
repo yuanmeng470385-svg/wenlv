@@ -1,37 +1,54 @@
-<view class="page-admin">
-  <view class="admin-header"><view class="icon-row"><icon name="wrench" size="36rpx" /><text>管理中心</text></view></view>
+<view class="page">
+  <view class="ad-head">
+    <view class="ad-title serif">管理中心</view>
+    <icon name="shield" size="44rpx" color="#BE3F2C" />
+  </view>
 
-  <view class="stats-grid">
-    <view class="stat-card warn" bindtap="goProviders">
-      <text class="stat-num">{{stats.pendingProviders||0}}</text><text class="stat-label">待审服务商</text>
+  <!-- 六宫格待办 -->
+  <view class="ad-grid">
+    <view class="cd ad-cell" bindtap="goProviders">
+      <view wx:if="{{stats.pendingProviders}}" class="ad-dot"></view>
+      <view class="ad-n serif">{{stats.pendingProviders || 0}}</view>
+      <view class="ad-l"><icon name="store" size="30rpx" color="#6E675C" />入驻审核</view>
     </view>
-    <view class="stat-card warn" bindtap="goPortfolios">
-      <text class="stat-num">{{stats.pendingPortfolios||0}}</text><text class="stat-label">待审作品</text>
+    <view class="cd ad-cell" bindtap="goPortfolios">
+      <view wx:if="{{stats.pendingPortfolios}}" class="ad-dot"></view>
+      <view class="ad-n serif">{{stats.pendingPortfolios || 0}}</view>
+      <view class="ad-l"><icon name="img" size="30rpx" color="#6E675C" />作品审核</view>
     </view>
-    <view class="stat-card warn" bindtap="goServiceItems">
-      <text class="stat-num">{{stats.pendingServiceItems||0}}</text><text class="stat-label">待审套餐</text>
+    <view class="cd ad-cell" bindtap="goServiceItems">
+      <view wx:if="{{stats.pendingServiceItems}}" class="ad-dot"></view>
+      <view class="ad-n serif">{{stats.pendingServiceItems || 0}}</view>
+      <view class="ad-l"><icon name="order" size="30rpx" color="#6E675C" />套餐审核</view>
     </view>
-    <view class="stat-card warn" bindtap="goRefunds">
-      <text class="stat-num">{{stats.pendingRefunds||0}}</text><text class="stat-label">待审退款</text>
+    <view class="cd ad-cell" bindtap="goRefunds">
+      <view wx:if="{{stats.pendingRefunds}}" class="ad-dot"></view>
+      <view class="ad-n serif">{{stats.pendingRefunds || 0}}</view>
+      <view class="ad-l"><icon name="coin" size="30rpx" color="#6E675C" />退款审批</view>
     </view>
-    <view class="stat-card warn" bindtap="goAvatarUpdates">
-      <text class="stat-num">{{stats.pendingAvatarUpdates||0}}</text><text class="stat-label">待审头像/背景</text>
+    <view class="cd ad-cell" bindtap="goAvatarUpdates">
+      <view wx:if="{{stats.pendingAvatarUpdates}}" class="ad-dot"></view>
+      <view class="ad-n serif">{{stats.pendingAvatarUpdates || 0}}</view>
+      <view class="ad-l"><icon name="camera" size="30rpx" color="#6E675C" />头像变更</view>
     </view>
-    <view class="stat-card warn" bindtap="goDeregistrations">
-      <text class="stat-num">{{stats.pendingDeregistrations||0}}</text><text class="stat-label">待审注销</text>
+    <view class="cd ad-cell" bindtap="goDeregistrations">
+      <view wx:if="{{stats.pendingDeregistrations}}" class="ad-dot"></view>
+      <view class="ad-n serif" style="color:#BE3F2C">{{stats.pendingDeregistrations || 0}}</view>
+      <view class="ad-l"><icon name="trash" size="30rpx" color="#6E675C" />注销申请</view>
     </view>
   </view>
 
-  <view class="menu-section">
-    <view class="menu-item flex-between" bindtap="goProviders"><view class="icon-row"><icon name="shop" size="36rpx" /><text>服务商入驻审核</text></view><icon name="chevron-right" size="28rpx" /></view>
-    <view class="menu-item flex-between" bindtap="goServiceItems"><view class="icon-row"><icon name="package" size="36rpx" /><text>套餐审核</text></view><icon name="chevron-right" size="28rpx" /></view>
-    <view class="menu-item flex-between" bindtap="goPortfolios"><view class="icon-row"><icon name="photo" size="36rpx" /><text>作品审核</text></view><icon name="chevron-right" size="28rpx" /></view>
-    <view class="menu-item flex-between" bindtap="goRefunds"><view class="icon-row"><icon name="money" size="36rpx" /><text>退款审核</text></view><icon name="chevron-right" size="28rpx" /></view>
-    <view class="menu-item flex-between" bindtap="goAvatarUpdates"><view class="icon-row"><icon name="photo" size="36rpx" /><text>头像/背景图修改审核</text></view><icon name="chevron-right" size="28rpx" /></view>
-    <view class="menu-item flex-between" bindtap="goDeregistrations"><view class="icon-row"><icon name="warning" size="36rpx" /><text>商家注销审核</text></view><icon name="chevron-right" size="28rpx" /></view>
+  <!-- 管理工具 -->
+  <view class="sech" style="margin:36rpx 0 4rpx">
+    <view class="sech-sq"></view><view class="sech-t" style="font-size:30rpx">管理工具</view>
+    <view class="sech-line"></view>
   </view>
-
-  <view class="menu-section mt-20">
-    <view class="menu-item flex-between" bindtap="goUsers"><view class="icon-row"><icon name="user" size="36rpx" /><text>用户管理</text></view><icon name="chevron-right" size="28rpx" /></view>
+  <view class="cd ad-menu">
+    <view class="lrow" bindtap="goUsers">
+      <view class="ad-mi"><icon name="users" size="38rpx" color="#8F6B33" /></view>
+      <view class="lrow-t">用户与封禁管理</view>
+      <icon name="chevr" size="32rpx" color="#A79E8F" />
+    </view>
   </view>
+  <view class="ad-note">Banner 与精选作品管理请前往「首页」管理模式</view>
 </view>

@@ -1,8 +1,4 @@
-.page-edit { min-height: 100vh; background: var(--bg-page); padding: 20rpx; }
-.form-section { margin: 0; }
-.form-item { padding: 24rpx 0; border-bottom: 1rpx solid var(--border-color); }
-.form-label { font-size: 28rpx; font-weight: 600; margin-bottom: 12rpx; }
-.form-input { width: 100%; height: 60rpx; font-size: 28rpx; }
-.form-textarea { width: 100%; height: 120rpx; font-size: 28rpx; }
-.save-btn { width: 100%; height: 88rpx; background: var(--color-primary); color: #fff; border-radius: 44rpx; font-size: 32rpx; display: flex; align-items: center; justify-content: center; }
-.p-20 { padding: 20rpx; }
+/* ========== 编辑资料 v3「纸墨朱砂」 ========== */
+.page { padding: 16rpx 32rpx 60rpx; min-height: 100vh; }
+.ep-save { margin-top: 48rpx; }
+.ep-note { text-align: center; font-size: 20rpx; color: var(--ink-3); letter-spacing: 1rpx; margin-top: 20rpx; }

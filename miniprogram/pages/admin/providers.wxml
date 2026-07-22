@@ -1,45 +1,42 @@
-<view class="page-review">
-  <view wx:if="{{loading}}" class="empty-hint"><text class="text-secondary">加载中...</text></view>
-  <view wx:elif="{{!list.length}}" class="empty-hint"><text class="text-secondary">暂无待审核服务商</text></view>
+<view class="page">
+  <view wx:if="{{loading}}" class="adm-state">加载中…</view>
+  <empty-state wx:elif="{{!list.length}}" text="暂无待审核服务商" icon="store" />
 
-  <view wx:for="{{list}}" wx:key="_id" class="review-card card" data-id="{{item._id}}" bindtap="onCardTap">
-    <!-- 基本信息 -->
-    <view class="flex-row">
-      <text class="cat-icon">{{getCategoryIcon(item.categoryType)}}</text>
-      <text class="text-bold text-lg ml-10">{{item.name}}</text>
-      <text class="type-tag ml-10">{{getTypeLabel(item.categoryType)}}</text>
-    </view>
-    <view class="flex-between mt-10">
-      <view class="icon-row"><icon name="phone" size="28rpx" /><text class="text-sm text-secondary">{{item.phone}}</text></view>
-      <text class="text-sm text-hint">{{item.createTime}}</text>
-    </view>
-    <text class="text-sm text-secondary mt-10">{{item.description}}</text>
-
-    <!-- 特色标签 -->
-    <view wx:if="{{item.featureTags && item.featureTags.length}}" class="tag-row mt-10">
-      <text wx:for="{{item.featureTags}}" wx:key="*this" class="feature-tag">{{item}}</text>
+  <view wx:for="{{list}}" wx:key="_id" class="cd rv-card" data-id="{{item._id}}" bindtap="onCardTap">
+    <!-- 头部 -->
+    <view class="rv-head">
+      <image wx:if="{{item.avatar}}" class="rv-avt" src="{{item.avatar}}" mode="aspectFill" />
+      <view wx:else class="rv-avt avt {{item._grad}}" style="width:96rpx;height:96rpx;font-size:38rpx">{{item._glyph}}</view>
+      <view class="flex-1">
+        <view class="rv-name-row">
+          <text class="rv-name serif text-ellipsis">{{item.name}}</text>
+          <text class="tag">{{item._typeLabel}}</text>
+        </view>
+        <view class="text-hint text-sm" style="margin-top:6rpx">申请于 {{item.createTime}}</view>
+      </view>
     </view>
 
-    <!-- 封面图 -->
-    <view wx:if="{{item.coverImages && item.coverImages.length}}" class="mt-10">
-      <text class="text-sm text-secondary">封面图</text>
-      <scroll-view scroll-x class="img-scroll mt-10">
-        <image wx:for="{{item.coverImages}}" wx:key="*this" src="{{item}}" mode="aspectFill" class="review-img" data-url="{{item}}" data-urls="{{item.coverImages}}" bindtap="previewImage" />
-      </scroll-view>
-    </view>
+    <view class="hr" style="margin:20rpx 0"></view>
 
-    <!-- 作品图 -->
-    <view wx:if="{{item.images && item.images.length}}" class="mt-10">
-      <text class="text-sm text-secondary">申请作品</text>
-      <scroll-view scroll-x class="img-scroll mt-10">
-        <image wx:for="{{item.images}}" wx:key="*this" src="{{item}}" mode="aspectFill" class="review-img" data-url="{{item}}" data-urls="{{item.images}}" bindtap="previewImage" />
-      </scroll-view>
+    <!-- 信息 -->
+    <view class="rv-grid">
+      <text class="rv-k">联系电话</text><text class="rv-v">{{item.phone || '未填写'}}</text>
+      <text class="rv-k">所在城市</text><text class="rv-v">{{item.city || '未填写'}}</text>
     </view>
+    <view wx:if="{{item.featureTags && item.featureTags.length}}" class="rv-tags">
+      <text class="tag" wx:for="{{item.featureTags}}" wx:key="*this" wx:for-item="tag">{{tag}}</text>
+    </view>
+    <view wx:if="{{item.description}}" class="rv-desc">{{item.description}}</view>
 
-    <!-- 操作按钮 -->
-    <view class="action-btns mt-20">
-      <button class="btn-reject" data-id="{{item._id}}" catchtap="onReject">驳回</button>
-      <button class="btn-pass" data-id="{{item._id}}" data-type="{{item.categoryType}}" catchtap="onPass">通过审核</button>
+    <!-- 图片 -->
+    <scroll-view wx:if="{{item.images && item.images.length}}" scroll-x enhanced show-scrollbar="{{false}}" class="rv-imgs">
+      <image wx:for="{{item.images}}" wx:key="*this" src="{{item}}" mode="aspectFill" class="rv-img" data-url="{{item}}" data-urls="{{item.images}}" catchtap="previewImage" />
+    </scroll-view>
+
+    <!-- 操作 -->
+    <view class="rv-ops">
+      <button class="btn btn-line-red btn-md rv-rej" data-id="{{item._id}}" catchtap="onReject">驳回</button>
+      <button class="btn btn-ink btn-md rv-pass" data-id="{{item._id}}" catchtap="onPass"><icon name="check" size="28rpx" color="#FBF8F0" />通过入驻</button>
     </view>
   </view>
 </view>

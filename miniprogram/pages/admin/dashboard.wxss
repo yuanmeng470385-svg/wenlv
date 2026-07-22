@@ -1,11 +1,20 @@
-.page-admin { min-height: 100vh; background: var(--bg-page); }
-.admin-header { background: var(--text-primary); color: #fff; padding: 40rpx 30rpx; font-size: 36rpx; font-weight: 700; }
-.stats-grid { display: flex; flex-wrap: wrap; gap: 12rpx; padding: 20rpx; margin-top: -20rpx; }
-.stat-card { flex: 1 1 calc(50% - 12rpx); min-width: 300rpx; background: var(--bg-white); border-radius: 16rpx; padding: 30rpx 20rpx; text-align: center; box-shadow: var(--shadow-card); }
-.stat-card.warn { background: #FDF6EB; border: 1rpx solid var(--color-warning); }
-.stat-num { display: block; font-size: 48rpx; font-weight: 700; color: var(--text-primary); }
-.stat-card.warn .stat-num { color: var(--color-warning); }
-.stat-label { display: block; font-size: 24rpx; color: var(--text-hint); margin-top: 8rpx; }
-.menu-section { background: var(--bg-white); margin-top: 20rpx; }
-.menu-item { padding: 30rpx; border-bottom: 1rpx solid var(--border-color); }
-.icon-row { display: flex; align-items: center; gap: 8rpx; }
+/* ========== 管理中心 v3「纸墨朱砂」 ========== */
+.page { padding: 16rpx 32rpx 40rpx; min-height: 100vh; }
+.ad-head { display: flex; align-items: center; justify-content: space-between; padding: 16rpx 4rpx 8rpx; }
+.ad-title { font-size: 40rpx; font-weight: 900; letter-spacing: 4rpx; }
+
+.ad-grid { display: flex; flex-wrap: wrap; justify-content: space-between; margin-top: 16rpx; }
+.ad-cell { width: 48.5%; box-sizing: border-box; padding: 28rpx; margin-top: 20rpx; position: relative; }
+.ad-cell:active { opacity: 0.85; }
+.ad-dot { position: absolute; top: 24rpx; right: 24rpx; width: 16rpx; height: 16rpx; border-radius: 50%; background: var(--red); }
+.ad-n { font-size: 56rpx; font-weight: 900; line-height: 1.2; }
+.ad-l { display: flex; align-items: center; gap: 8rpx; font-size: 22rpx; color: var(--ink-2); margin-top: 10rpx; }
+
+.ad-menu { margin-top: 16rpx; padding: 4rpx 28rpx; }
+.ad-menu .lrow { padding: 26rpx 0; }
+.ad-mi {
+  width: 72rpx; height: 72rpx; border-radius: 20rpx; flex: none;
+  background: rgba(176, 141, 87, 0.1); border: 1rpx solid rgba(176, 141, 87, 0.25);
+  display: flex; align-items: center; justify-content: center; margin-right: 24rpx;
+}
+.ad-note { text-align: center; font-size: 20rpx; color: var(--ink-3); letter-spacing: 1rpx; margin-top: 32rpx; }

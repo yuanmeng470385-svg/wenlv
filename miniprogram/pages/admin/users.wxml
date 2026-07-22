@@ -1,29 +1,33 @@
-<view class="page-admin-users">
-  <view class="search-bar card">
-    <view class="flex-row">
-      <input class="search-input flex-1" placeholder="搜索昵称或手机号" value="{{keyword}}" bindinput="onSearch" bindconfirm="onConfirmSearch" />
-      <button class="btn-search" bindtap="onConfirmSearch">搜索</button>
-    </view>
-    <view class="filter-row mt-10">
-      <text class="filter-item {{statusFilter === '' ? 'active' : ''}}" data-value="" bindtap="onFilterTap">全部</text>
-      <text class="filter-item {{statusFilter === 'active' ? 'active' : ''}}" data-value="active" bindtap="onFilterTap">正常</text>
-      <text class="filter-item {{statusFilter === 'banned' ? 'active' : ''}}" data-value="banned" bindtap="onFilterTap">已封禁</text>
-    </view>
+<view class="page">
+  <!-- 搜索 + 筛选 -->
+  <view class="srch">
+    <icon name="search" size="34rpx" color="#A79E8F" />
+    <input class="srch-input" placeholder="搜索昵称或手机号" placeholder-class="srch-phc" value="{{keyword}}" bindinput="onSearch" bindconfirm="onConfirmSearch" />
+  </view>
+  <view class="seg-row">
+    <view class="chip {{statusFilter === '' ? 'on' : ''}}" data-value="" bindtap="onFilterTap">全部</view>
+    <view class="chip {{statusFilter === 'active' ? 'on' : ''}}" data-value="active" bindtap="onFilterTap">正常</view>
+    <view class="chip {{statusFilter === 'banned' ? 'on' : ''}}" data-value="banned" bindtap="onFilterTap">已封禁</view>
   </view>
 
-  <view class="user-list">
-    <view wx:for="{{users}}" wx:key="_id" class="user-card card">
-      <view class="flex-between">
-        <view>
-          <text class="text-bold">{{item.nickName || '微信用户'}}</text>
-          <text wx:if="{{item.status === 'banned'}}" class="badge-banned ml-10">已封禁</text>
-          <text wx:if="{{item.roles && item.roles.length > 0}}" class="text-sm text-secondary ml-10">[{{item.roles.join(', ')}}]</text>
-        </view>
-        <text class="text-sm text-{{item.status === 'banned' ? 'danger' : 'primary'}}" data-id="{{item._id}}" data-status="{{item.status}}" bindtap="onBanUser">{{item.status === 'banned' ? '点击解封' : '封禁'}}</text>
+  <!-- 用户卡 -->
+  <view wx:for="{{users}}" wx:key="_id" class="cd user {{item.status === 'banned' ? 'user-banned' : ''}}">
+    <view class="user-avt avt" style="width:84rpx;height:84rpx;font-size:34rpx;background:{{item.status === 'banned' ? 'rgba(41,36,29,0.15)' : 'linear-gradient(140deg,#8A6B3D,#B08D57 60%,#D4B486)'}}">{{item.nickName ? item.nickName[0] : '微'}}</view>
+    <view class="user-info">
+      <view class="user-name-row">
+        <text class="user-name text-ellipsis">{{item.nickName || '微信用户'}}</text>
+        <text wx:if="{{item.status === 'banned'}}" class="st st-gray">已封禁</text>
       </view>
-      <text class="text-sm text-secondary mt-5">手机: {{item.phone || '未填写'}}</text>
+      <view class="text-hint text-sm" style="margin-top:4rpx">手机：{{item.phone || '未填写'}}</view>
+      <view wx:if="{{item.roles && item.roles.length}}" class="user-roles">
+        <text class="tag" wx:for="{{item.roles}}" wx:key="*this" wx:for-item="r">{{r}}</text>
+      </view>
     </view>
-    <view wx:if="{{users.length === 0}}" class="empty-hint"><text class="text-secondary">暂无用户</text></view>
-    <view wx:if="{{!hasMore && users.length > 0}}" class="text-center text-secondary text-sm pt-20">— 已加载全部 —</view>
+    <view wx:if="{{item.status === 'banned'}}" class="btn btn-line btn-sm" data-id="{{item._id}}" data-status="{{item.status}}" catchtap="onBanUser">解封</view>
+    <view wx:else class="btn btn-txt btn-sm" data-id="{{item._id}}" data-status="{{item.status}}" catchtap="onBanUser">封禁</view>
   </view>
+
+  <empty-state wx:if="{{users.length === 0}}" text="暂无用户" icon="users" />
+  <view wx:if="{{!hasMore && users.length > 0}}" class="user-end">— 已加载全部 —</view>
+  <view class="user-note">封禁后该账号登录即被拦截 · 操作写入审计日志</view>
 </view>

@@ -6,6 +6,7 @@ Page({
     city: '',           // 当前选中的城市
     locating: true,     // 定位加载中
     loaded: false,      // 是否已加载过结果
+    activeSec: 'in',    // in=平台入驻 / near=附近门店
     inProviders: [],    // 已入住汉服店
     nearbyShops: [],    // 附近外部汉服店
     inLoading: false,
@@ -81,7 +82,8 @@ Page({
         pageSize: 10,
       });
       const list = res && res.list ? res.list : [];
-      this.setData({ inProviders: list, inEmpty: list.length === 0, inLoading: false });
+      const mapped = list.map(p => Object.assign({}, p, { _glyph: (p.name || '服').charAt(0) }));
+      this.setData({ inProviders: mapped, inEmpty: mapped.length === 0, inLoading: false });
     } catch (err) {
       console.error('加载入驻汉服店失败:', err);
       this.setData({ inLoading: false });
@@ -109,6 +111,10 @@ Page({
   },
 
   // ===== 跳转 =====
+  onSecSwitch(e) {
+    this.setData({ activeSec: e.currentTarget.dataset.sec });
+  },
+
   onInProviderTap(e) {
     const id = e.currentTarget.dataset.id;
     wx.navigateTo({ url: `/pages/serviceDetail/index?id=${id}` });

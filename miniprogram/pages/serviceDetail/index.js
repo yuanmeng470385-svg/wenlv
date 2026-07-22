@@ -21,8 +21,20 @@ Page({
     wx.showLoading({ title: '加载中...' });
     try {
       const data = await getProviderDetail(this.data.providerId);
+      const p = data.provider;
+      if (p) {
+        const META = {
+          photographer: { grad: 'g-rouge', icon: 'camera' },
+          makeup: { grad: 'g-gold', icon: 'lipstick' },
+          hanfu_shop: { grad: 'g-cel', icon: 'robe' },
+        };
+        const m = META[p.categoryType] || META.photographer;
+        p._glyph = (p.name || '店').charAt(0);
+        p._grad = m.grad;
+        p._icon = m.icon;
+      }
       this.setData({
-        provider: data.provider,
+        provider: p,
         serviceItems: data.serviceItems || [],
         portfolios: data.portfolios || [],
         reviews: data.reviews || [],

@@ -1,74 +1,102 @@
-<view class="page-detail" wx:if="{{provider}}">
-  <image class="cover-img" src="{{provider.backgroundImage}}" mode="aspectFill" />
-
-  <view class="p-info p-30">
-    <view class="flex-row">
-      <image class="p-avatar" src="{{provider.avatar}}" mode="aspectFill" />
-      <view class="flex-1 ml-20">
-        <view class="flex-row">
-          <text class="text-xl text-bold">{{provider.name}}</text>
-        </view>
-        <view wx:if="{{provider.rating}}" class="flex-row mt-10">
-          <view class="icon-row mr-10">
-            <icon name="star-filled" size="28rpx" />
-            <text class="text-price text-bold">{{provider.rating}}</text>
-          </view>
-          <text class="text-sm text-hint">({{provider.reviewCount}}条评价)</text>
-        </view>
-      </view>
-      <view class="fav-btn" bindtap="onToggleFavorite">
-        <icon wx:if="{{isFavorited}}" name="heart-filled" size="40rpx" /><icon wx:else name="heart" size="40rpx" />
-      </view>
-    </view>
-    <view wx:if="{{provider.featureTags}}" class="tag-row mt-20">
-      <text wx:for="{{provider.featureTags}}" wx:key="*this" class="feature-tag">{{item}}</text>
+<view class="page-p" wx:if="{{provider}}">
+  <!-- 封面 -->
+  <view class="cover">
+    <image wx:if="{{provider.backgroundImage}}" class="cover-img" src="{{provider.backgroundImage}}" mode="aspectFill" />
+    <view wx:else class="cover-img imph {{provider._grad}}"><text class="imph-t" style="font-size:130rpx">{{provider._glyph}}</text></view>
+    <view class="fav-btn" bindtap="onToggleFavorite">
+      <icon wx:if="{{isFavorited}}" name="heart-filled" size="36rpx" color="#BE3F2C" />
+      <icon wx:else name="heart" size="36rpx" color="#F6F1E7" />
     </view>
   </view>
 
-  <view class="tab-bar">
-    <view class="tab-item {{activeTab === 'service' ? 'active' : ''}}" data-tab="service" bindtap="onTabChange"><text>服务项目</text></view>
-    <view class="tab-item {{activeTab === 'works' ? 'active' : ''}}" data-tab="works" bindtap="onTabChange"><text>作品展示</text></view>
-    <view class="tab-item {{activeTab === 'reviews' ? 'active' : ''}}" data-tab="reviews" bindtap="onTabChange"><text>用户评价</text></view>
-  </view>
-
-  <view wx:if="{{activeTab === 'service'}}" class="tab-content">
-    <view wx:for="{{serviceItems}}" wx:key="_id" class="service-card card" data-item="{{item}}" bindtap="onServiceSelect">
-      <image class="s-cover" src="{{item.icon}}" mode="aspectFill" />
-      <view class="s-info">
-        <text class="text-lg text-bold">{{item.name}}</text>
-        <text class="text-sm text-secondary mt-10">{{item.description}}</text>
-        <view class="flex-between mt-10">
-          <text class="text-price text-lg">¥{{item.price/100}}<text wx:if="{{item.priceType === 'hourly'}}" class="text-sm text-secondary">/小时</text><text wx:if="{{item.priceType === 'project'}}" class="text-sm text-secondary">/项目</text></text>
-          <text class="text-sm text-secondary">时长 {{item.duration}}分钟</text>
-        </view>
+  <!-- 头部信息 -->
+  <view class="p-head">
+    <image wx:if="{{provider.avatar}}" class="p-avt" src="{{provider.avatar}}" mode="aspectFill" />
+    <view wx:else class="p-avt imph {{provider._grad}}"><text class="imph-t" style="font-size:52rpx">{{provider._glyph}}</text></view>
+    <view class="p-head-info">
+      <view class="p-name serif">{{provider.name}}</view>
+      <view class="stars" wx:if="{{provider.rating}}">
+        <icon name="star-filled" size="30rpx" color="#C99345" />
+        <text class="stars-n serif">{{provider.rating}}</text>
+        <text class="stars-c">({{provider.reviewCount || 0}} 条评价)</text>
       </view>
     </view>
   </view>
 
-  <view wx:if="{{activeTab === 'works'}}" class="tab-content">
-    <view class="work-grid">
+  <view wx:if="{{provider.featureTags.length}}" class="p-tags">
+    <text class="tag" wx:for="{{provider.featureTags}}" wx:key="*this">{{item}}</text>
+  </view>
+
+  <!-- 统计 -->
+  <view class="cd stat p-stat">
+    <view class="stat-cell">
+      <view class="stat-n" style="font-size:40rpx">{{provider.rating || '5.0'}}</view>
+      <view class="stat-l">评分</view>
+    </view>
+    <view class="stat-cell">
+      <view class="stat-n" style="font-size:40rpx">{{provider.reviewCount || 0}}</view>
+      <view class="stat-l">评价</view>
+    </view>
+    <view class="stat-cell">
+      <view class="stat-n" style="font-size:40rpx">{{serviceItems.length}}</view>
+      <view class="stat-l">在售套餐</view>
+    </view>
+  </view>
+
+  <!-- Tabs -->
+  <view class="ptabs">
+    <view class="ptab {{activeTab === 'service' ? 'on' : ''}}" data-tab="service" bindtap="onTabChange"><text class="serif">服务项目</text></view>
+    <view class="ptab {{activeTab === 'works' ? 'on' : ''}}" data-tab="works" bindtap="onTabChange"><text>作品展示</text></view>
+    <view class="ptab {{activeTab === 'reviews' ? 'on' : ''}}" data-tab="reviews" bindtap="onTabChange"><text>用户评价</text></view>
+  </view>
+
+  <!-- 服务项目 -->
+  <view wx:if="{{activeTab === 'service'}}" class="p-content">
+    <empty-state wx:if="{{!serviceItems.length}}" text="暂无服务项目" icon="order" />
+    <view wx:for="{{serviceItems}}" wx:key="_id" class="svc cd" data-item="{{item}}" bindtap="onServiceSelect">
+      <image wx:if="{{item.icon}}" class="svc-icon" src="{{item.icon}}" mode="aspectFill" />
+      <view wx:else class="svc-icon svc-icon-ph"><icon name="{{provider._icon}}" size="40rpx" color="#43615C" /></view>
+      <view class="flex-1">
+        <view class="text-bold">{{item.name}}</view>
+        <view class="text-sm text-hint svc-desc text-ellipsis">{{item.description}}</view>
+        <view class="text-sm text-hint" style="margin-top:4rpx">{{item.duration}}分钟</view>
+      </view>
+      <view class="svc-right">
+        <view class="price"><text class="price-sym">¥</text>{{item.price/100}}<text wx:if="{{item.priceType === 'hourly'}}" class="price-q">/时</text></view>
+        <view class="btn btn-red btn-sm svc-book">预约</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 作品展示 -->
+  <view wx:if="{{activeTab === 'works'}}" class="p-content">
+    <empty-state wx:if="{{!portfolios.length}}" text="暂无作品" icon="img" />
+    <view class="work-grid" wx:else>
       <view wx:for="{{portfolios}}" wx:key="_id" class="work-item" data-id="{{item._id}}" bindtap="onPortfolioTap">
         <image src="{{item.images[0]}}" mode="aspectFill" class="work-img" />
         <view class="work-overlay">
           <text class="work-title text-ellipsis">{{item.title}}</text>
-          <view class="icon-row"><icon name="heart-filled" size="28rpx" /><text class="text-sm">{{item.likeCount || 0}}</text></view>
+          <view class="work-likes"><icon name="heart-filled" size="24rpx" color="#F6F1E7" /><text class="work-likes-n">{{item.likeCount || 0}}</text></view>
         </view>
       </view>
     </view>
   </view>
 
-  <view wx:if="{{activeTab === 'reviews'}}" class="tab-content">
-    <view wx:for="{{reviews}}" wx:key="_id" class="review-card card">
+  <!-- 用户评价 -->
+  <view wx:if="{{activeTab === 'reviews'}}" class="p-content">
+    <empty-state wx:if="{{!reviews.length}}" text="暂无评价" icon="msg" />
+    <view wx:for="{{reviews}}" wx:key="_id" class="cd review">
       <view class="flex-between">
-        <view class="icon-row"><icon name="star-filled" size="28rpx" /><text class="text-sm text-price">{{item.rating}}</text></view>
+        <view class="stars"><icon name="star-filled" size="28rpx" color="#C99345" /><text class="stars-n serif">{{item.rating}}</text></view>
         <text class="text-sm text-hint">{{item.createTime}}</text>
       </view>
-      <text class="mt-10">{{item.content}}</text>
+      <view class="mt-10">{{item.content}}</view>
     </view>
   </view>
 
-  <view class="bottom-bar safe-bottom flex-row">
-    <button class="call-btn" wx:if="{{provider.phone}}" bindtap="onCallPhone">电话咨询</button>
-    <button class="book-btn flex-1" bindtap="onBookTap">立即预约</button>
+  <!-- 底部操作栏 -->
+  <view class="actionbar p-action">
+    <button class="btn btn-line btn-lg" bindtap="onCallPhone"><icon name="phone" size="32rpx" color="#29241D" />咨询</button>
+    <button class="btn btn-red btn-lg flex-1" bindtap="onBookTap">立即预约</button>
   </view>
 </view>

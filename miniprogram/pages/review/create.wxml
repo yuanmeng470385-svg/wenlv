@@ -1,35 +1,45 @@
-<view class="page-review">
+<view class="page">
   <!-- 订单摘要 -->
-  <view wx:if="{{order}}" class="order-summary card">
-    <text class="text-bold text-lg">评价订单</text>
-    <text class="text-sm text-secondary mt-10">订单号: {{order.orderNo}}</text>
-    <view wx:for="{{order.items}}" wx:key="serviceItemId" wx:for-item="si" class="mt-10">
-      <text class="text-bold">{{si.name}}</text>
-      <text class="text-sm text-secondary ml-10">{{si.appointmentDate}}</text>
+  <view wx:if="{{order}}" class="cd rv-order">
+    <view class="sech">
+      <view class="sech-sq"></view><view class="sech-t" style="font-size:30rpx">评价订单</view>
+      <view class="sech-line"></view>
     </view>
-    <view wx:for="{{providers}}" wx:key="_id" class="mt-10">
-      <text class="text-sm">服务商: {{item.name}}</text>
+    <view class="rv-no serif">{{order.orderNo}}</view>
+    <view wx:for="{{order.items}}" wx:key="serviceItemId" wx:for-item="si" class="rv-line">
+      <text class="text-sm text-hint">{{si.name}} · {{si.appointmentDate}}</text>
+    </view>
+    <view wx:for="{{providers}}" wx:key="_id" class="rv-line">
+      <text class="text-sm text-hint">服务商：{{item.name}}</text>
     </view>
   </view>
 
   <!-- 评分 -->
-  <view class="rating-section card">
-    <text class="text-bold text-lg">评分</text>
-    <view class="star-row mt-20">
-      <text wx:for="{{[1,2,3,4,5]}}" wx:key="*this"
-        class="star {{item <= rating ? 'active' : ''}}"
-        data-rating="{{item}}" bindtap="onRatingChange"><icon wx:if="{{item <= rating}}" name="star-filled" size="48rpx" /><icon wx:else name="star" size="48rpx" /></text>
+  <view class="cd rv-sec">
+    <view class="sech">
+      <view class="sech-sq"></view><view class="sech-t" style="font-size:30rpx">评分</view>
+      <view class="sech-line"></view>
+      <text class="rv-score serif">{{rating}}.0</text>
+    </view>
+    <view class="rv-stars">
+      <view wx:for="{{[1,2,3,4,5]}}" wx:key="*this" class="rv-star" data-rating="{{item}}" bindtap="onRatingChange">
+        <icon wx:if="{{item <= rating}}" name="star-filled" size="72rpx" color="#C99345" />
+        <icon wx:else name="star" size="72rpx" color="#D8D0BF" />
+      </view>
     </view>
   </view>
 
   <!-- 评价内容 -->
-  <view class="content-section card">
-    <text class="text-bold text-lg">评价内容</text>
-    <textarea class="review-textarea mt-20" placeholder="分享你的体验..." value="{{content}}" bindinput="onInputChange" maxlength="500" />
-    <text class="text-right text-sm text-hint">{{content.length}}/500</text>
+  <view class="cd rv-sec">
+    <view class="sech">
+      <view class="sech-sq"></view><view class="sech-t" style="font-size:30rpx">评价内容</view>
+      <view class="sech-line"></view>
+      <text class="text-hint" style="font-size:20rpx">{{content.length}}/500</text>
+    </view>
+    <textarea class="rv-ta" placeholder="分享你的体验…" placeholder-class="rv-ph" value="{{content}}" bindinput="onInputChange" maxlength="500" />
   </view>
 
-  <view class="p-20">
-    <button class="submit-btn" bindtap="onSubmit" loading="{{submitting}}">提交评价</button>
+  <view class="rv-submit">
+    <button class="btn btn-red btn-lg btn-block" bindtap="onSubmit" loading="{{submitting}}">提交评价</button>
   </view>
 </view>

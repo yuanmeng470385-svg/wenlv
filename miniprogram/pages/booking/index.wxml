@@ -1,112 +1,146 @@
-<view class="page-booking">
-  <view class="step-indicator flex-center">
-    <text class="step {{currentStep >= 1 ? 'active' : ''}}">1.选服务</text>
-    <text class="step-arrow">→</text>
-    <text class="step {{currentStep >= 2 ? 'active' : ''}}">2.选时间</text>
-    <text class="step-arrow">→</text>
-    <text class="step {{currentStep >= 3 ? 'active' : ''}}">3.填信息</text>
-    <text class="step-arrow">→</text>
-    <text class="step {{currentStep >= 4 ? 'active' : ''}}">4.确认</text>
+<view class="page-bk">
+  <!-- 步骤条 -->
+  <view class="steps">
+    <view class="stp {{currentStep >= 1 ? 'done' : ''}} {{currentStep === 1 ? 'cur' : ''}}">
+      <view class="stp-dot"><icon wx:if="{{currentStep > 1}}" name="check" size="24rpx" color="#FBF8F0" /><text wx:else>1</text></view>
+      <text class="stp-lb">套餐</text>
+    </view>
+    <view class="stp-ln {{currentStep > 1 ? 'done' : ''}}"></view>
+    <view class="stp {{currentStep >= 2 ? 'done' : ''}} {{currentStep === 2 ? 'cur' : ''}}">
+      <view class="stp-dot"><icon wx:if="{{currentStep > 2}}" name="check" size="24rpx" color="#FBF8F0" /><text wx:else>2</text></view>
+      <text class="stp-lb">时间</text>
+    </view>
+    <view class="stp-ln {{currentStep > 2 ? 'done' : ''}}"></view>
+    <view class="stp {{currentStep >= 3 ? 'done' : ''}} {{currentStep === 3 ? 'cur' : ''}}">
+      <view class="stp-dot"><icon wx:if="{{currentStep > 3}}" name="check" size="24rpx" color="#FBF8F0" /><text wx:else>3</text></view>
+      <text class="stp-lb">信息</text>
+    </view>
+    <view class="stp-ln {{currentStep > 3 ? 'done' : ''}}"></view>
+    <view class="stp {{currentStep === 4 ? 'cur' : ''}}">
+      <view class="stp-dot"><text>4</text></view>
+      <text class="stp-lb">支付</text>
+    </view>
   </view>
 
-  <scroll-view scroll-y class="step-content" wx:if="{{currentStep === 1}}">
-    <text class="section-title text-lg text-bold">选择服务项目</text>
-    <view wx:for="{{serviceItems}}" wx:key="_id" class="service-select-card card" bindtap="addToCart" data-item="{{item}}">
-      <text class="text-bold">{{item.name}}</text>
-      <text class="text-sm text-secondary">{{item.description}}</text>
-      <view class="flex-between mt-10">
-        <text class="text-price">¥{{item.price / 100}}</text>
-        <text class="text-sm text-primary">+ 加入</text>
+  <!-- 第 1 步：选服务 -->
+  <scroll-view scroll-y class="bk-content" wx:if="{{currentStep === 1}}">
+    <view class="sech" style="margin:8rpx 0 20rpx">
+      <view class="sech-sq"></view><view class="sech-t" style="font-size:30rpx">选择服务</view>
+      <view class="sech-line"></view>
+    </view>
+    <view wx:for="{{serviceItems}}" wx:key="_id" class="cd svc" bindtap="addToCart" data-item="{{item}}">
+      <view class="svc-ic"><icon name="camera" size="38rpx" color="#43615C" /></view>
+      <view class="flex-1">
+        <view class="text-bold">{{item.name}}</view>
+        <view class="text-sm text-hint text-ellipsis" style="margin-top:6rpx;max-width:360rpx">{{item.description}}</view>
+      </view>
+      <view class="svc-right">
+        <view class="price"><text class="price-sym">¥</text>{{item.price / 100}}<text wx:if="{{item.priceType === 'hourly'}}" class="price-q">/时</text></view>
+        <view class="btn btn-line btn-sm svc-add">加入</view>
       </view>
     </view>
 
-    <view wx:if="{{cart.length}}" class="cart-section mt-20">
-      <text class="section-title text-lg text-bold">已选服务 ({{cart.length}}项)</text>
-      <view wx:for="{{cart}}" wx:key="_id" class="cart-item card">
-        <view class="flex-between">
-          <text class="text-bold">{{item.name}}</text>
-          <text class="text-sm text-price" data-index="{{index}}" bindtap="removeFromCart">移除</text>
+    <block wx:if="{{cart.length}}">
+      <view class="sech" style="margin:32rpx 0 20rpx">
+        <view class="sech-sq"></view><view class="sech-t" style="font-size:30rpx">已选 {{cart.length}} 项</view>
+        <view class="sech-line"></view>
+        <view class="price" style="font-size:30rpx"><text class="price-sym">¥</text>{{totalFee / 100}}</view>
+      </view>
+      <view class="cd cart-item" wx:for="{{cart}}" wx:key="_id">
+        <view class="flex-1">
+          <view class="text-bold">{{item.name}}</view>
+          <view class="text-sm text-hint" style="margin-top:4rpx">¥{{item.price / 100}}{{item.priceType === 'hourly' ? '/时' : ''}}</view>
         </view>
+        <view class="btn btn-txt btn-sm" data-index="{{index}}" catchtap="removeFromCart">移除</view>
       </view>
-      <view class="text-right p-20">
-        <text class="text-price text-xl">合计 ¥{{totalFee / 100}}</text>
-      </view>
-    </view>
+    </block>
   </scroll-view>
 
-  <scroll-view scroll-y class="step-content" wx:if="{{currentStep === 2}}">
-    <text class="section-title text-lg text-bold">选择预约时间</text>
-    <view wx:for="{{cart}}" wx:key="_id" wx:for-item="item" wx:for-index="idx">
-      <view class="time-card card">
-        <text class="text-bold">{{item.name}}</text>
-        <view class="date-list mt-20">
-          <scroll-view scroll-x>
-            <text wx:for="{{dateList}}" wx:key="date" wx:for-item="it"
-              class="date-item {{item.appointmentDate === it.date ? 'active' : ''}}"
-              data-date="{{it.date}}" data-idx="{{idx}}" bindtap="onSelectDate">
-              {{it.week}} {{it.monthDay}}
-            </text>
-          </scroll-view>
-        </view>
-        <view wx:if="{{item.appointmentDate}}" class="time-slots mt-20">
-          <text class="text-sm text-secondary mb-10">选择时段</text>
-          <view class="slot-grid">
-            <text wx:for="{{timeSlots}}" wx:key="*this" wx:for-item="t"
-              class="slot-item {{item.appointmentTime === t ? 'active' : ''}}"
-              data-time="{{t}}" data-idx="{{idx}}" bindtap="onSelectTime">
-              {{t}}
-            </text>
+  <!-- 第 2 步：选时间 -->
+  <scroll-view scroll-y class="bk-content" wx:if="{{currentStep === 2}}">
+    <view class="sech" style="margin:8rpx 0 20rpx">
+      <view class="sech-sq"></view><view class="sech-t" style="font-size:30rpx">选择时间</view>
+      <view class="sech-line"></view>
+    </view>
+    <view wx:for="{{cart}}" wx:key="_id" wx:for-item="item" wx:for-index="idx" class="cd time-card">
+      <view class="text-bold">{{item.name}}</view>
+      <scroll-view scroll-x enhanced show-scrollbar="{{false}}" class="date-scroll">
+        <view class="date-row">
+          <view wx:for="{{dateList}}" wx:key="date" wx:for-item="it"
+            class="date-pill {{item.appointmentDate === it.date ? 'on' : ''}}"
+            data-date="{{it.date}}" data-idx="{{idx}}" bindtap="onSelectDate">
+            <text class="date-week">{{it.week}}</text>
+            <text class="date-day serif">{{it.monthDay}}</text>
           </view>
         </view>
-        <view wx:if="{{item.priceType === 'hourly'}}" class="mt-20">
-          <text class="text-sm">时长: {{item.hours}}小时</text>
-          <slider min="1" max="8" value="{{item.hours}}" data-idx="{{idx}}" bindchange="onHoursChange" show-value />
+      </scroll-view>
+      <block wx:if="{{item.appointmentDate}}">
+        <view class="text-sm text-hint" style="margin:20rpx 0 12rpx">选择时段</view>
+        <view class="slot-grid">
+          <view wx:for="{{timeSlots}}" wx:key="*this" wx:for-item="t"
+            class="chip slot {{item.appointmentTime === t ? 'on' : ''}}"
+            data-time="{{t}}" data-idx="{{idx}}" bindtap="onSelectTime">
+            {{t}}
+          </view>
         </view>
+      </block>
+      <view wx:if="{{item.priceType === 'hourly'}}" class="hours-row">
+        <text class="text-sm">时长 {{item.hours}} 小时</text>
+        <slider class="hours-slider" min="1" max="8" value="{{item.hours}}" data-idx="{{idx}}" bindchange="onHoursChange" activeColor="#29241D" backgroundColor="rgba(41,36,29,0.12)" block-color="#29241D" block-size="20" show-value />
       </view>
     </view>
   </scroll-view>
 
-  <view class="step-content" wx:if="{{currentStep === 3}}">
-    <text class="section-title text-lg text-bold">填写联系信息</text>
-    <view class="form-card card">
-      <view class="form-item">
-        <text class="form-label">联系人</text>
-        <input class="form-input" placeholder="请输入姓名" value="{{contactName}}" data-field="contactName" bindinput="onInputChange" />
+  <!-- 第 3 步：填信息 -->
+  <view class="bk-content" wx:if="{{currentStep === 3}}">
+    <view class="sech" style="margin:8rpx 0 20rpx">
+      <view class="sech-sq"></view><view class="sech-t" style="font-size:30rpx">联系信息</view>
+      <view class="sech-line"></view>
+    </view>
+    <view class="cd form-card">
+      <view class="form-row">
+        <text class="form-lb">联系人</text>
+        <input class="form-in" placeholder="请输入姓名" placeholder-class="form-ph" value="{{contactName}}" data-field="contactName" bindinput="onInputChange" />
       </view>
-      <view class="form-item">
-        <text class="form-label">手机号</text>
-        <input class="form-input" type="number" placeholder="请输入手机号" value="{{contactPhone}}" data-field="contactPhone" bindinput="onInputChange" />
+      <view class="form-row">
+        <text class="form-lb">手机号</text>
+        <input class="form-in" type="number" placeholder="请输入手机号" placeholder-class="form-ph" value="{{contactPhone}}" data-field="contactPhone" bindinput="onInputChange" />
       </view>
-      <view class="form-item">
-        <text class="form-label">备注</text>
-        <textarea class="form-textarea" placeholder="有什么需要特别说明的？" value="{{remark}}" data-field="remark" bindinput="onInputChange" />
+      <view class="form-row form-row-top">
+        <text class="form-lb">备注</text>
+        <textarea class="form-ta" placeholder="想拍的风格、特殊需求…" placeholder-class="form-ph" value="{{remark}}" data-field="remark" bindinput="onInputChange" />
       </view>
     </view>
   </view>
 
-  <view class="step-content" wx:if="{{currentStep === 4}}">
-    <text class="section-title text-lg text-bold">确认订单</text>
-    <view class="confirm-card card">
+  <!-- 第 4 步：确认 -->
+  <view class="bk-content" wx:if="{{currentStep === 4}}">
+    <view class="sech" style="margin:8rpx 0 20rpx">
+      <view class="sech-sq"></view><view class="sech-t" style="font-size:30rpx">确认订单</view>
+      <view class="sech-line"></view>
+    </view>
+    <view class="cd confirm-card">
       <view wx:for="{{cart}}" wx:key="_id" class="confirm-item">
-        <text class="text-bold">{{item.name}}</text>
-        <text class="text-sm text-secondary">{{item.appointmentDate}} {{item.appointmentTime}}</text>
-        <text class="text-price text-right">¥{{item.price / 100}}</text>
+        <view class="flex-1">
+          <view class="text-bold">{{item.name}}</view>
+          <view class="text-sm text-hint" style="margin-top:4rpx">{{item.appointmentDate}} {{item.appointmentTime}}<text wx:if="{{item.priceType === 'hourly'}}"> · {{item.hours}}小时</text></view>
+        </view>
+        <view class="price" style="font-size:30rpx"><text class="price-sym">¥</text>{{item.price / 100}}</view>
       </view>
-      <view class="flex-between mt-10">
-        <text>联系人</text><text>{{contactName}} {{contactPhone}}</text>
-      </view>
-      <view class="flex-between mt-10" wx:if="{{remark}}">
-        <text>备注</text><text>{{remark}}</text>
-      </view>
-      <view class="flex-between mt-20 text-xl">
-        <text class="text-bold">合计</text><text class="text-price text-bold">¥{{totalFee / 100}}</text>
+      <view class="hr" style="margin:20rpx 0"></view>
+      <view class="flex-between"><text class="text-hint text-sm">联系人</text><text class="text-sm">{{contactName}}　{{contactPhone}}</text></view>
+      <view class="flex-between" style="margin-top:12rpx" wx:if="{{remark}}"><text class="text-hint text-sm">备注</text><text class="text-sm" style="max-width:420rpx;text-align:right">{{remark}}</text></view>
+      <view class="flex-between confirm-total">
+        <text class="text-bold">合计</text>
+        <view class="price" style="font-size:40rpx"><text class="price-sym">¥</text>{{totalFee / 100}}</view>
       </view>
     </view>
   </view>
 
-  <view class="bottom-bar safe-bottom flex-between">
-    <button wx:if="{{currentStep > 1}}" class="prev-btn" bindtap="prevStep">上一步</button>
-    <button wx:if="{{currentStep < 4}}" class="next-btn flex-1" bindtap="nextStep">下一步</button>
-    <button wx:if="{{currentStep === 4}}" class="submit-btn flex-1" bindtap="onSubmit">提交订单</button>
+  <!-- 底部操作 -->
+  <view class="actionbar bk-action">
+    <button wx:if="{{currentStep > 1}}" class="btn btn-line btn-lg" bindtap="prevStep">上一步</button>
+    <button wx:if="{{currentStep < 4}}" class="btn btn-ink btn-lg flex-1" bindtap="nextStep">下一步</button>
+    <button wx:if="{{currentStep === 4}}" class="btn btn-red btn-lg flex-1" bindtap="onSubmit">提交订单</button>
   </view>
 </view>

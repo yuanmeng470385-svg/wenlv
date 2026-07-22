@@ -1,62 +1,55 @@
-/* CSS 变量定义 - 文旅摄影预约小程序 */
-/* 视觉升级 v2 - 更精致的暖色调 + 更大的间距圆角 */
+/* ============================================================
+   CSS 变量定义 - 文旅摄影预约小程序
+   视觉系统 v3「纸墨朱砂 · 新中式」2026-07-21
+   上层为新版色板；下层为旧变量别名（旧页面自动过渡，勿删）
+   ============================================================ */
 page {
-  /* 品牌色系 - 雅致暖棕 */
-  --color-primary: #B8875E;
-  --color-primary-dark: #8B5E3C;
-  --color-primary-light: #E4D0BC;
-  --color-primary-bg: #F9F3EC;
+  /* ---- 纸墨色板 ---- */
+  --paper: #F6F1E7;        /* 宣纸 · 页面底 */
+  --paper-2: #FBF8F0;      /* 浅纸 · 吸顶区 / 底栏 */
+  --card: #FFFDF7;         /* 卡片 */
+  --ink: #29241D;          /* 墨 · 主文字 / 主按钮 */
+  --ink-2: #6E675C;        /* 淡墨 · 次文字 */
+  --ink-3: #A79E8F;        /* 灰墨 · 弱提示 */
+  --line: rgba(41, 36, 29, 0.14);   /* 发丝线 */
+  --line-2: rgba(41, 36, 29, 0.07); /* 更浅分隔 */
 
-  /* 功能色 */
-  --color-price: #E8563A;
-  --color-success: #52B818;
-  --color-warning: #F0A020;
-  --color-danger: #E04545;
-  --color-info: #4080E0;
+  /* ---- 强调色（全局仅三种） ---- */
+  --red: #BE3F2C;          /* 朱砂 · 价格 / 主操作 / 警示 */
+  --red-deep: #9E3020;     /* 深朱 · 按压态 */
+  --red-bg: rgba(190, 63, 44, 0.10);
+  --celadon: #43615C;      /* 黛青 · 进行中 / 成功 */
+  --celadon-bg: rgba(67, 97, 92, 0.13);
+  --gold: #B08D57;         /* 泥金 · 评分 / 轻奢点缀 */
+  --gold-deep: #8F6B33;
+  --gold-bg: rgba(176, 141, 87, 0.16);
+  --star: #C99345;         /* 星金 · 评分星 */
 
-  /* 等级色 */
-  --level-bronze: #C08A50;
-  --level-silver: #A0A8B0;
-  --level-gold: #D4A830;
-  --level-platinum: #4088D0;
-  --level-diamond: #9060C0;
+  /* ---- 字体 ---- */
+  --f-serif: 'Noto Serif SC', 'Songti SC', 'STSong', 'SimSun', 'Noto Serif CJK SC', serif;
+  --f-sans: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
 
-  /* 文字色 */
-  --text-primary: #1A1A1A;
-  --text-secondary: #666666;
-  --text-hint: #999999;
-  --text-disabled: #CCCCCC;
+  /* ---- 阴影（仅一种，克制） ---- */
+  --shadow-card: 0 2rpx 0 rgba(41, 36, 29, 0.02), 0 28rpx 68rpx -36rpx rgba(41, 36, 29, 0.22);
+  --shadow-float: 0 8rpx 32rpx -12rpx rgba(41, 36, 29, 0.28);
 
-  /* 背景色 */
-  --bg-page: #F7F5F2;
-  --bg-white: #FFFFFF;
-  --bg-card: #FFFFFF;
-  --bg-mask: rgba(0, 0, 0, 0.45);
-
-  /* 边框 */
-  --border-color: #E8E6E1;
-
-  /* 阴影 */
-  --shadow-card: 0 1rpx 8rpx rgba(0, 0, 0, 0.03), 0 2rpx 16rpx rgba(0, 0, 0, 0.02);
-  --shadow-float: 0 4rpx 20rpx rgba(0, 0, 0, 0.06);
-
-  /* 间距 */
+  /* ---- 间距 ---- */
   --spacing-xs: 8rpx;
   --spacing-sm: 16rpx;
   --spacing-md: 24rpx;
   --spacing-lg: 32rpx;
   --spacing-xl: 48rpx;
 
-  /* 圆角 */
-  --radius-sm: 8rpx;
-  --radius-md: 16rpx;
-  --radius-lg: 24rpx;
+  /* ---- 圆角 ---- */
+  --radius-sm: 10rpx;
+  --radius-md: 20rpx;
+  --radius-lg: 28rpx;
+  --radius-pill: 999rpx;
   --radius-round: 50%;
 
   /* ---- 按钮体系 ---- */
   --btn-height: 88rpx;
-  --btn-radius: 44rpx;
-  --btn-padding: 22rpx 40rpx;
+  --btn-radius: 999rpx;
   --btn-font-size: 30rpx;
 
   /* ---- 图标体系 ---- */
@@ -64,10 +57,47 @@ page {
   --icon-size-md: 36rpx;
   --icon-size-lg: 44rpx;
   --icon-size-xl: 80rpx;
-  --icon-color: #666666;
-  --icon-color-light: #E4D0BC;
 
   /* ---- 骨架屏 ---- */
-  --skeleton-color: #F0EDE8;
-  --skeleton-shimmer: #E8E5E0;
+  --skeleton-color: #EDE7DB;
+  --skeleton-shimmer: #F6F1E7;
+
+  /* ============================================================
+     旧变量别名 —— 让未改版页面自动落入新色板，逐步替换勿删
+     ============================================================ */
+  --color-primary: var(--ink);
+  --color-primary-dark: var(--red-deep);
+  --color-primary-light: #E7DFD0;
+  --color-primary-bg: #F0EAE0;
+
+  --color-price: var(--red);
+  --color-success: var(--celadon);
+  --color-warning: var(--gold-deep);
+  --color-danger: var(--red);
+  --color-info: var(--celadon);
+
+  --text-primary: var(--ink);
+  --text-secondary: var(--ink-2);
+  --text-hint: var(--ink-3);
+  --text-disabled: #C9C2B4;
+
+  --bg-page: var(--paper);
+  --bg-white: var(--card);
+  --bg-card: var(--card);
+  --bg-mask: rgba(23, 20, 15, 0.5);
+
+  --border-color: rgba(41, 36, 29, 0.10);
+
+  /* 旧等级色（评级已删，保留别名防报错） */
+  --level-bronze: var(--gold);
+  --level-silver: var(--ink-3);
+  --level-gold: var(--gold);
+  --level-platinum: var(--celadon);
+  --level-diamond: var(--celadon);
+
+  /* 旧按钮 padding 别名 */
+  --btn-padding: 22rpx 40rpx;
+  --icon-color: var(--ink-2);
+  --icon-color-light: var(--ink-3);
+  --shadow-card-legacy: var(--shadow-card);
 }

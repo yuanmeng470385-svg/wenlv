@@ -1,1 +1,7 @@
-{"navigationBarTitleText":"用户管理","usingComponents":{"icon":"/components/icon/index"}}
+{
+  "navigationBarTitleText": "用户管理",
+  "usingComponents": {
+    "icon": "/components/icon/index",
+    "empty-state": "/components/empty-state/index"
+  }
+}
