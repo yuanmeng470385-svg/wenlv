@@ -104,14 +104,26 @@ Page({
     }
   },
   onBookTap() {
-    // 默认带上第一个服务套餐
+    // 取第一个套餐跳转到详情页
     const items = this.data.serviceItems || [];
-    const sid = items.length > 0 ? items[0]._id : '';
-    wx.navigateTo({ url: `/pages/booking/index?providerId=${this.data.providerId}&serviceItemId=${sid}` });
+    if (!items.length) {
+      wx.showToast({ title: '暂无可用套餐', icon: 'none' });
+      return;
+    }
+    this.navigateToItemDetail(items[0]);
   },
 
   onServiceSelect(e) {
-    const item = e.currentTarget.dataset.item;
-    wx.navigateTo({ url: `/pages/booking/index?providerId=${this.data.providerId}&serviceItemId=${item._id}` });
+    this.navigateToItemDetail(e.currentTarget.dataset.item);
+  },
+
+  navigateToItemDetail(item) {
+    const provider = this.data.provider || {};
+    const params = [
+      `providerId=${this.data.providerId}`,
+      `providerName=${encodeURIComponent(provider.name || '')}`,
+      `item=${encodeURIComponent(JSON.stringify(item))}`,
+    ].join('&');
+    wx.navigateTo({ url: `/pages/serviceItemDetail/index?${params}` });
   },
 });

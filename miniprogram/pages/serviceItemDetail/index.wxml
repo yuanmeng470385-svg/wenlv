@@ -1,0 +1,70 @@
+<view class="page" wx:if="{{item}}">
+  <!-- 顶部大图区 -->
+  <view class="hero">
+    <image wx:if="{{item.icon}}" class="hero-img" src="{{item.icon}}" mode="aspectFill" />
+    <view wx:else class="hero-img hero-ph {{_grad}}">
+      <text class="hero-glyph">{{_glyph}}</text>
+    </view>
+  </view>
+
+  <!-- 商家信息 -->
+  <view class="provider-row" bindtap="onProviderTap">
+    <text class="pr-name">{{providerName || '查看商家'}}</text>
+    <text class="pr-cat">{{_catLabel}}</text>
+    <icon name="chevr" size="28rpx" color="#A79E8F" />
+  </view>
+
+  <!-- 套餐名称 -->
+  <view class="name-row">
+    <text class="s-name serif">{{item.name}}</text>
+  </view>
+
+  <!-- 价格区 -->
+  <view class="price-row">
+    <text class="price-num"><text class="price-sym">¥</text>{{item.price / 100}}</text>
+    <text wx:if="{{item.priceType === 'hourly'}}" class="price-unit">/ 小时</text>
+  </view>
+
+  <!-- 信息标签 -->
+  <view class="info-chips">
+    <view class="chip">
+      <icon name="clock" size="24rpx" color="#6E675C" />
+      <text>{{item.duration || 0}} 分钟</text>
+    </view>
+    <view class="chip" wx:if="{{item.maxDailyBooking}}">
+      <icon name="calendar" size="24rpx" color="#6E675C" />
+      <text>每日限 {{item.maxDailyBooking}} 单</text>
+    </view>
+    <view class="chip">
+      <text>{{item.priceType === 'hourly' ? '按时计费' : '固定套餐'}}</text>
+    </view>
+  </view>
+
+  <!-- 套餐描述 -->
+  <view class="sec" wx:if="{{item.description}}">
+    <view class="sec-title">套餐描述</view>
+    <view class="sec-body">{{item.description}}</view>
+  </view>
+
+  <!-- 包含内容 -->
+  <view class="sec" wx:if="{{item.includes && item.includes.length}}">
+    <view class="sec-title">包含内容</view>
+    <view class="include-list">
+      <view wx:for="{{item.includes}}" wx:key="*this" class="include-item">
+        <view class="dot"></view>
+        <text>{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部占位（给固定按钮留空间） -->
+  <view style="height:160rpx"></view>
+</view>
+
+<!-- 空状态 -->
+<empty-state wx:if="{{!item}}" text="套餐信息加载失败" icon="order" />
+
+<!-- 底部固定按钮 -->
+<view class="bottom-bar" wx:if="{{item}}">
+  <button class="book-btn" bindtap="onBook">立即预约</button>
+</view>

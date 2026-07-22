@@ -4,6 +4,7 @@
     "pages/serviceList/index",
     "pages/hanfuLocation/index",
     "pages/serviceDetail/index",
+    "pages/serviceItemDetail/index",
     "pages/portfolioDetail/index",
     "pages/booking/index",
     "pages/orderList/index",
