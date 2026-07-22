@@ -94,9 +94,8 @@
     </view>
   </view>
 
-  <!-- 底部操作栏 -->
+  <!-- 底部操作栏：仅保留咨询电话 -->
   <view class="actionbar p-action">
-    <button class="btn btn-line btn-lg" bindtap="onCallPhone"><icon name="phone" size="32rpx" color="#29241D" />咨询</button>
-    <button class="btn btn-red btn-lg flex-1" bindtap="onBookTap">立即预约</button>
+    <button class="btn btn-line btn-lg flex-1" bindtap="onCallPhone"><icon name="phone" size="32rpx" color="#29241D" />咨询电话</button>
   </view>
 </view>

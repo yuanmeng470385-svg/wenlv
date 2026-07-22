@@ -24,25 +24,28 @@
 
   <!-- 第 1 步：选服务 -->
   <scroll-view scroll-y class="bk-content" wx:if="{{currentStep === 1}}">
-    <view class="sech" style="margin:8rpx 0 20rpx">
-      <view class="sech-sq"></view><view class="sech-t" style="font-size:30rpx">选择服务</view>
-      <view class="sech-line"></view>
-    </view>
-    <view wx:for="{{serviceItems}}" wx:key="_id" class="cd svc" bindtap="addToCart" data-item="{{item}}">
-      <view class="svc-ic"><icon name="camera" size="38rpx" color="#43615C" /></view>
-      <view class="flex-1">
-        <view class="text-bold">{{item.name}}</view>
-        <view class="text-sm text-hint text-ellipsis" style="margin-top:6rpx;max-width:360rpx">{{item.description}}</view>
+    <!-- 多项目模式：显示所有套餐可选 -->
+    <block wx:if="{{!singleMode}}">
+      <view class="sech" style="margin:8rpx 0 20rpx">
+        <view class="sech-sq"></view><view class="sech-t" style="font-size:30rpx">选择服务</view>
+        <view class="sech-line"></view>
       </view>
-      <view class="svc-right">
-        <view class="price"><text class="price-sym">¥</text>{{item.price / 100}}<text wx:if="{{item.priceType === 'hourly'}}" class="price-q">/时</text></view>
-        <view class="btn btn-line btn-sm svc-add">加入</view>
+      <view wx:for="{{serviceItems}}" wx:key="_id" class="cd svc" bindtap="addToCart" data-item="{{item}}">
+        <view class="svc-ic"><icon name="camera" size="38rpx" color="#43615C" /></view>
+        <view class="flex-1">
+          <view class="text-bold">{{item.name}}</view>
+          <view class="text-sm text-hint text-ellipsis" style="margin-top:6rpx;max-width:360rpx">{{item.description}}</view>
+        </view>
+        <view class="svc-right">
+          <view class="price"><text class="price-sym">¥</text>{{item.price / 100}}<text wx:if="{{item.priceType === 'hourly'}}" class="price-q">/时</text></view>
+          <view class="btn btn-line btn-sm svc-add">加入</view>
+        </view>
       </view>
-    </view>
+    </block>
 
     <block wx:if="{{cart.length}}">
       <view class="sech" style="margin:32rpx 0 20rpx">
-        <view class="sech-sq"></view><view class="sech-t" style="font-size:30rpx">已选 {{cart.length}} 项</view>
+        <view class="sech-sq"></view><view class="sech-t" style="font-size:30rpx">{{singleMode ? '预约项目' : '已选 ' + cart.length + ' 项'}}</view>
         <view class="sech-line"></view>
         <view class="price" style="font-size:30rpx"><text class="price-sym">¥</text>{{totalFee / 100}}</view>
       </view>
@@ -51,7 +54,7 @@
           <view class="text-bold">{{item.name}}</view>
           <view class="text-sm text-hint" style="margin-top:4rpx">¥{{item.price / 100}}{{item.priceType === 'hourly' ? '/时' : ''}}</view>
         </view>
-        <view class="btn btn-txt btn-sm" data-index="{{index}}" catchtap="removeFromCart">移除</view>
+        <view wx:if="{{!singleMode}}" class="btn btn-txt btn-sm" data-index="{{index}}" catchtap="removeFromCart">移除</view>
       </view>
     </block>
   </scroll-view>

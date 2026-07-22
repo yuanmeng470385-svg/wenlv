@@ -1,8 +1,8 @@
 <view class="page" wx:if="{{item}}">
   <!-- 顶部大图区 -->
   <view class="hero">
-    <image wx:if="{{item.icon}}" class="hero-img" src="{{item.icon}}" mode="aspectFill" />
-    <view wx:else class="hero-img hero-ph {{_grad}}">
+    <image wx:if="{{item.icon}}" class="hero-img" src="{{item.icon}}" mode="widthFix" />
+    <view wx:else class="hero-ph {{_grad}}">
       <text class="hero-glyph">{{_glyph}}</text>
     </view>
   </view>

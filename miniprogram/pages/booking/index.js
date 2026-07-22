@@ -18,13 +18,14 @@ Page({
     remark: '',
     totalFee: 0,
     currentStep: 1,
-  },
+    singleMode: false,   // 单项目模式：从套餐详情进入，只能预约一个项目
 
   onShow() { this.restoreCart(); },
   onLoad(options) {
     const providerId = options.providerId || '';
     const serviceItemId = options.serviceItemId || '';
-    this.setData({ providerId, preselectServiceItemId: serviceItemId });
+    const singleMode = !!serviceItemId;
+    this.setData({ providerId, preselectServiceItemId: serviceItemId, singleMode });
     this.setData({
       dateList: timeUtil.getDateList(30),
       timeSlots: timeUtil.getDefaultTimeSlots(),
@@ -41,6 +42,8 @@ Page({
   },
 
   restoreCart() {
+    // 单项目模式不恢复旧购物车
+    if (this.data.singleMode) return;
     try {
       const saved = wx.getStorageSync('booking_cart');
       if (saved) { const cart = JSON.parse(saved); if (cart.length) this.setData({ cart }); this.calcTotal(); }
