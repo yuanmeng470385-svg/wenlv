@@ -43,6 +43,11 @@
       </view>
     </block>
 
+    <!-- 单项目模式加载中 -->
+    <view wx:if="{{singleMode && dataLoading && !cart.length}}" class="cd" style="padding:48rpx;text-align:center">
+      <view class="text-hint" style="font-size:28rpx">加载套餐信息…</view>
+    </view>
+
     <block wx:if="{{cart.length}}">
       <view class="sech" style="margin:32rpx 0 20rpx">
         <view class="sech-sq"></view><view class="sech-t" style="font-size:30rpx">{{singleMode ? '预约项目' : '已选 ' + cart.length + ' 项'}}</view>

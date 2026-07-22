@@ -119,11 +119,8 @@ Page({
 
   navigateToItemDetail(item) {
     const provider = this.data.provider || {};
-    const params = [
-      `providerId=${this.data.providerId}`,
-      `providerName=${encodeURIComponent(provider.name || '')}`,
-      `item=${encodeURIComponent(JSON.stringify(item))}`,
-    ].join('&');
-    wx.navigateTo({ url: `/pages/serviceItemDetail/index?${params}` });
+    wx.navigateTo({
+      url: `/pages/serviceItemDetail/index?providerId=${this.data.providerId}&serviceItemId=${item._id}&providerName=${encodeURIComponent(provider.name || '')}`,
+    });
   },
 });

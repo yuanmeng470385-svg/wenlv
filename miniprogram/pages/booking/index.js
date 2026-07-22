@@ -19,6 +19,7 @@ Page({
     totalFee: 0,
     currentStep: 1,
     singleMode: false,   // 单项目模式：从套餐详情进入，只能预约一个项目
+    dataLoading: false,  // 数据加载中
 
   onShow() { this.restoreCart(); },
   onLoad(options) {
@@ -56,6 +57,7 @@ Page({
       setTimeout(() => wx.navigateBack(), 1500);
       return;
     }
+    this.setData({ dataLoading: true });
     try {
       const data = await getProviderDetail(this.data.providerId);
       this.setData({ provider: data.provider, serviceItems: data.serviceItems });
@@ -65,6 +67,8 @@ Page({
       }
     } catch (err) {
       wx.showToast({ title: '加载失败', icon: 'none' });
+    } finally {
+      this.setData({ dataLoading: false });
     }
   },
 
