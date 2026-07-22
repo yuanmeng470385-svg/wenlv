@@ -20,6 +20,7 @@ Page({
     currentStep: 1,
     singleMode: false,   // 单项目模式：从套餐详情进入，只能预约一个项目
     dataLoading: false,  // 数据加载中
+  },
 
   onShow() { this.restoreCart(); },
   onLoad(options) {
