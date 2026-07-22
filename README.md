@@ -2,7 +2,7 @@
 
 摄影 + 妆造 + 汉服 O2O 预约平台。支持固定套餐/按时计费两种定价、组合套餐、微信支付、多角色身份切换、汉服店位置发现与全链路后台审核。
 
-> **当前状态（2026-07-22）：** UI 重设计进行中，活跃分支 `feat/ui-redesign`（41 commits ahead of main），101 个文件改动涉及所有页面样式重构。
+> **当前状态（2026-07-22）：** UI 重设计完成，活跃分支 `feat/ui-redesign`（~50 commits ahead of main）。新增套餐详情中间页，预约流程重构为 3 步（商家→套餐→下单），多项安全与体验修复。
 
 ## 技术栈
 - **前端**: 原生微信小程序
@@ -14,7 +14,7 @@
 ```
 wenlv/
 ├── miniprogram/              # 小程序前端代码
-│   ├── pages/                # 29 个页面（用户端 / 商家端 provider / 管理端 admin）
+│   ├── pages/                # 30 个页面（用户端 / 商家端 provider / 管理端 admin）
 │   ├── components/           # 5 个共享组件（icon / empty-state / error-state / loading-skeleton / cloudTipModal）
 │   ├── services/             # 云函数调用封装 (cloud / user / service / order)
 │   ├── utils/                # 工具函数 (金额、时间、校验、通用)
@@ -79,13 +79,14 @@ cli.bat cloud functions deploy --env <环境ID> --names fn1 fn2 ... --remote-npm
 | `hanfu_shop` | 汉服店 —— 商家后台（同上） |
 | `admin` | 管理员 —— 审核入驻/作品/套餐/退款/头像变更/注销，管理用户与 Banner（在 DB 中手动追加 `roles:["user","admin"]`，默认密码 `admin123`，可在 `config` 集合修改） |
 
-3 个 TabBar 页面（首页 / 功能 / 我的）按身份切换模式：
+3 个 TabBar 页面（首页 / 订单 / 我的）按身份切换模式：
 - **首页**：用户模式为浏览发现；商家模式为自己店铺的详情页（含头像/背景图编辑入口）
-- **功能**：用户模式为订单列表；商家模式为数据看板 + 快捷入口 + 订单管理
+- **订单**：用户模式为订单列表；商家模式为数据看板 + 快捷入口 + 订单管理
 - **我的**：登录、身份切换、管理员入口、退出登录、注销商家身份
 
 ## 核心功能
 - 三类服务商：摄影师 / 妆造师 / 汉服店
+- 预约流程：商家详情→套餐详情（大图+描述）→立即预约→4步下单（确认套餐/选时间/填信息/支付）
 - 两种定价：固定套餐(`fixed`) / 按时计费(`hourly`)（原「按项目(`project`)」已移除）
 - 组合套餐：一次下单多服务项（`orders.items[]`）
 - 作品墙：上传 + 审核 + 点赞 + 收藏 + 精选（作品级精选已替代旧商家级精选）
@@ -150,7 +151,7 @@ cancelled   pending_refund (管理员 approveRefund 通过后 → cancelled)
 ## 仓库与分支
 
 - GitHub：`https://github.com/yuanmeng470385-svg/wenlv`
-- 活跃开发分支：`feat/ui-redesign`（41 commits ahead of main）；`main` 落后于 `feat/backend-auth`，最新功能尚未合回
+- 活跃开发分支：`feat/ui-redesign`（~50 commits ahead of main）；`main` 落后于 `feat/backend-auth`，最新功能尚未合回
 - 设计文档见 `docs/superpowers/specs/`，实施计划见 `docs/superpowers/plans/`
 - UI 重设计参考素材见 `docs/ui-redesign/`
 

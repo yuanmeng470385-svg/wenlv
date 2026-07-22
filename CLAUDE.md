@@ -9,32 +9,29 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Cloud Environment ID:** `cloud1-d1gv9n7j56c0a3448`
 - **AppID:** `wxce7801ec430c768e`
 - **GitHub:** `https://github.com/yuanmeng470385-svg/wenlv`
-- **Scale:** 70 cloud functions / 29 pages / 15 DB collections / 5 shared components
+- **Scale:** 70 cloud functions / 30 pages / 15 DB collections / 5 shared components
 - **Git identity:** repo-level yuan / yuanmeng470385@gmail.com; proxy 127.0.0.1:7897 + openssl for GitHub
 
 ## Repository Status (as of 2026-07-22)
 
-- **Active branch:** `feat/ui-redesign` (tip `4599a01`), 41 commits ahead of `main`
+- **Active branch:** `feat/ui-redesign` (tip `13f9467`), ~50 commits ahead of `main`
 - `main` ≈ `feat/backend-auth` at `30a97b1` — behind; all active work is on `feat/ui-redesign`, not yet merged back
-- **Working tree:** 101 modified files + 5 untracked — ongoing UI redesign across all pages + admin/provider pages, plus:
-  - 套餐审核收紧 + 移除 `project` 定价与 `originalPrice` 字段（`saveServiceItem`/`editServiceItem`/`reviewServiceItem`/`approveProvider`）
-  - New `docs/ui-redesign/` directory (design reference assets)
-  - New `scripts/check-compile.js` (build check), `scripts/gen-tabbar-icons.js` (tab bar icon generation), `scripts/package.json` (dep: `@resvg/resvg-js`)
+- **Working tree:** clean — all changes committed and pushed
+- **Recent work:** UI 重设计全部页面、套餐审核收紧、7 项关键安全/体验修复、12 项重要+轻微修复、新增套餐详情中间页、预约流程重构
 
 ### Recent Commits (last 10 on feat/ui-redesign)
 
 ```
+13f9467 fix: 修复booking语法错误 + TabBar功能改为订单
+51d213f fix: 套餐详情云端加载数据 + 预约页空白修复
+4047416 fix: 套餐详情图片完整显示 + 预约页单项目模式
+26b6fff feat: 新增套餐详情中间页 + 修复hanfuLocation Component模式
+f0242ef fix: 12项重要+轻微修复 - 体验优化与逻辑完善
+a2e0836 fix: 7项关键修复 - 鉴权/安全/体验
+35aeba5 feat: UI重设计全页面重构 + 套餐审核收紧 + 文档更新
 4599a01 fix: approval sync, image display, icon optimization
 edee544 fix: 套餐上下架生效 + 新增删除功能
 8c12a6c docs: CLAUDE.md补充多身份隔离规则+角色切换缓存清理+订单确认更新
-6a6f6a2 fix: 切换商家身份首页缓存未清空
-6eed566 fix: 多身份数据隔离 - 云函数按categoryType匹配当前身份
-9285825 fix: 注销时pending_complete/pending_refund/pending_pay不再阻止
-56a830c fix: 商家确认完成 + 订单状态分类同步
-944e11b fix: 优秀展示布局改用width:50%+内padding方案
-d90c71e fix: 手机端优秀展示一排只显示一个 - gap属性兼容性
-604ad8f fix: 三个问题修复
-```
 
 ## Commands
 
@@ -88,16 +85,17 @@ Use `miniprogram-automator` package:
 wenlv/
 ├── miniprogram/          # Frontend
 │   ├── app.js            # App entry, cloud.init, globalData (userInfo/openid/activeRole/hasLogin/isAdminMode)
-│   ├── app.json          # 29 pages + 3-tab tabBar + scope.userLocation permission
+│   ├── app.json          # 30 pages + 3-tab tabBar + scope.userLocation permission
 │   ├── pages/
 │   │   ├── index/        # 首页 tab (3 modes: admin / user / provider-as-serviceDetail)
-│   │   ├── orderList/    # 功能 tab (user: orders; provider: dashboard + quick entries + orders)
+│   │   ├── orderList/    # 订单 tab (user: orders; provider: dashboard + quick entries + orders)
 │   │   ├── profile/      # 我的 tab (login, role switch, admin login, logout, deregister)
 │   │   ├── serviceList/  # Provider list by category (photographer/makeup)
 │   │   ├── hanfuLocation/# Hanfu shop discovery (location + nearby POI via Tencent Maps)
-│   │   ├── serviceDetail/# Provider detail (public view)
+│   │   ├── serviceDetail/# Provider detail (public view, bottom: consultation phone only)
+│   │   ├── serviceItemDetail/ # Service item detail (image+name+description → booking button)
 │   │   ├── portfolioDetail/ # Portfolio detail
-│   │   ├── booking/      # 4-step booking flow
+│   │   ├── booking/      # 4-step booking flow (single-mode from item detail, multi-mode otherwise)
 │   │   ├── orderDetail/  # Order detail + phone-call buttons
 │   │   ├── favorites/    # My favorites
 │   │   ├── review/create/# 1-5 star review creation
@@ -275,7 +273,20 @@ Key serviceItem fields: `priceType` (`fixed` for 套餐 / `hourly` for 按时 �
 
 ### Tab Bar
 
-Three tabs: 首页 (index), 功能 (orderList), 我的 (profile). Index page renders admin/user/provider views based on `isAdminMode` and `activeRole`. Provider-mode index reuses the serviceDetail layout (cover swiper + avatar + 服务项目/作品展示/用户评价 tabs + edit icons for avatar/cover). Provider-mode orderList prepends a 3-column stats board (今日预约/待处理/总订单) + quick-entry row.
+Three tabs: 首页 (index), 订单 (orderList), 我的 (profile). Index page renders admin/user/provider views based on `isAdminMode` and `activeRole`. Provider-mode index reuses the serviceDetail layout (cover swiper + avatar + 服务项目/作品展示/用户评价 tabs + edit icons for avatar/cover). Provider-mode orderList prepends a 3-column stats board (今日预约/待处理/总订单) + quick-entry row.
+
+### Booking Flow (预约流程)
+
+三步预约：**商家详情(serviceDetail)** → 点套餐 → **套餐详情(serviceItemDetail)** → 点"立即预约" → **预约下单(booking)**
+
+- **serviceDetail**: Shows provider info, service items list + portfolios + reviews. Bottom bar: consultation phone only (立即预约 removed — moved to serviceItemDetail)
+- **serviceItemDetail**: Hero image (widthFix, full display), provider name+category, item name, price (red serif), duration/maxDaily tags, description card, includes list. Bottom fixed "立即预约" button → navigates to booking with `serviceItemId`
+- **booking**: Two modes:
+  - **singleMode** (from serviceItemDetail, `serviceItemId` present): Only shows the preselected item, no add/remove. Cart not restored from storage.
+  - **multiMode** (from serviceDetail "咨询" or other entry): Full service items list, can add multiple to cart.
+  - 4 steps: 确认套餐 → 选时间(30-day date picker + time slots + hourly slider) → 填信息(name/phone/remark) → 确认提交
+  - On submit: `createOrder` → choose payment method → WeChat Pay / mock pay / pay later
+  - Cart cleared only on successful order creation
 
 ### Provider Deregister Flow (注销)
 
@@ -309,17 +320,32 @@ Hanfu shops use a dedicated discovery page (`pages/hanfuLocation/`) instead of t
 
 ```
 pending_pay → paid → confirmed → in_progress → pending_complete → completed → reviewed
-    ↓           ↓         ↓             ↓
+    ↓           ↓         ↓
 cancelled   pending_refund (admin approves → cancelled)
 ```
 
-- Provider actions (`providerHandleOrder`): `confirm`, `reject` (auto-refunds), `start`, `complete`
-- Customer auto-cancel: unpaid orders expire (`cancelExpiredOrders`); `paid` orders not accepted within 24h → auto-cancelled
-- Cancel refund: <24h = full refund, 24h-48h = 50%, expired = cannot cancel
-- `confirmComplete` transitions `pending_complete` → `completed` (both customer AND provider can call it)
+**Provider actions** (`providerHandleOrder`):
+| Action | From | To | Notes |
+|--------|------|----|-------|
+| confirm | `paid` | `confirmed` | 接单 |
+| reject | `paid` | `pending_refund`/`cancelled` | 同用户取消退款规则（>24h全/0-24h半） |
+| reject | `confirmed` | `pending_refund` | 确认后反悔，全额退但需管理员审核 |
+| start | `confirmed` | `in_progress` | 开始服务 |
+| complete | `in_progress` | `pending_complete` | 标记完成，等用户确认 |
+
+**Cancel refund rules** (user cancel / provider reject from `paid`):
+- >24h before appointment: full refund → `pending_refund`
+- 0-24h: 50% refund → `pending_refund`
+- Past appointment: ❌ cannot cancel
+
+**Auto-cancel** (`cancelExpiredOrders`): `paid` orders not accepted within 24h → auto-cancelled with full refund (conditional update `where({_id, orderStatus:'paid'})` prevents concurrent double-processing)
+
+**`confirmComplete`**: `pending_complete` → `completed` (both customer AND provider can call it). Increments provider `orderCount`.
+
 - Provider tabs include `pending_complete` (待确认完成); `completed` tab auto-includes `reviewed` orders
 - STATUS_MAP in `orderList/index.js` maps status keys to Chinese labels
 - `orderNo` format: `{商家名}-{套餐名}` (generated in `createOrder`)
+- `createReview` has duplicate guard: conditional update `where({_id, orderStatus:'completed'})` prevents re-review
 
 ### Review/Rating System
 
