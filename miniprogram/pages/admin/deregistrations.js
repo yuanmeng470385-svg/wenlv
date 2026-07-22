@@ -33,12 +33,18 @@ Page({
   },
   async onReject(e) {
     const id = e.currentTarget.dataset.id;
-    try {
-      const { callFunction } = require('../../services/cloud');
-      await callFunction('approveDeregister', { providerId: id, action: 'reject' });
-      wx.showToast({ title: '已拒绝', icon: 'success' });
-      this.loadList();
-    } catch (err) { wx.showToast({ title: '操作失败', icon: 'none' }); }
+    wx.showModal({
+      title: '确认拒绝', content: '确定拒绝此注销申请？',
+      success: async (res) => {
+        if (!res.confirm) return;
+        try {
+          const { callFunction } = require('../../services/cloud');
+          await callFunction('approveDeregister', { providerId: id, action: 'reject' });
+          wx.showToast({ title: '已拒绝', icon: 'success' });
+          this.loadList();
+        } catch (err) { wx.showToast({ title: '操作失败', icon: 'none' }); }
+      }
+    });
   },
 
   onCardTap(e) {

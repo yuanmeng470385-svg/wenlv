@@ -5,8 +5,9 @@ const { callFunction } = require('./cloud');
 
 /**
  * 微信登录 / 自动注册
+ * @param {object} data - { nickName, avatarUrl } 可选
  */
-const login = () => callFunction('login');
+const login = (data) => callFunction('login', data || {});
 
 /**
  * 更新用户资料

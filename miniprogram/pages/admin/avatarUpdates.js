@@ -16,21 +16,33 @@ Page({
   },
   async onApprove(e) {
     const { id, field } = e.currentTarget.dataset;
-    try {
-      const { callFunction } = require('../../services/cloud');
-      await callFunction('approveAvatarUpdate', { providerId: id, field, action: 'approve' });
-      wx.showToast({ title: '已通过', icon: 'success' });
-      this.loadList();
-    } catch (err) { wx.showToast({ title: '操作失败', icon: 'none' }); }
+    wx.showModal({
+      title: '确认通过', content: '确定通过此头像/背景图变更？',
+      success: async (res) => {
+        if (!res.confirm) return;
+        try {
+          const { callFunction } = require('../../services/cloud');
+          await callFunction('approveAvatarUpdate', { providerId: id, field, action: 'approve' });
+          wx.showToast({ title: '已通过', icon: 'success' });
+          this.loadList();
+        } catch (err) { wx.showToast({ title: '操作失败', icon: 'none' }); }
+      }
+    });
   },
   async onReject(e) {
     const { id, field } = e.currentTarget.dataset;
-    try {
-      const { callFunction } = require('../../services/cloud');
-      await callFunction('approveAvatarUpdate', { providerId: id, field, action: 'reject' });
-      wx.showToast({ title: '已拒绝', icon: 'success' });
-      this.loadList();
-    } catch (err) { wx.showToast({ title: '操作失败', icon: 'none' }); }
+    wx.showModal({
+      title: '确认拒绝', content: '确定拒绝此变更？',
+      success: async (res) => {
+        if (!res.confirm) return;
+        try {
+          const { callFunction } = require('../../services/cloud');
+          await callFunction('approveAvatarUpdate', { providerId: id, field, action: 'reject' });
+          wx.showToast({ title: '已拒绝', icon: 'success' });
+          this.loadList();
+        } catch (err) { wx.showToast({ title: '操作失败', icon: 'none' }); }
+      }
+    });
   },
 
   onCardTap(e) {

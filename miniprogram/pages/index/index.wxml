@@ -55,7 +55,7 @@
     </view>
     <view class="bell" bindtap="onBellTap">
       <icon name="bell" size="44rpx" color="#29241D" />
-      <view class="bell-dot"></view>
+      <view class="bell-dot" wx:if="{{unreadCount > 0}}"></view>
     </view>
   </view>
 

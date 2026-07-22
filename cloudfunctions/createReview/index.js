@@ -1,6 +1,7 @@
 const cloud = require('wx-server-sdk');
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 const db = cloud.database();
+const _ = db.command;
 
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext();
@@ -12,14 +13,41 @@ exports.main = async (event, context) => {
     if (!rating || rating < 1 || rating > 5) {
       return { code: 1001, message: '评分必须为1-5' };
     }
+    if (!orderId) return { code: 1001, message: '缺少orderId' };
 
     const orderRes = await db.collection('orders').doc(orderId).get();
     if (!orderRes.data) return { code: 1003, message: '订单不存在' };
-    if (orderRes.data.userId !== openid) return { code: 1002, message: '无权评价' };
-    if (orderRes.data.orderStatus !== 'completed') return { code: 2001, message: '仅已完成订单可评价' };
+    const order = orderRes.data;
+    if (order.userId !== openid) return { code: 1002, message: '无权评价' };
+
+    // ===== 防重复：如果已评价则拒绝 =====
+    if (order.orderStatus === 'reviewed') {
+      return { code: 2001, message: '该订单已评价' };
+    }
+    if (order.orderStatus !== 'completed') {
+      return { code: 2001, message: '仅已完成订单可评价' };
+    }
+
+    // ===== 防重复：检查 reviews 集合是否已有该订单的评价 =====
+    const existingReview = await db.collection('reviews').where({ orderId, userId: openid }).count();
+    if (existingReview.total > 0) {
+      // 已有评价但订单状态未更新，补更新订单状态
+      await db.collection('orders').doc(orderId).update({
+        data: { orderStatus: 'reviewed', updateTime: db.serverDate() }
+      });
+      return { code: 2001, message: '该订单已评价' };
+    }
+
+    // ===== 原子更新订单状态（防并发竞态） =====
+    const updateResult = await db.collection('orders')
+      .where({ _id: orderId, orderStatus: 'completed' })
+      .update({ data: { orderStatus: 'reviewed', updateTime: db.serverDate() } });
+    if (!updateResult.stats || updateResult.stats.updated === 0) {
+      return { code: 2001, message: '该订单已被处理，无法重复评价' };
+    }
 
     // 对每个服务商分别创建评价
-    const providerIds = [...new Set(orderRes.data.items.map(i => i.providerId))];
+    const providerIds = [...new Set(order.items.map(i => i.providerId))];
 
     for (const providerId of providerIds) {
       await db.collection('reviews').add({
@@ -47,14 +75,9 @@ exports.main = async (event, context) => {
       });
     }
 
-    // 更新订单状态
-    await db.collection('orders').doc(orderId).update({
-      data: { orderStatus: 'reviewed', updateTime: db.serverDate() }
-    });
-
     return { code: 0, data: {}, message: '评价成功' };
   } catch (err) {
-    return { code: 9999, message: err.message };
+    console.error('[createReview]', err);
+    return { code: 9999, message: '评价失败，请重试' };
   }
 };
-

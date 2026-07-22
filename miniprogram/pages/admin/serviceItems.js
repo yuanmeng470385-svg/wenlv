@@ -16,14 +16,22 @@ Page({
   getTypeLabel(t) { const m = { fixed: '固定套餐', hourly: '按时计费' }; return m[t] || t; },
   async onAction(e) {
     const { id, action } = e.currentTarget.dataset;
-    wx.showLoading({ title: '处理中...' });
-    try {
-      const { callFunction } = require('../../services/cloud');
-      await callFunction('reviewServiceItem', { serviceItemId: id, action });
-      wx.hideLoading();
-      wx.showToast({ title: action === 'approved' ? '已通过' : '已驳回', icon: 'success' });
-      this.loadData();
-    } catch (e) { wx.hideLoading(); wx.showToast({ title: '操作失败', icon: 'none' }); }
+    const title = action === 'approved' ? '确认通过' : '确认驳回';
+    const content = action === 'approved' ? '确定通过此套餐？' : '确定驳回此套餐？';
+    wx.showModal({
+      title, content,
+      success: async (res) => {
+        if (!res.confirm) return;
+        wx.showLoading({ title: '处理中...' });
+        try {
+          const { callFunction } = require('../../services/cloud');
+          await callFunction('reviewServiceItem', { serviceItemId: id, action });
+          wx.hideLoading();
+          wx.showToast({ title: action === 'approved' ? '已通过' : '已驳回', icon: 'success' });
+          this.loadData();
+        } catch (e) { wx.hideLoading(); wx.showToast({ title: '操作失败', icon: 'none' }); }
+      }
+    });
   },
 
   onCardTap(e) {

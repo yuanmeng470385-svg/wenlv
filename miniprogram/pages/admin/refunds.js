@@ -11,14 +11,26 @@ Page({
   },
   async onAction(e) {
     const { id, action } = e.currentTarget.dataset;
-    wx.showLoading({ title: '处理中...' });
-    try {
-      const { callFunction } = require('../../services/cloud');
-      await callFunction('approveRefund', { orderId: id, action });
-      wx.hideLoading();
-      wx.showToast({ title: action === 'approved' ? '退款已通过' : '已驳回', icon: 'success' });
-      this.loadData();
-    } catch (e) { wx.hideLoading(); wx.showToast({ title: '操作失败', icon: 'none' }); }
+    const title = action === 'approved' ? '确认退款' : '确认驳回';
+    const content = action === 'approved'
+      ? '确定通过此退款申请？将向用户退款。'
+      : '确定驳回此退款申请？';
+    wx.showModal({
+      title, content,
+      confirmText: action === 'approved' ? '确认退款' : '确认驳回',
+      confirmColor: action === 'approved' ? '#E74C3C' : '#000000',
+      success: async (res) => {
+        if (!res.confirm) return;
+        wx.showLoading({ title: '处理中...' });
+        try {
+          const { callFunction } = require('../../services/cloud');
+          await callFunction('approveRefund', { orderId: id, action });
+          wx.hideLoading();
+          wx.showToast({ title: action === 'approved' ? '退款已通过' : '已驳回', icon: 'success' });
+          this.loadData();
+        } catch (e) { wx.hideLoading(); wx.showToast({ title: '操作失败', icon: 'none' }); }
+      }
+    });
   },
 
   onCardTap(e) {

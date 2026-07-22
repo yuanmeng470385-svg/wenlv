@@ -25,6 +25,7 @@ Page({
     activeTab: 'service',
     adminBanners: [],
     allProviders: [],
+    unreadCount: 0,
   },
 
   onLoad() {
@@ -81,13 +82,16 @@ Page({
       if (this.data.activeRole === 'user') {
         const { callFunction } = require('../../services/cloud');
 
-        // 缓存：banners / categories / topProviders 只拉一次
-        let banners = this.data.banners.length ? this.data.banners : [];
+        // 仅 categories 做全会话缓存（极少变动）
+        // banners / topProviders / featuredWorks 每次 onShow 都刷新
         let categories = this.data.categories.length ? this.data.categories : [];
-        let topProviders = this.data.topProviders.length ? this.data.topProviders : [];
+        let banners = [];
+        let topProviders = [];
 
         const promises = [];
-        if (!banners.length) promises.push(callFunction('getBanners').then(r => { banners = r.list || []; }).catch(()=>{}));
+        // banners 每次都拉取（管理员可能随时更新）
+        promises.push(callFunction('getBanners').then(r => { banners = r.list || []; }).catch(()=>{}));
+        // categories 仅首次加载
         if (!categories.length) promises.push(getCategoryList().then(r => {
           categories = (r || []).map(c => Object.assign({}, c, {
             _glyph: metaOf(c.type).glyph,
@@ -95,7 +99,8 @@ Page({
             _grad: metaOf(c.type).grad,
           }));
         }).catch(()=>{}));
-        if (!topProviders.length) promises.push(callFunction('getProviderList', { page: 1, pageSize: 6 }).then(r => {
+        // topProviders 每次都拉取（精选商家可能变动）
+        promises.push(callFunction('getProviderList', { page: 1, pageSize: 6 }).then(r => {
           topProviders = (r.list || []).map(p => Object.assign({}, p, {
             _glyph: (p.name || '影').charAt(0),
             _label: metaOf(p.categoryType).label,
@@ -136,9 +141,12 @@ Page({
         promises.push(featuredPromise);
 
         await Promise.all(promises);
-        if (banners.length) this.setData({ banners });
-        if (categories.length) this.setData({ categories });
-        if (topProviders.length) this.setData({ topProviders });
+        this.setData({ banners, categories, topProviders });
+
+        // 加载未读通知数
+        callFunction('getNotifications', { page: 1, pageSize: 1 })
+          .then(r => this.setData({ unreadCount: r.unreadCount || 0 }))
+          .catch(() => {});
       } else {
         // 商家模式 - 静默刷新时跳过缓存，否则首次加载后不再拉取
         if (this.data.provider && !this._firstLoad && !silent) return;

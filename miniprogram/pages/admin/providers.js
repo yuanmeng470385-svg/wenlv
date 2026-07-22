@@ -23,9 +23,12 @@ Page({
   getTypeLabel(t) { const m = { photographer: '摄影师', makeup: '妆造师', hanfu_shop: '汉服店' }; return m[t] || t; },
 
   onPass(e) {
-    // 等级系统已删除，通过无需再选星级
     const { id } = e.currentTarget.dataset;
-    this.doAction(id, 'approved', 0);
+    wx.showModal({
+      title: '确认通过',
+      content: '通过后将创建商家身份，确定吗？',
+      success: (res) => { if (res.confirm) this.doAction(id, 'approved', 0); },
+    });
   },
 
   onReject(e) {
